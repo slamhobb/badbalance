@@ -1,0 +1,13 @@
+from spending_app import app
+from spending_app.dao.base import BaseDao
+
+if __name__ == '__main__':
+    app.debug = True
+    app.run()
+
+
+def init_db():
+    with app.app_context():
+        dao = BaseDao()
+        with app.open_resource('schema.sql', mode='r') as f:
+            dao.executescript(f.read())
