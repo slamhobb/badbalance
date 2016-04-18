@@ -1,4 +1,7 @@
-settings = dict(
-    DATABASE='/home/gkar/git/badbalance/spending_app/bad_balance.db',
-    token_name='bb_token'
-)
+import os
+
+_basedir = os.path.abspath(os.path.dirname(__file__))
+
+DATA_BASE_CONNECTION_STRING = os.path.join(_basedir, 'bad_balance.db')
+
+AUTH_TOKEN_NAME = 'bb-auth-token'

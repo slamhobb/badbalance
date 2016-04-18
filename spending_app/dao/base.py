@@ -1,12 +1,11 @@
 import sqlite3
-
-from spending_app.config import settings
+from spending_app import config
 
 
 class BaseDao:
     @staticmethod
     def __create_connection():
-        conn = sqlite3.connect(settings['DATABASE'])
+        conn = sqlite3.connect(config.DATA_BASE_CONNECTION_STRING)
         conn.row_factory = sqlite3.Row
         return conn
 
