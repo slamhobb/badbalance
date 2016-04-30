@@ -1,3 +1,4 @@
+import inject
 import uuid
 
 from spending_app.dao.user import UserDao
@@ -7,9 +8,8 @@ from spending_app.infrastructure.auth import UserContext
 
 
 class AuthService:
-    def __init__(self):
-        self.user_dao = UserDao()
-        self.token_dao = AuthTokenDao()
+    user_dao = inject.attr(UserDao)
+    token_dao = inject.attr(AuthTokenDao)
 
     def authenticate(self, login, password):
         user = self.user_dao.get_by_login(login)

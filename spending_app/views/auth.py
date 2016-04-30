@@ -1,17 +1,21 @@
-from flask import Blueprint, redirect, render_template, request, session, url_for, g
-from spending_app import config
+import inject
+
+from flask import Blueprint, redirect, render_template, request, url_for, g
+
+from spending_app.infrastructure.web import *
 from spending_app.bussiness.auth import AuthService
 from spending_app.forms.auth import LoginForm
 
 mod = Blueprint('auth', __name__)
 
-auth_service = AuthService()
+auth_service = inject.instance(AuthService)
 
 
 @mod.before_request
 def add_user_context():
-    if config.AUTH_TOKEN_NAME in session:
-        g.user_context = auth_service.get_user_context(session[config.AUTH_TOKEN_NAME])
+    token = get_token()
+    if token is not None:
+        g.user_context = auth_service.get_user_context(token)
 
 
 @mod.route('/')
@@ -29,14 +33,14 @@ def login():
     token = auth_service.authenticate(form.login.data, form.password.data)
 
     if token is not None:
-        session[config.AUTH_TOKEN_NAME] = token
+        set_token(token)
 
-    return redirect(url_for('spending.index'))
+    return redirect(url_for('redirect.redirect'))
 
 
 @mod.route('/logout')
 def logout():
-    session.pop(config.AUTH_TOKEN_NAME, None)
+    remove_token()
     return redirect(url_for('.login_page'))
 
 

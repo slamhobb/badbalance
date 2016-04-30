@@ -3,6 +3,6 @@ from wtforms import StringField, PasswordField
 from wtforms.validators import DataRequired, Email
 
 
-class LoginForm(Form):
+class RegistrationForm(Form):
     login = StringField('Логин', [DataRequired(), Email()])
     password = PasswordField('Пароль', [DataRequired()])

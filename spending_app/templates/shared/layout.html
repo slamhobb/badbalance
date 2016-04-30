@@ -18,7 +18,8 @@
     <script src="{{ url_for('static', filename='jquery-1.11.3.min.js') }}"></script>
     <script src="{{ url_for('static', filename='jquery-ui-1.11.4/jquery-ui.min.js') }}"></script>
     <script src="{{ url_for('static', filename='jquery-ui-1.11.4/datepicker-ru.js') }}"></script>
-    <script src="{{ url_for('static', filename='spendings.js') }}"></script>
+
+    {% block scripts %}{% endblock %}
   </head>
 
   <body>

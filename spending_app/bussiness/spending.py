@@ -1,9 +1,10 @@
+import inject
+
 from spending_app.dao.spending import SpendingDao
 
 
 class SpendingService:
-    def __init__(self):
-        self.spending_dao = SpendingDao()
+    spending_dao = inject.attr(SpendingDao)
 
     def get_list_by_user(self, user_id):
         return self.spending_dao.get_list(user_id)

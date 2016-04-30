@@ -28,9 +28,11 @@ class BaseDao:
 
     def execute(self, sql, params):
         conn = self.__create_connection()
-        conn.execute(sql, params)
+        cur = conn.execute(sql, params)
+        inserted_id = cur.lastrowid
         conn.commit()
         conn.close()
+        return inserted_id
 
     def executescript(self, query):
         conn = self.__create_connection()

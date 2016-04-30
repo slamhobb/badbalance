@@ -9,4 +9,5 @@ class AuthTokenDao(BaseDao):
         return int(result['user_id'])
 
     def insert_token(self, auth_token):
-        self.execute('insert into auth_token(token, user_id) values(:token, :user_id)', auth_token.to_primitive())
+        self.execute('insert into auth_token(token, user_id) values(:token, :user_id)',
+                     auth_token.to_primitive())

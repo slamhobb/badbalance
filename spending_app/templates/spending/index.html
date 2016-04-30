@@ -1,7 +1,10 @@
 {% extends 'shared/layout.html' %}
-{% block body %}
 
-  <h3>Журнал расходов</h3>
+{% block scripts %}
+  <script src="{{ url_for('static', filename='spendings.js') }}"></script>
+{% endblock %}
+
+{% block body %}
 
   <div id="spending_table"></div>
 
@@ -15,7 +18,5 @@
     </div>
     <button type=submit class="btn btn-primary btn-sm">Добавить</button>
   </form>
-
-  <p>qweqwe</p>
 
 {% endblock %}

@@ -1,0 +1,3 @@
+import inject
+
+inject.configure()

@@ -20,6 +20,7 @@ class SpendingDao(BaseDao):
         return [Spending(r) for r in result]
 
     def add(self, spending):
-        self.execute(
-            'insert into spending (user_id, date, sum, text, category) values (:user_id, :date, :sum, :text, :category)',
-                spending.to_primitive())
+        self.execute("""
+            insert into spending (user_id, date, sum, text, category)
+                values (:user_id, :date, :sum, :text, :category)""",
+                     spending.to_primitive())
