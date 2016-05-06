@@ -1,17 +1,21 @@
 {% extends 'shared/layout.html' %}
 
 {% block scripts %}
-  <script src="{{ url_for('static', filename='spendings.js') }}"></script>
+  <script src="{{ url_for('static', filename='clientapps/index.js') }}"></script>
+  <script src="{{ url_for('static', filename='clientapps/spending/app.js') }}"></script>
+  <script src="{{ url_for('static', filename='clientapps/spending/spending.js') }}"></script>
+  <script src="{{ url_for('static', filename='clientapps/spending/index.js') }}"></script>
 {% endblock %}
 
 {% block body %}
 
-  <div id="spending_table"></div>
+  <div data-control="spendingTable">
+  </div>
 
-  <form id=spending_form class="form-inline" action="{{ url_for('spending.add_spending') }}" method=POST>
+  <form class="form-inline" data-control="addSpendingForm">
     <div class="form-group form-group-sm">
       {{ form.csrf_token }}
-      {{ form.date(class="form-control", placeholder=form.date.label.text) }}
+      {{ form.date(class="form-control dateinput", placeholder=form.date.label.text) }}
       {{ form.sum(class="form-control", placeholder=form.sum.label.text) }}
       {{ form.text(class="form-control", placeholder=form.text.label.text) }}
       {{ form.category(class="form-control", placeholder=form.category.label.text) }}
