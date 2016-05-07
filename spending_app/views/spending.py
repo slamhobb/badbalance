@@ -37,7 +37,8 @@ def add_user_context():
 @mod.route('/')
 @login_required
 def index():
-    return render_template('spending/index.html', form=SpendingForm())
+    model = spending_service.get_index()
+    return render_template('spending/index.html', form=SpendingForm(), model=model)
 
 
 @mod.route('/list')

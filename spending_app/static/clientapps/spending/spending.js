@@ -27,13 +27,23 @@
             var data = $ui.addSpendingForm.serialize()
 
             $.post(urls.addSpendingUrl, data, 'json')
-                .done(function () {
-                    updateTable();
-                })
+                .done(onAddSpending)
                 .fail(function () {
                     alert('Произошла ошибка')
                 });
         });
+    }
+
+    function onAddSpending(result) {
+        if (result.hasOwnProperty('status'))
+        {
+            if (result.status)
+            {
+                updateTable();
+            } else {
+                alert(JSON.stringify(result.message));
+            }
+        }
     }
 
     function updateTable(){
