@@ -12,8 +12,8 @@ class SpendingService:
         return datetime.now().strftime('%B %Y')
 
     def get_list_by_user(self, user_id):
-        # return self.spending_dao.get_list(user_id)
-        return self.spending_dao.get_list_by_month_and_year(user_id, 5, 2016)
+        return self.spending_dao.get_list(user_id)
+        #return self.spending_dao.get_list_by_month_and_year(user_id, 5, 2016)
 
     def save(self, spending):
         self.spending_dao.add(spending)
