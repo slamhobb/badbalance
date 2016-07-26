@@ -1,8 +1,12 @@
+import os
 import sqlite3
 from spending_app import config
 
 
 class BaseDao:
+    def __init__(self, base_path=''):
+        self.base_dir = os.path.dirname(os.path.realpath(__file__)) + base_path
+
     @staticmethod
     def __create_connection():
         conn = sqlite3.connect(config.DATA_BASE_CONNECTION_STRING)
@@ -39,3 +43,8 @@ class BaseDao:
         conn.executescript(query)
         conn.commit()
         conn.close()
+
+    def get_sql(self, path):
+        with open(self.base_dir + path, 'r') as f:
+            query = f.read()
+        return query

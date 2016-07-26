@@ -3,23 +3,23 @@ from spending_app.domain.user import User
 
 
 class UserDao(BaseDao):
+    def __init__(self):
+        super().__init__('/sql/user/')
+
     def get_by_id(self, user_id):
-        result = self.query_one('select id, login, password from User where id = :user_id',
-                                dict(user_id=user_id))
+        sql = self.get_sql('get_by_id.sql')
+        result = self.query_one(sql, dict(user_id=user_id))
         return User(result)
 
     def get_by_login(self, login):
-        result = self.query_one('select id, login, password from User where login = :login', dict(login=login))
+        sql = self.get_sql('get_by_login.sql')
+        result = self.query_one(sql, dict(login=login))
         return User(result)
 
     def save(self, user):
         if user.id is None or user.id == 0:
-            user.id = self.execute("""
-                insert into User(login, password)
-                    values (:login, :password)""", user.to_primitive())
+            sql = self.get_sql('insert.sql')
+            user.id = self.execute(sql, user.to_primitive())
         else:
-            self.execute("""
-                update User
-                    set login = :login,
-                        password = :password
-                    where id = :id""", user.to_primitive())
+            sql = self.get_sql('update.sql')
+            self.execute(sql, user.to_primitive())
