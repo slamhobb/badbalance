@@ -24,12 +24,12 @@
         $ui.addSpendingForm.submit(function (e) {
             e.preventDefault();
 
-            var data = $ui.addSpendingForm.serialize()
+            var data = $ui.addSpendingForm.serialize();
 
-            $.post(urls.addSpendingUrl, data, 'json')
-                .done(onAddSpending)
-                .fail(function () {
-                    alert('Произошла ошибка')
+            httpClient.postform(urls.addSpendingUrl, data)
+                .then(onAddSpending)
+                .catch(function(error){
+                    alert('Произошла ошибка ' + error);
                 });
         });
     }
@@ -47,9 +47,10 @@
     }
 
     function updateTable(){
-        $.get(urls.getSpendingTableUrl, function(result) {
-            $ui.spendingTable.html(result);
-        }, 'html');
+        httpClient.gettext(urls.getSpendingTableUrl)
+            .then(function(result){
+               $ui.spendingTable.html(result);
+            });
     }
 
     module.start = function () {

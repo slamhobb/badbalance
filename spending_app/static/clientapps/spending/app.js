@@ -3,8 +3,7 @@
     'use strict';
 
     mainModule.Applications.Spending = {
-        start: function () {
-        }
+        start: function () { }
     };
 
 })(BadBalance);

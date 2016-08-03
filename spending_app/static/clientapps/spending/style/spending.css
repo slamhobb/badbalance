@@ -1,0 +1,28 @@
+.spending_date {
+    width: 45px;
+}
+
+.spending_sum {
+    width: 45px;
+}
+
+.spending_text {
+    width: 45px;
+}
+
+/*.spending_category {*/
+    /*width: 45px;*/
+/*}*/
+
+.spending_action {
+    width: 45px;
+}
+
+.spending_delete {
+    display: none;
+    float: right;
+}
+
+.spending_table tr:hover .spending_delete {
+    display: block;
+}

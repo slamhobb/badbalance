@@ -1,10 +1,14 @@
 {% extends 'shared/layout.html' %}
 
 {% block scripts %}
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='clientapps/spending/style/spending.css') }}">
+
   <script src="{{ url_for('static', filename='clientapps/index.js') }}"></script>
   <script src="{{ url_for('static', filename='clientapps/spending/app.js') }}"></script>
   <script src="{{ url_for('static', filename='clientapps/spending/spending.js') }}"></script>
   <script src="{{ url_for('static', filename='clientapps/spending/index.js') }}"></script>
+
+  <script src="{{ url_for('static', filename='clientapps/core/httpClient.js') }}"></script>
 {% endblock %}
 
 {% block body %}
