@@ -45,7 +45,7 @@ def index():
 @login_required
 def spending_list():
     data = spending_service.get_list_by_user(g.user_context.user_id)
-    return render_template('spending/spending_table.html', spending_list=data)
+    return jsonify(spending=data)
 
 
 @mod.route('/add', methods=['POST'])

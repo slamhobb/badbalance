@@ -10,8 +10,8 @@
 
     function bindUi() {
         return {
-            addSpendingForm: $('[data-control=addSpendingForm]'),
-            spendingTable: $('[data-control=spendingTable]')
+            addSpendingForm: $('#addSpendingForm'),
+            spendingTable: $('#spendingTable'),
         }
     }
 
@@ -20,18 +20,28 @@
         $('.dateinput').datepicker({dateFormat: 'yy-mm-dd'});
     }
 
-    function setupAddSpending() {
-        $ui.addSpendingForm.submit(function (e) {
-            e.preventDefault();
+    function setupEvents() {
+        $ui.addSpendingForm.submit(addSpending);
+        $ui.spendingTable.on('click', '.spending_edit', onClickEdit);
+        $ui.spendingTable.on('click', '.spending_save', onClickSave);
+        $ui.spendingTable.on('click', '.spending_delete', onClickDelete);
+    }
 
-            var data = $ui.addSpendingForm.serialize();
+    function initSpendingWidget() {
+        var template = document.getElementById('spendingTemplate').innerHTML;
+        spendingWidget.init1($ui.spendingTable[0], template);
+    }
 
-            httpClient.postform(urls.addSpendingUrl, data)
-                .then(onAddSpending)
-                .catch(function(error){
-                    alert('Произошла ошибка ' + error);
-                });
-        });
+    function addSpending(e){
+        e.preventDefault();
+
+        var data = $ui.addSpendingForm.serialize();
+
+        httpClient.postform(urls.addSpendingUrl, data)
+            .then(onAddSpending)
+            .catch(function(error){
+                alert('Произошла ошибка ' + error);
+            });
     }
 
     function onAddSpending(result) {
@@ -47,16 +57,34 @@
     }
 
     function updateTable(){
-        httpClient.gettext(urls.getSpendingTableUrl)
-            .then(function(result){
-               $ui.spendingTable.html(result);
+        httpClient.getjson(urls.getSpendingTableUrl)
+            .then(function(result) {
+                spendingWidget.setData(result);
+                spendingWidget.render();
             });
+    }
+
+    function onClickEdit() {
+        var val = $(this).closest('tr').find('.spending_id').val();
+        spendingWidget.setEdit(val, true);
+        spendingWidget.render();
+    }
+
+    function onClickSave() {
+        var val = $(this).closest('tr').find('.spending_id').val();
+        spendingWidget.setEdit(val, false);
+        spendingWidget.render();
+    }
+
+    function onClickDelete() {
+
     }
 
     module.start = function () {
         $ui = bindUi();
         setupDatePicker();
-        setupAddSpending();
+        setupEvents();
+        initSpendingWidget();
 
         updateTable();
     };

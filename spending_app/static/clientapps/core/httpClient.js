@@ -1,4 +1,5 @@
 (function(module) {
+    'use strict';
 
     var defaultOptions = {
         credentials: 'same-origin'
@@ -12,6 +13,15 @@
                 .then(handleError)
                 .then(parseText);
         },
+
+        getjson: function(url){
+            var requestOptions = Object.assign({}, defaultOptions);
+
+            return window.fetch(url, requestOptions)
+                .then(handleError)
+                .then(parseJson);
+        },
+
         postform: function(url, data){
             var requestOptions = Object.assign(
                 {},
