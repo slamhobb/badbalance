@@ -102,7 +102,7 @@
           <% if (!('edit' in spending[i] ? spending[i].edit : false)) { %>
             <td>
               <div class="spending_date">
-                <input type="hidden" class="spending_id" value="<%= spending[i].id %>">
+                <input type="hidden" class="spending-id--input" value="<%= spending[i].id %>">
                 <%= spending[i].date %>
               </div>
             </td>
@@ -137,27 +137,27 @@
           <% } else { %>
             <td>
               <div class="spending_date">
-                <input type="hidden" class="spending_id" value="<%= spending[i].id %>">
-                <input type="text" class="form-control dateinput" name=date value="<%= spending[i].date %>">
+                <input type="hidden" class="spending-id--input" value="<%= spending[i].id %>">
+                <input type="text" class="form-control dateinput spending-date--input" name=date value="<%= spending[i].date %>">
               </div>
             </td>
 
             <td>
               <div class="spending_sum">
-                <input type="text" class="form-control" name=sum value="<%= spending[i].sum %>">
+                <input type="text" class="form-control spending-sum--input" name=sum value="<%= spending[i].sum %>">
               </div>
             </td>
 
             <td>
               <div class="spending_text">
-                <input type="text" class="form-control" name=text value="<%= spending[i].text %>">
+                <input type="text" class="form-control spending-text--input" name=text value="<%= spending[i].text %>">
               </div>
 
             </td>
 
             <td>
               <div class="spending_category">
-                <input type="text" class="form-control" name=category value="<%= spending[i].category %>">
+                <input type="text" class="form-control spending-category--input" name=category value="<%= spending[i].category %>">
               </div>
             </td>
 

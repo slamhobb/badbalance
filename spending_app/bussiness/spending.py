@@ -17,4 +17,7 @@ class SpendingService:
         #return self.spending_dao.get_list_by_month_and_year(user_id, 5, 2016)
 
     def save(self, spending):
-        self.spending_dao.add(spending)
+        if (spending.id or 0) > 0:
+            self.spending_dao.update(spending)
+        else:
+            self.spending_dao.add(spending)

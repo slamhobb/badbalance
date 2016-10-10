@@ -38,6 +38,24 @@
             return window.fetch(url, requestOptions)
                 .then(handleError)
                 .then(parseJson);
+        },
+
+        postjson: function(url, data) {
+            var requestOptions = Object.assign(
+                {},
+                defaultOptions,
+                {
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    method: 'post',
+                    body: JSON.stringify(data)
+                }
+            );
+
+            return window.fetch(url, requestOptions)
+                .then(handleError)
+                .then(parseJson);
         }
     };
 

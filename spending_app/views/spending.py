@@ -48,9 +48,9 @@ def spending_list():
     return jsonify(spending=data)
 
 
-@mod.route('/add', methods=['POST'])
+@mod.route('/save', methods=['POST'])
 @login_required
-def add_spending():
+def save_spending():
     form = SpendingForm(request.form)
 
     if not form.validate_on_submit():
