@@ -64,8 +64,8 @@
     }
 
     function onClickEdit() {
-        var val = $(this).closest('tr').find('.spending-id--input').val();
-        spendingWidget.setEdit(val, true);
+        var id = $(this).closest('tr').find('.spending-id--input').val();
+        spendingWidget.setEdit(id, true);
         spendingWidget.render();
     }
 
@@ -77,11 +77,14 @@
             date: $tr.find('.spending-date--input').val(),
             sum: $tr.find('.spending-sum--input').val(),
             text: $tr.find('.spending-text--input').val(),
-            category: $tr.find('.spending-category--input').val(),
-            csrf_token: $ui.csrfToken.val()
+            category: $tr.find('.spending-category--input').val()
         };
 
-        httpClient.postform(urls.addSpendingUrl, $.param(data))
+        var dataWithToken = Object.assign({}, data, {
+            csrf_token: $ui.csrfToken.val()
+        });
+
+        httpClient.postform(urls.addSpendingUrl, $.param(dataWithToken))
             .then(function(result) {
                 onUpdateSpending(result, data);
             })
