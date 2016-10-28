@@ -1,9 +1,11 @@
 .spending_date {
     width: 100px;
+    text-align: right;
 }
 
 .spending_sum {
     width: 75px;
+    text-align: right;
 }
 
 .spending_text {
@@ -35,4 +37,8 @@
 .spending_edit:hover,
 .spending_delete:hover {
     color: #ff5a00;
+}
+
+.month_selector {
+    margin-bottom: 20px;
 }

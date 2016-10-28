@@ -1,41 +1,74 @@
-(function (module){
+(function (module) {
 
     var $renderElement;
     var renderer;
-    var state;
+    var list;
 
     module.spendingWidget = {
-        init1: function($element, template, editTemplate) {
+        init1: function($element, template) {
             $renderElement = $element;
 
             renderer = jrtmpl(template);
         },
 
         setData: function (data) {
-            state = data;
+            list = data;
         },
 
         render: function() {
-            $renderElement.innerHTML = renderer(state);
+            var table = formatTable(list);
+            $renderElement.innerHTML = renderer(table);
         },
 
         setEdit: function (id, edit) {
-            var indx = this.getIndexById(id);
+            var indx = getIndexById(id);
 
-            state.spending[indx].edit = edit;
+            list[indx].edit = edit;
         },
 
         updateData: function (data) {
-            var indx = this.getIndexById(data.id);
+            var indx = getIndexById(data.id);
 
-            state.spending[indx] = Object.assign({}, state.spending[indx], data);
+            list[indx] = Object.assign({}, list[indx], data);
         },
 
-        getIndexById: function(id) {
-            return state.spending.map(function(x) { return parseInt(x.id) }).indexOf(parseInt(id));
+        deleteData: function (id) {
+            var indx = getIndexById(id);
+
+            list.splice(indx, 1);
         }
     };
 
+    function getIndexById(id) {
+        return list.map(function(x) { return parseInt(x.id) }).indexOf(parseInt(id));
+    }
 
+    function formatTable(items) {
+        var prevDate = new Date(0);
+
+        var formatedTable = items.map(function (item) {
+            var curDate = new Date(item.date);
+
+            var dateStr = curDate.getTime() !== prevDate.getTime()
+                ? item.date
+                : '';
+
+            prevDate = curDate;
+
+            return {
+                id: item.id,
+                dateStr: dateStr,
+                date: item.date,
+                sum: item.sum,
+                text: item.text,
+                category: item.category,
+                edit: item.edit
+            };
+        });
+
+        return {
+            items: formatedTable
+        };
+    }
 
 })(window);

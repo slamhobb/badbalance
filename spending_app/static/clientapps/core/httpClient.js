@@ -22,6 +22,20 @@
                 .then(parseJson);
         },
 
+        post: function(url) {
+            var requestOptions = Object.assign(
+                {},
+                defaultOptions,
+                {
+                    method: 'post'
+                }
+            );
+
+            return window.fetch(url, requestOptions)
+                .then(handleError)
+                .then(parseJson);
+        },
+
         postform: function(url, data){
             var requestOptions = Object.assign(
                 {},
@@ -46,7 +60,8 @@
                 defaultOptions,
                 {
                     headers: {
-                        'Content-type': 'application/json'
+                        'Content-type': 'application/json',
+                        'X-CSRFToken': getCSRFToken()
                     },
                     method: 'post',
                     body: JSON.stringify(data)
@@ -58,6 +73,10 @@
                 .then(parseJson);
         }
     };
+
+    function getCSRFToken() {
+        return document.querySelector('meta[name="csrf-token"]').content;
+    }
 
     function handleError(response){
         if (!response.ok) {

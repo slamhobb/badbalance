@@ -44,14 +44,23 @@ def index():
 @mod.route('/list')
 @login_required
 def spending_list():
-    data = spending_service.get_list_by_user(g.user_context.user_id)
-    return jsonify(spending=data)
+    items = spending_service.get_list_by_user(g.user_context.user_id)
+    items = [i.to_primitive() for i in items]
+    return jsonify(spending=items)
+
+
+@mod.route('/list_month/<int:year>/<int:month>')
+@login_required
+def spending_list_month(year, month):
+    items = spending_service.get_by_month(g.user_context.user_id, year, month)
+    items = [i.to_primitive() for i in items]
+    return jsonify(spending=items)
 
 
 @mod.route('/save', methods=['POST'])
 @login_required
 def save_spending():
-    form = SpendingForm(request.form)
+    form = SpendingForm()
 
     if not form.validate_on_submit():
         return jsonify(status=False, message=form.errors)
@@ -65,5 +74,23 @@ def save_spending():
 
 
 @mod.route('/remove', methods=['POST'])
+@login_required
 def remove_spending():
-    pass
+    user_id = g.user_context.user_id
+
+    id = request.get_json()['id']
+
+    spending_service.delete(id, user_id)
+
+    return jsonify(status=True)
+
+
+@mod.route('/stat/<int:year>/<int:month>', methods=['GET'])
+@login_required
+def get_statistic(year, month):
+    user_id = g.user_context.user_id
+
+    res = spending_service.get_statistic(user_id, year, month)
+    res = [r.to_primitive() for r in res]
+
+    return jsonify(stat=res)

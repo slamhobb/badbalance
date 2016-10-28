@@ -4,15 +4,18 @@
 
     var $ui = {},
         urls = {
-            getSpendingTableUrl: '/spending/list',
-            addSpendingUrl: '/spending/save'
+            getSpendingTableByMonthUrl: '/spending/list_month',
+            addSpendingUrl: '/spending/save',
+            removeSpendingUrl: '/spending/remove',
+            statSpendingUrl: '/spending/stat'
         };
 
     function bindUi() {
         return {
-            addSpendingForm: $('#addSpendingForm'),
+            addSpendingForm: document.getElementById('addSpendingForm'),
             spendingTable: $('#spendingTable'),
-            csrfToken: $('#csrf_token')
+            monthForm: document.getElementById('monthForm'),
+            chart: document.getElementById('chart')
         }
     }
 
@@ -22,7 +25,8 @@
     }
 
     function setupEvents() {
-        $ui.addSpendingForm.submit(addSpending);
+        $ui.addSpendingForm.addEventListener('submit', addSpending);
+        $ui.monthForm.addEventListener('submit', updateTableByMonth);
         $ui.spendingTable.on('click', '.spending_edit', onClickEdit);
         $ui.spendingTable.on('click', '.spending_save', onClickSave);
         $ui.spendingTable.on('click', '.spending_delete', onClickDelete);
@@ -33,12 +37,61 @@
         spendingWidget.init1($ui.spendingTable[0], template);
     }
 
+    function updateChart() {
+        var data = formToJSON($ui.monthForm);
+        var url = urls.statSpendingUrl + '/' + data.year + '/' + data.month;
+
+        httpClient.getjson(url)
+            .then(drawChart)
+            .catch(function (error) {
+                alert('Произошла ошибка ' + error);
+            });
+    }
+
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++ ) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+    function drawChart(result) {
+        var ctx = $ui.chart.getContext("2d");
+
+        var colors = result.stat.map(function () { return getRandomColor(); });
+
+        var data = {
+            labels: result.stat.map(function(x) { return x.category }),
+            datasets: [
+                {
+                    data: result.stat.map(function(x) { return x.sum }),
+                    backgroundColor: colors,
+                    hoverBackgroundColor: colors
+                }]
+        };
+
+        var myPieChart = new Chart(ctx,{
+            type: 'doughnut',
+            data: data
+            //options: options
+        });
+    }
+
+    function updateTableByMonth(e) {
+        e.preventDefault();
+
+        updateTable();
+        updateChart();
+    }
+
     function addSpending(e){
         e.preventDefault();
 
-        var data = $ui.addSpendingForm.serialize();
+        var data = formToJSON($ui.addSpendingForm);
 
-        httpClient.postform(urls.addSpendingUrl, data)
+        httpClient.postjson(urls.addSpendingUrl, data)
             .then(onAddSpending)
             .catch(function(error){
                 alert('Произошла ошибка ' + error);
@@ -55,21 +108,28 @@
         }
     }
 
-    function updateTable(){
-        httpClient.getjson(urls.getSpendingTableUrl)
+    function updateTable() {
+        var data = formToJSON($ui.monthForm);
+        var url = urls.getSpendingTableByMonthUrl + '/' + data.year + '/' +data.month;
+
+        httpClient.getjson(url)
             .then(function(result) {
-                spendingWidget.setData(result);
+                spendingWidget.setData(result.spending);
                 spendingWidget.render();
             });
     }
 
-    function onClickEdit() {
+    function onClickEdit(e) {
+        e.preventDefault();
+
         var id = $(this).closest('tr').find('.spending-id--input').val();
         spendingWidget.setEdit(id, true);
         spendingWidget.render();
     }
 
-    function onClickSave() {
+    function onClickSave(e) {
+        e.preventDefault();
+
         var $tr = $(this).closest('tr');
 
         var data = {
@@ -80,11 +140,7 @@
             category: $tr.find('.spending-category--input').val()
         };
 
-        var dataWithToken = Object.assign({}, data, {
-            csrf_token: $ui.csrfToken.val()
-        });
-
-        httpClient.postform(urls.addSpendingUrl, $.param(dataWithToken))
+        httpClient.postjson(urls.addSpendingUrl, data)
             .then(function(result) {
                 onUpdateSpending(result, data);
             })
@@ -105,8 +161,35 @@
         }
     }
 
-    function onClickDelete() {
+    function onClickDelete(e) {
+        e.preventDefault();
 
+        var $tr = $(this).closest('tr');
+
+        var id = $tr.find('.spending-id--input').val();
+
+        var data = {
+            id: id
+        };
+
+        httpClient.postjson(urls.removeSpendingUrl, data)
+            .then(function (result) {
+                onDeleteSpending(result, id);
+            })
+            .catch(function (error) {
+                alert('Произошла ошибка ' + error);
+            });
+    }
+
+    function onDeleteSpending(result, id) {
+        if (result.hasOwnProperty('status')) {
+            if (result.status) {
+                spendingWidget.deleteData(id);
+                spendingWidget.render();
+            } else {
+                alert(JSON.stringify(result.message));
+            }
+        }
     }
 
     module.start = function () {
@@ -116,6 +199,7 @@
         initSpendingWidget();
 
         updateTable();
+        updateChart();
     };
 
 })(BadBalance.Applications.Spending);

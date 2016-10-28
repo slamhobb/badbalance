@@ -1,3 +1,10 @@
+drop table if exists category;
+
+create table category (
+	int int primary key,
+	name text not null
+);
+
 drop table if exists spending;
 
 create table spending(

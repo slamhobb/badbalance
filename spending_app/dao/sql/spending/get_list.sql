@@ -1,6 +1,5 @@
 select
 	id,
-	--user_id,
 	date,
 	sum,
 	text,
