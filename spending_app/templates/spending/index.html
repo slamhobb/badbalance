@@ -6,16 +6,8 @@
 
 
 {% block scripts %}
-  <script src="{{ url_for('static', filename='clientapps/core/tmpl.js') }}"></script>
-  <script src="{{ url_for('static', filename='clientapps/core/httpClient.js') }}"></script>
-  <script src="{{ url_for('static', filename='clientapps/core/formToJSON.js') }}"></script>
-
-  <script src="{{ url_for('static', filename='clientapps/index.js') }}"></script>
-  <script src="{{ url_for('static', filename='clientapps/spending/app.js') }}"></script>
-  <script src="{{ url_for('static', filename='clientapps/spending/spending.js') }}"></script>
-  <script src="{{ url_for('static', filename='clientapps/spending/spendingWidget.js') }}"></script>
-  <script src="{{ url_for('static', filename='clientapps/spending/index.js') }}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script>
+  <script src="{{ url_for('static', filename='built/spending.js') }}"></script>
 {% endblock %}
 
 

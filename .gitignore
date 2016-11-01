@@ -7,3 +7,9 @@ __pycache__
 
 # ided
 .idea/
+
+#nmp modules
+node_modules
+
+#built static
+static/built
