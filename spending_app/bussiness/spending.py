@@ -3,14 +3,16 @@ import calendar
 
 import inject
 
-from spending_app.dao.spending import SpendingDao
+from spending_app.dao.spending.spending import SpendingDao
+from spending_app.dao.spending.category import CategoryDao
 from spending_app.domain.spending import SpendingPage
 
 
 class SpendingService:
     spending_dao = inject.attr(SpendingDao)
+    category_dao = inject.attr(CategoryDao)
 
-    def get_index(self):
+    def get_index(self, user_id):
         now = datetime.now()
         year = now.year
         month = now.month
@@ -20,6 +22,7 @@ class SpendingService:
         page.month = month
         page.mlist = enumerate([calendar.month_abbr[i] for i in range(1, 12)], 1)
         page.ylist = [2016, 2017, 2018]
+        page.balance = self.spending_dao.get_balance_by_month(user_id, year, month)
         return page
 
     def get_list_by_user(self, user_id):
@@ -39,3 +42,6 @@ class SpendingService:
 
     def get_statistic(self, user_id, year, month):
         return self.spending_dao.get_statistic(user_id, year, month)
+
+    def get_category_list(self, user_id):
+        return self.category_dao.get_list_by_user(user_id)

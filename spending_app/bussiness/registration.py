@@ -1,6 +1,6 @@
 import inject
 
-from spending_app.dao.user import UserDao
+from spending_app.dao.user.user import UserDao
 
 
 class RegistrationService:

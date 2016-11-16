@@ -4,7 +4,7 @@ from spending_app.domain.user import User
 
 class UserDao(BaseDao):
     def __init__(self):
-        super().__init__('/sql/user/')
+        super().__init__('/user/sql/')
 
     def get_by_id(self, user_id):
         sql = self.get_sql('get_by_id.sql')

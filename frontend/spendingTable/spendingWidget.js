@@ -1,40 +1,47 @@
 'use strict';
 
-import ditemplater from '../core/tmpl';
+import './spendingTable.css';
+import template from './spendingTable.pug';
 
 let $renderElement;
-let renderer;
 let list;
+let categories;
 
-export default {
-    init1: function($element, template) {
+export default class SpendingWidget {
+
+    init($element) {
         $renderElement = $element;
+    }
 
-        renderer = ditemplater.jrtmpl(template);
-    },
+    setCategories(data) {
+        categories = data;
+    }
 
-    setData: function (data) {
+    setData(data) {
         list = data;
-    },
+    }
 
-    render: function() {
-        let table = formatTable(list);
-        $renderElement.innerHTML = renderer(table);
-    },
+    render() {
+        let items = formatTable(list);
+        $renderElement.innerHTML = template({
+            items: items,
+            categories: categories
+        });
+    }
 
-    setEdit: function (id, edit) {
+    setEdit(id, edit) {
         let indx = getIndexById(id);
 
         list[indx].edit = edit;
-    },
+    }
 
-    updateData: function (data) {
+    updateData(data) {
         let indx = getIndexById(data.id);
 
         list[indx] = Object.assign({}, list[indx], data);
-    },
+    }
 
-    deleteData: function (id) {
+    deleteData(id) {
         let indx = getIndexById(id);
 
         list.splice(indx, 1);
@@ -48,7 +55,7 @@ function getIndexById(id) {
 function formatTable(items) {
     let prevDate = new Date(0);
 
-    let formatedTable = items.map(function (item) {
+    return items.map(function (item) {
         var curDate = new Date(item.date);
 
         var dateStr = curDate.getTime() !== prevDate.getTime()
@@ -57,19 +64,18 @@ function formatTable(items) {
 
         prevDate = curDate;
 
+        let categoryIndx = categories.map(x => parseInt(x.id)).indexOf(parseInt(item.category));
+
         return {
             id: item.id,
             dateStr: dateStr,
             date: item.date,
             sum: item.sum,
             text: item.text,
-            category: item.category,
+            categoryId: item.category,
+            categoryName: categories[categoryIndx].name,
             edit: item.edit
         };
     });
-
-    return {
-        items: formatedTable
-    };
 }
 

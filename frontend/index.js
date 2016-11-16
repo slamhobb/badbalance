@@ -1,5 +1,5 @@
 'use strict';
 
-import start from './spending/spending';
+import start from './spendingTable';
 
 start();

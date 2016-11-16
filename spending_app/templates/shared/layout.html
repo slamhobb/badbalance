@@ -23,6 +23,7 @@
         </div>
 
         <ul class="nav navbar-nav navbar-right">
+          <li><p class="navbar-text"><span class="glyphicon glyphicon-user"></span> {{ g.user_context.login }}</p></li>
           <li><a href="{{ url_for('auth.logout') }}">Выйти <span class="glyphicon glyphicon-log-out"></span></a></li>
         </ul>
       </div>
@@ -43,11 +44,11 @@
 
     <footer>
       <div class="container">
-        <p class="text-muted">Footer text</p>
+        <p class="text-muted">Плохой баланс 2016</p>
       </div>
     </footer>
 
-    <script src="{{ url_for('static', filename='jquery-3.1.0.js') }}"></script>
+    <script src="{{ url_for('static', filename='jquery-3.1.0.min.js') }}"></script>
     <script src="{{ url_for('static', filename='jquery-ui-1.11.4/jquery-ui.min.js') }}"></script>
     <script src="{{ url_for('static', filename='jquery-ui-1.11.4/datepicker-ru.js') }}"></script>
 

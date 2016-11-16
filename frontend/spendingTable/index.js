@@ -1,23 +1,27 @@
 'use strict';
 
 import httpClient from '../core/httpClient';
-import spendingWidget from './spendingWidget';
+import SpendingWidget from './spendingWidget';
 import formToJSON from '../core/formToJSON';
+import template from './options.pug';
 
 let $ui = {},
     urls = {
         getSpendingTableByMonthUrl: '/spending/list_month',
         addSpendingUrl: '/spending/save',
         removeSpendingUrl: '/spending/remove',
-        statSpendingUrl: '/spending/stat'
-    };
+        statSpendingUrl: '/spending/stat',
+        getCategoryListUrl: '/spending/get_category_list'
+    },
+    spendingWidget = new SpendingWidget();
 
 function bindUi() {
     return {
         addSpendingForm: document.getElementById('addSpendingForm'),
         spendingTable: $('#spendingTable'),
         monthForm: document.getElementById('monthForm'),
-        chart: document.getElementById('chart')
+        chart: document.getElementById('chart'),
+        categorySelect: document.querySelector('#addSpendingForm [name=category]')
     }
 }
 
@@ -35,8 +39,7 @@ function setupEvents() {
 }
 
 function initSpendingWidget() {
-    let template = document.getElementById('spendingTemplate').innerHTML;
-    spendingWidget.init1($ui.spendingTable[0], template);
+    spendingWidget.init($ui.spendingTable[0]);
 }
 
 function updateChart() {
@@ -81,6 +84,20 @@ function drawChart(result) {
     });
 }
 
+function updateTable() {
+    var data = formToJSON($ui.monthForm);
+    var url = urls.getSpendingTableByMonthUrl + '/' + data.year + '/' +data.month;
+
+    httpClient.getjson(url)
+        .then(function(result) {
+            spendingWidget.setData(result.spending);
+            spendingWidget.render();
+        })
+        .catch(function(error) {
+            alert('Произошла ошибка' + error);
+        });
+}
+
 function updateTableByMonth(e) {
     e.preventDefault();
 
@@ -88,10 +105,25 @@ function updateTableByMonth(e) {
     updateChart();
 }
 
+function getCategories() {
+    httpClient.getjson(urls.getCategoryListUrl)
+        .then(function (result) {
+            if ('categories' in result) {
+                renderCategories($ui.categorySelect, result.categories);
+                spendingWidget.setCategories(result.categories);
+            }
+        });
+}
+
+function renderCategories($element, categories) {
+    $element.innerHTML = template({categories: categories});
+}
+
 function addSpending(e){
     e.preventDefault();
 
     var data = formToJSON($ui.addSpendingForm);
+    debugger;
 
     httpClient.postjson(urls.addSpendingUrl, data)
         .then(onAddSpending)
@@ -108,17 +140,6 @@ function onAddSpending(result) {
             alert(JSON.stringify(result.message));
         }
     }
-}
-
-function updateTable() {
-    var data = formToJSON($ui.monthForm);
-    var url = urls.getSpendingTableByMonthUrl + '/' + data.year + '/' +data.month;
-
-    httpClient.getjson(url)
-        .then(function(result) {
-            spendingWidget.setData(result.spending);
-            spendingWidget.render();
-        });
 }
 
 function onClickEdit(e) {
@@ -139,7 +160,7 @@ function onClickSave(e) {
         date: $tr.find('.spending-date--input').val(),
         sum: $tr.find('.spending-sum--input').val(),
         text: $tr.find('.spending-text--input').val(),
-        category: $tr.find('.spending-category--input').val()
+        category: $tr.find('.spending-category--input option:selected').val()
     };
 
     httpClient.postjson(urls.addSpendingUrl, data)
@@ -200,7 +221,9 @@ export default function start() {
     setupEvents();
     initSpendingWidget();
 
+    getCategories();
     updateTable();
     updateChart();
+
 }
 

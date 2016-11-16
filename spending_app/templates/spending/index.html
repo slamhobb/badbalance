@@ -1,7 +1,7 @@
 {% extends 'shared/layout.html' %}
 
 {% block styles %}
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='clientapps/spending/style/spending.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='built/spending.css') }}">
 {% endblock %}
 
 
@@ -15,53 +15,49 @@
   <ul class="nav nav-tabs">
     <li class="active"><a href="#">Расходы</a></li>
     <li><a href="/statistic">Статистика</a></li>
-    <li><a href="#">Категории</a></li>
+    <li class="disabled"><a href="#">Категории</a></li>
   </ul>
 {% endblock %}
 
 
 {% block body %}
-  <div class="row">
-    <div class="col-sm-1" style="background-color: #2b669a">+</div>
-    <div class="col-sm-1" style="background-color: #1abc9c">+</div>
-    <div class="col-sm-1" style="background-color: #2b669a">+</div>
-    <div class="col-sm-1" style="background-color: #1abc9c">+</div>
-    <div class="col-sm-1" style="background-color: #2b669a">+</div>
-    <div class="col-sm-1" style="background-color: #1abc9c">+</div>
-    <div class="col-sm-1" style="background-color: #2b669a">+</div>
-    <div class="col-sm-1" style="background-color: #1abc9c">+</div>
-    <div class="col-sm-1" style="background-color: #2b669a">+</div>
-    <div class="col-sm-1" style="background-color: #1abc9c">+</div>
-    <div class="col-sm-1" style="background-color: #2b669a">+</div>
-    <div class="col-sm-1" style="background-color: #1abc9c">+</div>
+{#  <div class="row">#}
+{#    <div class="col-sm-1" style="background-color: #2b669a">+</div>#}
+{#    <div class="col-sm-1" style="background-color: #1abc9c">+</div>#}
+{#    <div class="col-sm-1" style="background-color: #2b669a">+</div>#}
+{#    <div class="col-sm-1" style="background-color: #1abc9c">+</div>#}
+{#    <div class="col-sm-1" style="background-color: #2b669a">+</div>#}
+{#    <div class="col-sm-1" style="background-color: #1abc9c">+</div>#}
+{#    <div class="col-sm-1" style="background-color: #2b669a">+</div>#}
+{#    <div class="col-sm-1" style="background-color: #1abc9c">+</div>#}
+{#    <div class="col-sm-1" style="background-color: #2b669a">+</div>#}
+{#    <div class="col-sm-1" style="background-color: #1abc9c">+</div>#}
+{#    <div class="col-sm-1" style="background-color: #2b669a">+</div>#}
+{#    <div class="col-sm-1" style="background-color: #1abc9c">+</div>#}
+{#  </div>#}
+
+  <div class="balance-sum">
+    <p>Расход за месяц: {{ model.balance }}</p>
   </div>
 
-  <div class="pageHeader">
-    <h3>История расходов</h3>
-  </div>
-
-  <div class="row month_selector">
-    <div class="col-sm-12">
-      <form id="monthForm" class="form-inline">
-        <div class="form-group">
-          <label class="sr-only">Год</label>
-          <select class="form-control" name="year">
-            {% for y in model.ylist %}
-              <option value="{{ y }}" {% if y == model.year %}selected{% endif %}>{{ y }}</option>
-            {% endfor %}
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="sr-only">Месяц</label>
-          <select class="form-control" name="month">
-            {% for i, m in model.mlist %}
-              <option value="{{ i }}" {% if i == model.month %}selected{% endif %}>{{ m }}</option>
-            {% endfor %}
-          </select>
-        </div>
-        <button type="submit" class="btn btn-link">Показать</button>
-      </form>
-    </div>
+  <div class="month_selector">
+    <form id="monthForm" class="form-inline">
+      <div class="form-group">
+        <select class="form-control" name="year" title="Год">
+          {% for y in model.ylist %}
+            <option value="{{ y }}" {% if y == model.year %}selected{% endif %}>{{ y }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <select class="form-control" name="month" title="Месяц">
+          {% for i, m in model.mlist %}
+            <option value="{{ i }}" {% if i == model.month %}selected{% endif %}>{{ m }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn btn-link">Показать</button>
+    </form>
   </div>
 
   <div class="row">
@@ -88,7 +84,9 @@
             </td>
             <td>
               <div class="spending_category">
-                {{ form.category(class="form-control", placeholder=form.category.label.text) }}
+
+                <select class="form-control" name="{{ form.category.name }}" title="{{ form.category.label.text }}"></select>
+{#                {{ form.category(class="form-control", placeholder=form.category.label.text) }}#}
               </div>
             </td>
             <td>
@@ -105,93 +103,5 @@
       <canvas id="chart" width="260" height="260"></canvas>
     </div>
   </div>
-
-  <script type="text/html" id="spendingTemplate">
-    <table class="spending_table table table-striped table-bordered">
-      <thead>
-        <tr>
-          <td>Дата</td>
-          <td>Сумма</td>
-          <td>Текст</td>
-          <td>Категория</td>
-          <td></td>
-        </tr>
-      </thead>
-      <tbody>
-        <% items.forEach(function (item) { %>
-          <tr>
-            <% if (!('edit' in item ? item.edit : false)) { %>
-              <td>
-                <div class="spending_date">
-                  <input type="hidden" class="spending-id--input" value="<%= item.id %>">
-                  <%= item.dateStr %>
-                </div>
-              </td>
-
-              <td>
-                <div class="spending_sum">
-                  <%= item.sum %>
-                </div>
-              </td>
-
-              <td>
-                <div class="spending_text">
-                  <%= item.text %>
-                </div>
-
-              </td>
-
-              <td>
-                <div class="spending_category">
-                  <%= item.category %>
-                </div>
-              </td>
-
-              <td>
-                <div class="spending_action">
-                    <div class="action_wrapper">
-                      <a href="#" class="spending_edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                      <a href="#" class="spending_delete"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
-                    </div>
-                </div>
-              </td>
-            <% } else { %>
-              <td>
-                <div class="spending_date">
-                  <input type="hidden" class="spending-id--input" value="<%= item.id %>">
-                  <input type="text" class="form-control dateinput spending-date--input" name=date value="<%= item.date %>">
-                </div>
-              </td>
-
-              <td>
-                <div class="spending_sum">
-                  <input type="text" class="form-control spending-sum--input" name=sum value="<%= item.sum %>">
-                </div>
-              </td>
-
-              <td>
-                <div class="spending_text">
-                  <input type="text" class="form-control spending-text--input" name=text value="<%= item.text %>">
-                </div>
-
-              </td>
-
-              <td>
-                <div class="spending_category">
-                  <input type="text" class="form-control spending-category--input" name=category value="<%= item.category %>">
-                </div>
-              </td>
-
-              <td>
-                <div class="spending_action">
-                  <button class="btn btn-default btn-sm spending_save"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
-                </div>
-              </td>
-            <% } %>
-          </tr>
-        <% }); %>
-      </tbody>
-    </table>
-  </script>
 
 {% endblock %}

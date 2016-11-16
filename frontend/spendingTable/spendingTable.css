@@ -1,0 +1,48 @@
+.spending_date {
+    width: 100px;
+    text-align: right;
+}
+
+.spending_sum {
+    width: 75px;
+    text-align: right;
+}
+
+.spending_text {
+    width: 200px;
+}
+
+.spending_category {
+    width: 100px;
+}
+
+.spending_action {
+    width: 42px;
+}
+
+.action_wrapper {
+    display: none;
+}
+
+.spending_table tr:hover .action_wrapper {
+    display: inline-block;
+}
+
+.spending_edit,
+.spending_delete {
+    margin: 0 6px 0 0;
+    color: #c8c8c8;
+}
+
+.spending_edit:hover,
+.spending_delete:hover {
+    color: #ff5a00;
+}
+
+.month_selector {
+    margin-bottom: 20px;
+}
+
+.balance-sum {
+    padding: 25px 0 15px 0;
+}

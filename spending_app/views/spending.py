@@ -37,7 +37,7 @@ def add_user_context():
 @mod.route('/')
 @login_required
 def index():
-    model = spending_service.get_index()
+    model = spending_service.get_index(g.user_context.user_id)
     return render_template('spending/index.html', form=SpendingForm(), model=model)
 
 
@@ -94,3 +94,14 @@ def get_statistic(year, month):
     res = [r.to_primitive() for r in res]
 
     return jsonify(stat=res)
+
+
+@mod.route('/get_category_list', methods=['GET'])
+@login_required
+def get_category_list():
+    user_id = g.user_context.user_id
+
+    res = spending_service.get_category_list(user_id)
+    res = [r.to_primitive() for r in res]
+
+    return jsonify(categories=res)

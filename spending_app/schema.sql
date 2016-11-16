@@ -1,9 +1,14 @@
 drop table if exists category;
 
 create table category (
-	int int primary key,
-	name text not null
+  id integer primary key autoincrement,
+  name text not null,
+  user_id integer not null
 );
+
+insert into category(name, user_id)
+	values ('Еда', 1), ('Проезд', 2);
+
 
 drop table if exists spending;
 
@@ -15,6 +20,7 @@ create table spending(
   text text not null,
   category int not null
 );
+
 
 drop table if exists user;
 

@@ -5,9 +5,8 @@ from spending_app.dao.base import BaseDao
 
 if __name__ == '__main__':
     basedir = os.path.abspath(os.path.dirname(__file__))
-
     app.static_folder = os.path.join(basedir, 'static')
-    app.debug = True
+
     app.run()
 
 

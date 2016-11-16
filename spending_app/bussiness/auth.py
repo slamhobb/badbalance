@@ -1,8 +1,8 @@
 import inject
 import uuid
 
-from spending_app.dao.user import UserDao
-from spending_app.dao.auth import AuthTokenDao
+from spending_app.dao.user.user import UserDao
+from spending_app.dao.auth.auth import AuthTokenDao
 from spending_app.domain.auth import AuthToken
 from spending_app.infrastructure.auth import UserContext
 
@@ -26,7 +26,7 @@ class AuthService:
         return auth_token.token
 
     def get_user_context(self, token):
-        user_id = self.token_dao.get_user_id_by_token(token)
-        if user_id is None:
+        context = self.token_dao.get_user_context_by_token(token)
+        if context is None:
             return None
-        return UserContext(user_id)
+        return UserContext(context.user_id, context.login)

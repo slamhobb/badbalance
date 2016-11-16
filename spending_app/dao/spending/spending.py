@@ -1,11 +1,11 @@
 from spending_app.dao.base import BaseDao
-from spending_app.domain.spending import Spending, SpendingList
+from spending_app.domain.spending import SpendingList
 from spending_app.domain.statistic import Statistic
 
 
 class SpendingDao(BaseDao):
     def __init__(self):
-        super().__init__('/sql/spending/')
+        super().__init__('/spending/sql/')
 
     def get_list_by_month(self, user_id, year, month):
         sql = self.get_sql('get_list_by_month_and_year.sql')
@@ -28,6 +28,11 @@ class SpendingDao(BaseDao):
     def delete(self, spend_id, user_id):
         sql = self.get_sql('delete.sql')
         self.execute(sql, dict(id=spend_id, user_id=user_id))
+
+    def get_balance_by_month(self, user_id, year, month):
+        sql = self.get_sql('get_balance_by_month.sql')
+        result = self.query_one(sql, dict(user_id=user_id, year=year, month=month))
+        return int(result['sum'])
 
     def get_statistic(self, user_id, year, month):
         sql = self.get_sql('statistic_by_user.sql')
