@@ -1,9 +1,11 @@
 select
-	sum(sum) as sum,
-	category
-	from spending
-	where user_id = :user_id
+	sum(sum)    as sum,
+	min(c.name) as category
+	from spending as s
+		inner join category as c on
+			s.category = c.id
+	where s.user_id = :user_id
 		and abs(strftime('%Y', date)) = :year
 		and abs(strftime('%m', date)) = :month
-	group by category
+	group by s.category
 

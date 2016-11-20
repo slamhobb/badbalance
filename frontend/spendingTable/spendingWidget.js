@@ -4,7 +4,7 @@ import './spendingTable.css';
 import template from './spendingTable.pug';
 
 let $renderElement;
-let list;
+let state;
 let categories;
 
 export default class SpendingWidget {
@@ -17,12 +17,14 @@ export default class SpendingWidget {
         categories = data;
     }
 
-    setData(data) {
-        list = data;
+    setData(array) {
+        let newState = new Map();
+        array.forEach(item => newState.set(parseInt(item.id), item));
+        state = newState;
     }
 
     render() {
-        let items = formatTable(list);
+        let items = formatTable();
         $renderElement.innerHTML = template({
             items: items,
             categories: categories
@@ -30,32 +32,26 @@ export default class SpendingWidget {
     }
 
     setEdit(id, edit) {
-        let indx = getIndexById(id);
-
-        list[indx].edit = edit;
+        state.get(parseInt(id)).edit = edit;
     }
 
     updateData(data) {
-        let indx = getIndexById(data.id);
+        let id = parseInt(data.id);
 
-        list[indx] = Object.assign({}, list[indx], data);
+        Object.assign(state.get(id), data);
     }
 
     deleteData(id) {
-        let indx = getIndexById(id);
-
-        list.splice(indx, 1);
+        state.delete(parseInt(id));
     }
-};
-
-function getIndexById(id) {
-    return list.map(function(x) { return parseInt(x.id) }).indexOf(parseInt(id));
 }
 
-function formatTable(items) {
+function formatTable() {
     let prevDate = new Date(0);
 
-    return items.map(function (item) {
+    let returnList = [];
+
+    state.forEach(item => {
         var curDate = new Date(item.date);
 
         var dateStr = curDate.getTime() !== prevDate.getTime()
@@ -66,7 +62,7 @@ function formatTable(items) {
 
         let categoryIndx = categories.map(x => parseInt(x.id)).indexOf(parseInt(item.category));
 
-        return {
+        returnList.push({
             id: item.id,
             dateStr: dateStr,
             date: item.date,
@@ -75,7 +71,9 @@ function formatTable(items) {
             categoryId: item.category,
             categoryName: categories[categoryIndx].name,
             edit: item.edit
-        };
+        });
     });
+
+    return returnList;
 }
 

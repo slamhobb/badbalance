@@ -123,7 +123,6 @@ function addSpending(e){
     e.preventDefault();
 
     var data = formToJSON($ui.addSpendingForm);
-    debugger;
 
     httpClient.postjson(urls.addSpendingUrl, data)
         .then(onAddSpending)
@@ -224,6 +223,5 @@ export default function start() {
     getCategories();
     updateTable();
     updateChart();
-
 }
 
