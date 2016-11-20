@@ -3,6 +3,8 @@
 import httpClient from '../core/httpClient';
 import SpendingWidget from './spendingWidget';
 import formToJSON from '../core/formToJSON';
+import Flatpickr from '../datepicker';
+
 import template from './options.pug';
 
 let $ui = {},
@@ -26,8 +28,7 @@ function bindUi() {
 }
 
 function setupDatePicker() {
-    $.datepicker.setDefaults($.datepicker.regional["ru"]);
-    $('.dateinput').datepicker({dateFormat: 'yy-mm-dd'});
+    new Flatpickr(document.getElementById('date'));
 }
 
 function setupEvents() {
