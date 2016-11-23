@@ -7,7 +7,7 @@ create table category (
 );
 
 insert into category(name, user_id)
-	values ('Еда', 1), ('Проезд', 2);
+	values ('Еда', 0), ('Проезд', 0);
 
 
 drop table if exists spending;

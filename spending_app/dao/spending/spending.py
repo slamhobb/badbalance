@@ -31,8 +31,10 @@ class SpendingDao(BaseDao):
 
     def get_balance_by_month(self, user_id, year, month):
         sql = self.get_sql('get_balance_by_month.sql')
-        result = self.query_one(sql, dict(user_id=user_id, year=year, month=month))
-        return int(result['sum'])
+        result = self.query_all(sql, dict(user_id=user_id, year=year, month=month))
+        if len(result) == 0:
+            return 0
+        return int(result[0]['sum'])
 
     def get_statistic(self, user_id, year, month):
         sql = self.get_sql('statistic_by_user.sql')
