@@ -29,6 +29,8 @@ export default class SpendingWidget {
             items: items,
             categories: categories
         });
+
+        return $renderElement;
     }
 
     setEdit(id, edit) {

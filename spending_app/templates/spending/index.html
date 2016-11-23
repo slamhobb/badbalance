@@ -21,20 +21,6 @@
 
 
 {% block body %}
-{#  <div class="row">#}
-{#    <div class="col-sm-1" style="background-color: #2b669a">+</div>#}
-{#    <div class="col-sm-1" style="background-color: #1abc9c">+</div>#}
-{#    <div class="col-sm-1" style="background-color: #2b669a">+</div>#}
-{#    <div class="col-sm-1" style="background-color: #1abc9c">+</div>#}
-{#    <div class="col-sm-1" style="background-color: #2b669a">+</div>#}
-{#    <div class="col-sm-1" style="background-color: #1abc9c">+</div>#}
-{#    <div class="col-sm-1" style="background-color: #2b669a">+</div>#}
-{#    <div class="col-sm-1" style="background-color: #1abc9c">+</div>#}
-{#    <div class="col-sm-1" style="background-color: #2b669a">+</div>#}
-{#    <div class="col-sm-1" style="background-color: #1abc9c">+</div>#}
-{#    <div class="col-sm-1" style="background-color: #2b669a">+</div>#}
-{#    <div class="col-sm-1" style="background-color: #1abc9c">+</div>#}
-{#  </div>#}
 
   <div class="balance-sum">
     <p>Расход за месяц: {{ model.balance }}</p>
@@ -69,7 +55,7 @@
           <tr>
             <td>
               <div class="spending_date">
-                {{ form.date(class="form-control dateinput", placeholder=form.date.label.text) }}
+                {{ form.date(class="form-control", placeholder=form.date.label.text) }}
               </div>
             </td>
             <td>

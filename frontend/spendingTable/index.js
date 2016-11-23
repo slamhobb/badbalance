@@ -20,7 +20,7 @@ let $ui = {},
 function bindUi() {
     return {
         addSpendingForm: document.getElementById('addSpendingForm'),
-        spendingTable: $('#spendingTable'),
+        spendingTable: document.getElementById('spendingTable'),
         monthForm: document.getElementById('monthForm'),
         chart: document.getElementById('chart'),
         categorySelect: document.querySelector('#addSpendingForm [name=category]')
@@ -31,16 +31,31 @@ function setupDatePicker() {
     new Flatpickr(document.getElementById('date'));
 }
 
+
+function delegate(className, listener) {
+    return function (event) {
+        var el = event.target;
+
+        do {
+            if ( !(el.classList && el.classList.contains(className)) ) continue;
+
+            listener.apply(el, arguments);
+        }
+        while ( (el = el.parentNode) )
+    }
+}
+
+
 function setupEvents() {
     $ui.addSpendingForm.addEventListener('submit', addSpending);
     $ui.monthForm.addEventListener('submit', updateTableByMonth);
-    $ui.spendingTable.on('click', '.spending_edit', onClickEdit);
-    $ui.spendingTable.on('click', '.spending_save', onClickSave);
-    $ui.spendingTable.on('click', '.spending_delete', onClickDelete);
+    $ui.spendingTable.addEventListener('click', delegate('spending_edit', onClickEdit));
+    $ui.spendingTable.addEventListener('click', delegate('spending_save', onClickSave));
+    $ui.spendingTable.addEventListener('click', delegate('spending_delete', onClickDelete));
 }
 
 function initSpendingWidget() {
-    spendingWidget.init($ui.spendingTable[0]);
+    spendingWidget.init($ui.spendingTable);
 }
 
 function updateChart() {
@@ -87,7 +102,7 @@ function drawChart(result) {
 
 function updateTable() {
     var data = formToJSON($ui.monthForm);
-    var url = urls.getSpendingTableByMonthUrl + '/' + data.year + '/' +data.month;
+    var url = urls.getSpendingTableByMonthUrl + '/' + data.year + '/' + data.month;
 
     httpClient.getjson(url)
         .then(function(result) {
@@ -106,8 +121,13 @@ function updateTableByMonth(e) {
     updateChart();
 }
 
+function renderTable() {
+    let table = spendingWidget.render();
+    Array.from(table.getElementsByClassName('dateinput')).forEach(x => x.flatpickr());
+}
+
 function getCategories() {
-    httpClient.getjson(urls.getCategoryListUrl)
+    return httpClient.getjson(urls.getCategoryListUrl)
         .then(function (result) {
             if ('categories' in result) {
                 renderCategories($ui.categorySelect, result.categories);
@@ -120,7 +140,7 @@ function renderCategories($element, categories) {
     $element.innerHTML = template({categories: categories});
 }
 
-function addSpending(e){
+function addSpending(e) {
     e.preventDefault();
 
     var data = formToJSON($ui.addSpendingForm);
@@ -142,25 +162,36 @@ function onAddSpending(result) {
     }
 }
 
+function closest(el, name) {
+    name = name.toUpperCase();
+
+    do {
+        if ( !(el.nodeName && el.nodeName === name) ) continue;
+
+        return el
+    }
+    while ( el = el.parentNode )
+}
+
 function onClickEdit(e) {
     e.preventDefault();
 
-    var id = $(this).closest('tr').find('.spending-id--input').val();
+    let id = closest(this, 'tr').getElementsByClassName('spending-id--input')[0].value;
     spendingWidget.setEdit(id, true);
-    spendingWidget.render();
+    renderTable();
 }
 
 function onClickSave(e) {
     e.preventDefault();
 
-    var $tr = $(this).closest('tr');
+    var $tr = closest(this, 'tr');
 
     var data = {
-        id: $tr.find('.spending-id--input').val(),
-        date: $tr.find('.spending-date--input').val(),
-        sum: $tr.find('.spending-sum--input').val(),
-        text: $tr.find('.spending-text--input').val(),
-        category: $tr.find('.spending-category--input option:selected').val()
+        id: $tr.getElementsByClassName('spending-id--input')[0].value,
+        date: $tr.getElementsByClassName('spending-date--input')[0].value,
+        sum: $tr.getElementsByClassName('spending-sum--input')[0].value,
+        text: $tr.getElementsByClassName('spending-text--input')[0].value,
+        category: $tr.getElementsByClassName('spending-category--input')[0].value
     };
 
     httpClient.postjson(urls.addSpendingUrl, data)
@@ -221,8 +252,7 @@ export default function start() {
     setupEvents();
     initSpendingWidget();
 
-    getCategories();
-    updateTable();
+    getCategories()
+        .then(updateTable);
     updateChart();
 }
-
