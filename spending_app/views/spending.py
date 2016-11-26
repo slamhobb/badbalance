@@ -2,8 +2,8 @@ import inject
 
 from functools import wraps
 
-from flask import render_template, session, request, Blueprint,\
-    flash, redirect, url_for, jsonify, make_response, g
+from flask import render_template, request, Blueprint,\
+    redirect, url_for, jsonify, g
 
 from spending_app.infrastructure.web import *
 from spending_app.bussiness.spending import SpendingService
@@ -94,14 +94,3 @@ def get_statistic(year, month):
     res = [r.to_primitive() for r in res]
 
     return jsonify(stat=res)
-
-
-@mod.route('/get_category_list', methods=['GET'])
-@login_required
-def get_category_list():
-    user_id = g.user_context.user_id
-
-    res = spending_service.get_category_list(user_id)
-    res = [r.to_primitive() for r in res]
-
-    return jsonify(categories=res)

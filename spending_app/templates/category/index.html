@@ -1,0 +1,53 @@
+{% extends 'shared/layout.html' %}
+
+{% block styles %}
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='built/category.css') }}">
+{% endblock %}
+
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='built/category.js') }}"></script>
+{% endblock %}
+
+
+{% block menu %}
+  <ul class="nav nav-tabs">
+    <li><a href="/spending">Расходы</a></li>
+    <li><a href="/statistic">Статистика</a></li>
+    <li class="active"><a href="#">Категории</a></li>
+  </ul>
+{% endblock %}
+
+
+{% block body %}
+
+  <div class="tab-title">
+    <p>Редактирование списка категорий:</p>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4">
+      <!-- Table -->
+      <div id="categoryTable"></div>
+
+      <form id="addCategoryForm">
+        <table class="table table-bordered">
+          <tr>
+            <td>
+              <div>
+                <input type="text" class="form-control" placeholder="Название">
+              </div>
+            </td>
+            <td>
+              <div>
+                <button type=submit class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+
+  </div>
+
+{% endblock %}

@@ -10,10 +10,10 @@ import template from './options.pug';
 let $ui = {},
     urls = {
         getSpendingTableByMonthUrl: '/spending/list_month',
-        addSpendingUrl: '/spending/save',
+        saveSpendingUrl: '/spending/save',
         removeSpendingUrl: '/spending/remove',
         statSpendingUrl: '/spending/stat',
-        getCategoryListUrl: '/spending/get_category_list'
+        getCategoryListUrl: '/category/get_list'
     },
     spendingWidget = new SpendingWidget();
 
@@ -30,7 +30,6 @@ function bindUi() {
 function setupDatePicker() {
     new Flatpickr(document.getElementById('date'));
 }
-
 
 function delegate(className, listener) {
     return function (event) {
@@ -145,7 +144,7 @@ function addSpending(e) {
 
     var data = formToJSON($ui.addSpendingForm);
 
-    httpClient.postjson(urls.addSpendingUrl, data)
+    httpClient.postjson(urls.saveSpendingUrl, data)
         .then(onAddSpending)
         .catch(function(error){
             alert('Произошла ошибка ' + error);
@@ -153,12 +152,10 @@ function addSpending(e) {
 }
 
 function onAddSpending(result) {
-    if (result.hasOwnProperty('status')) {
-        if (result.status) {
-            updateTable();
-        } else {
-            alert(JSON.stringify(result.message));
-        }
+    if (result.status) {
+        updateTable();
+    } else {
+        alert(JSON.stringify(result.message));
     }
 }
 
@@ -194,7 +191,7 @@ function onClickSave(e) {
         category: $tr.getElementsByClassName('spending-category--input')[0].value
     };
 
-    httpClient.postjson(urls.addSpendingUrl, data)
+    httpClient.postjson(urls.saveSpendingUrl, data)
         .then(function(result) {
             onUpdateSpending(result, data);
         })
@@ -204,23 +201,21 @@ function onClickSave(e) {
 }
 
 function onUpdateSpending(result, data) {
-    if (result.hasOwnProperty('status')) {
-        if (result.status) {
-            spendingWidget.updateData(data);
-            spendingWidget.setEdit(data.id, false);
-            spendingWidget.render();
-        } else {
-            alert(JSON.stringify(result.message));
-        }
+    if (result.status) {
+        spendingWidget.updateData(data.id, data);
+        spendingWidget.setEdit(data.id, false);
+        spendingWidget.render();
+    } else {
+        alert(JSON.stringify(result.message));
     }
 }
 
 function onClickDelete(e) {
     e.preventDefault();
 
-    var $tr = $(this).closest('tr');
+    var $tr = closest(this, 'tr');
 
-    var id = $tr.find('.spending-id--input').val();
+    var id = $tr.getElementsByClassName('spending-id--input')[0].value;
 
     var data = {
         id: id
@@ -236,13 +231,11 @@ function onClickDelete(e) {
 }
 
 function onDeleteSpending(result, id) {
-    if (result.hasOwnProperty('status')) {
-        if (result.status) {
-            spendingWidget.deleteData(id);
-            spendingWidget.render();
-        } else {
-            alert(JSON.stringify(result.message));
-        }
+    if (result.status) {
+        spendingWidget.deleteData(id);
+        spendingWidget.render();
+    } else {
+        alert(JSON.stringify(result.message));
     }
 }
 

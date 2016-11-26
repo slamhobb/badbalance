@@ -1,0 +1,18 @@
+table(class="table table-striped  table-bordered")
+  thead
+    tr
+      td
+        div
+          strong Название
+      td
+        div
+  tbody
+    each cat in categories
+      tr
+        td
+          input(type='hidden' value=cat.id)
+          if cat.edit
+            input(type='text' value=cat.name)
+          else
+            =cat.name
+        td

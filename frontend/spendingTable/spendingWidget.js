@@ -37,10 +37,8 @@ export default class SpendingWidget {
         state.get(parseInt(id)).edit = edit;
     }
 
-    updateData(data) {
-        let id = parseInt(data.id);
-
-        Object.assign(state.get(id), data);
+    updateData(id, data) {
+        state.set(parseInt(id), data);
     }
 
     deleteData(id) {
@@ -54,9 +52,9 @@ function formatTable() {
     let returnList = [];
 
     state.forEach(item => {
-        var curDate = new Date(item.date);
+        let curDate = new Date(item.date);
 
-        var dateStr = curDate.getTime() !== prevDate.getTime()
+        let dateStr = curDate.getTime() !== prevDate.getTime()
             ? item.date
             : '';
 

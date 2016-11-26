@@ -9,7 +9,8 @@ module.exports = {
     context: __dirname + '/frontend',
 
     entry: {
-        spending: './index',
+        spending: './spendings',
+        category: './category'
     },
 
     output: {

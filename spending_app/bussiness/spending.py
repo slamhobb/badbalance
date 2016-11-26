@@ -4,13 +4,11 @@ import calendar
 import inject
 
 from spending_app.dao.spending.spending import SpendingDao
-from spending_app.dao.spending.category import CategoryDao
 from spending_app.domain.spending import SpendingPage
 
 
 class SpendingService:
     spending_dao = inject.attr(SpendingDao)
-    category_dao = inject.attr(CategoryDao)
 
     def get_index(self, user_id):
         now = datetime.now()
@@ -42,6 +40,3 @@ class SpendingService:
 
     def get_statistic(self, user_id, year, month):
         return self.spending_dao.get_statistic(user_id, year, month)
-
-    def get_category_list(self, user_id):
-        return self.category_dao.get_list_by_user(user_id)
