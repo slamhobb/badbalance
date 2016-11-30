@@ -1,7 +1,7 @@
 update spending
-	set user_id     = :user_id,
-		date        = :date,
-		sum         = :sum,
-		text        = :text,
-		category    = :category
-    where id = :id;
+	set date     = :date,
+		sum      = :sum,
+		text     = :text,
+		category = :category
+    where id = :id
+		and :user_id;

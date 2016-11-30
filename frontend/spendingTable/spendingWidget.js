@@ -1,79 +1,125 @@
 'use strict';
 
-import './spendingTable.css';
-import template from './spendingTable.pug';
+import spendingComponent from './spendingComponent';
+import Flatpickr from '../datepicker';
 
-let $renderElement;
-let state;
-let categories;
+import { closest, delegate } from '../core/domUtils';
+import httpClient from '../core/httpClient';
 
-export default class SpendingWidget {
 
-    init($element) {
-        $renderElement = $element;
-    }
+let $ui = {},
+    urls = {
+        getSpendingTableByMonthUrl: '/spending/list_month',
+        saveSpendingUrl: '/spending/save',
+        removeSpendingUrl: '/spending/remove',
+    },
+    component;
 
-    setCategories(data) {
-        categories = data;
-    }
-
-    setData(array) {
-        let newState = new Map();
-        array.forEach(item => newState.set(parseInt(item.id), item));
-        state = newState;
-    }
-
-    render() {
-        let items = formatTable();
-        $renderElement.innerHTML = template({
-            items: items,
-            categories: categories
-        });
-
-        return $renderElement;
-    }
-
-    setEdit(id, edit) {
-        state.get(parseInt(id)).edit = edit;
-    }
-
-    updateData(id, data) {
-        state.set(parseInt(id), data);
-    }
-
-    deleteData(id) {
-        state.delete(parseInt(id));
+function bindUi() {
+    return {
+        spendingTable: document.getElementById('spendingTable')
     }
 }
 
-function formatTable() {
-    let prevDate = new Date(0);
-
-    let returnList = [];
-
-    state.forEach(item => {
-        let curDate = new Date(item.date);
-
-        let dateStr = curDate.getTime() !== prevDate.getTime()
-            ? item.date
-            : '';
-
-        prevDate = curDate;
-
-        let categoryIndx = categories.map(x => parseInt(x.id)).indexOf(parseInt(item.category));
-
-        returnList.push({
-            id: item.id,
-            dateStr: dateStr,
-            date: item.date,
-            sum: item.sum,
-            text: item.text,
-            categoryId: item.category,
-            categoryName: categories[categoryIndx].name,
-            edit: item.edit
-        });
-    });
-
-    return returnList;
+function setupEvents() {
+    $ui.spendingTable.addEventListener('click', delegate('spending_edit', onClickEdit));
+    $ui.spendingTable.addEventListener('click', delegate('spending_save', onClickSave));
+    $ui.spendingTable.addEventListener('click', delegate('spending_delete', onClickDelete));
 }
 
+function setupDatePickers() {
+    Array.from($ui.spendingTable.getElementsByClassName('dateinput')).forEach(x => new Flatpickr(x));
+}
+
+function onClickEdit(event, el) {
+    event.preventDefault();
+
+    let id = closest(el, 'tr').getElementsByClassName('spending-id--input')[0].value;
+    component.setEdit(id, true);
+    component.render();
+    setupDatePickers();
+}
+
+function onClickSave(event, el) {
+    event.preventDefault();
+
+    var $tr = closest(el, 'tr');
+
+    var data = {
+        id: $tr.getElementsByClassName('spending-id--input')[0].value,
+        date: $tr.getElementsByClassName('spending-date--input')[0].value,
+        sum: $tr.getElementsByClassName('spending-sum--input')[0].value,
+        text: $tr.getElementsByClassName('spending-text--input')[0].value,
+        category: $tr.getElementsByClassName('spending-category--input')[0].value
+    };
+
+    httpClient.postjson(urls.saveSpendingUrl, data)
+        .then(result => {
+            onSaveSpending(result, data);
+        })
+        .catch(error => {
+            alert('Произошла ошибка ' + error);
+        });
+}
+
+function onSaveSpending(result, data) {
+    if (result.status) {
+        component.updateItem(data.id, data);
+        component.setEdit(data.id, false);
+        component.render();
+    } else {
+        alert(JSON.stringify(result.message));
+    }
+}
+
+function onClickDelete(event, el) {
+    event.preventDefault();
+
+    var $tr = closest(el, 'tr');
+
+    var id = $tr.getElementsByClassName('spending-id--input')[0].value;
+
+    var data = {
+        id: id
+    };
+
+    httpClient.postjson(urls.removeSpendingUrl, data)
+        .then(result => {
+            onDeleteSpending(result, id);
+        })
+        .catch(error => {
+            alert('Произошла ошибка ' + error);
+        });
+}
+
+function onDeleteSpending(result, id) {
+    if (result.status) {
+        component.deleteItem(id);
+        component.render();
+    } else {
+        alert(JSON.stringify(result.message));
+    }
+}
+
+function redrawSpendingTable(month, year) {
+    var url = urls.getSpendingTableByMonthUrl + '/' + year + '/' + month;
+
+    httpClient.getjson(url)
+        .then(result => {
+            component.setItems(result.spending);
+            component.render();
+        })
+        .catch(error => {
+            alert('Произошла ошибка' + error);
+        });
+}
+
+function init(categories) {
+    $ui = bindUi();
+    setupEvents();
+
+    component = Object.create(spendingComponent);
+    component.init($ui.spendingTable, categories);
+}
+
+export { init, redrawSpendingTable }

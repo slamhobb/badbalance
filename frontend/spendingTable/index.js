@@ -1,69 +1,48 @@
 'use strict';
 
-import httpClient from '../core/httpClient';
-import SpendingWidget from './spendingWidget';
-import formToJSON from '../core/formToJSON';
-import Flatpickr from '../datepicker';
+//import Chart from 'chart.js';
 
+import './spendingTable.css';
+import { init, redrawSpendingTable } from './spendingWidget';
 import template from './options.pug';
+
+import httpClient from '../core/httpClient';
+import Flatpickr from '../datepicker';
+import formToJSON from '../core/formToJSON';
 
 let $ui = {},
     urls = {
-        getSpendingTableByMonthUrl: '/spending/list_month',
-        saveSpendingUrl: '/spending/save',
-        removeSpendingUrl: '/spending/remove',
+        addSpendingUrl: '/spending/save',
+        getCategoryListUrl: '/category/get_list',
         statSpendingUrl: '/spending/stat',
-        getCategoryListUrl: '/category/get_list'
-    },
-    spendingWidget = new SpendingWidget();
+
+    };
 
 function bindUi() {
     return {
         addSpendingForm: document.getElementById('addSpendingForm'),
-        spendingTable: document.getElementById('spendingTable'),
         monthForm: document.getElementById('monthForm'),
         chart: document.getElementById('chart'),
         categorySelect: document.querySelector('#addSpendingForm [name=category]')
     }
 }
 
+function setupEvents() {
+    $ui.addSpendingForm.addEventListener('submit', addSpending);
+    $ui.monthForm.addEventListener('submit', updatePageData);
+}
+
 function setupDatePicker() {
     new Flatpickr(document.getElementById('date'));
 }
 
-function delegate(className, listener) {
-    return function (event) {
-        var el = event.target;
-
-        do {
-            if ( !(el.classList && el.classList.contains(className)) ) continue;
-
-            listener.apply(el, arguments);
-        }
-        while ( (el = el.parentNode) )
-    }
-}
-
-
-function setupEvents() {
-    $ui.addSpendingForm.addEventListener('submit', addSpending);
-    $ui.monthForm.addEventListener('submit', updateTableByMonth);
-    $ui.spendingTable.addEventListener('click', delegate('spending_edit', onClickEdit));
-    $ui.spendingTable.addEventListener('click', delegate('spending_save', onClickSave));
-    $ui.spendingTable.addEventListener('click', delegate('spending_delete', onClickDelete));
-}
-
-function initSpendingWidget() {
-    spendingWidget.init($ui.spendingTable);
-}
-
-function updateChart() {
+function renderChart() {
     var data = formToJSON($ui.monthForm);
     var url = urls.statSpendingUrl + '/' + data.year + '/' + data.month;
 
     httpClient.getjson(url)
         .then(drawChart)
-        .catch(function (error) {
+        .catch(error => {
             alert('Произошла ошибка ' + error);
         });
 }
@@ -99,44 +78,34 @@ function drawChart(result) {
     });
 }
 
-function updateTable() {
-    var data = formToJSON($ui.monthForm);
-    var url = urls.getSpendingTableByMonthUrl + '/' + data.year + '/' + data.month;
-
-    httpClient.getjson(url)
-        .then(function(result) {
-            spendingWidget.setData(result.spending);
-            spendingWidget.render();
-        })
-        .catch(function(error) {
-            alert('Произошла ошибка' + error);
-        });
-}
-
-function updateTableByMonth(e) {
-    e.preventDefault();
-
-    updateTable();
-    updateChart();
-}
-
 function renderTable() {
-    let table = spendingWidget.render();
-    Array.from(table.getElementsByClassName('dateinput')).forEach(x => x.flatpickr());
+    var data = formToJSON($ui.monthForm);
+
+    redrawSpendingTable(data.month, data.year);
+}
+
+function updatePageData(e) {
+    if (e) {
+        e.preventDefault();
+    }
+
+    renderTable();
+    renderChart();
 }
 
 function getCategories() {
     return httpClient.getjson(urls.getCategoryListUrl)
-        .then(function (result) {
-            if ('categories' in result) {
-                renderCategories($ui.categorySelect, result.categories);
-                spendingWidget.setCategories(result.categories);
+        .then(result => {
+            if (result.categories) {
+                renderCategories(result.categories);
+
+                return result.categories;
             }
         });
 }
 
-function renderCategories($element, categories) {
-    $element.innerHTML = template({categories: categories});
+function renderCategories(categories) {
+    $ui.categorySelect.innerHTML = template({categories: categories});
 }
 
 function addSpending(e) {
@@ -144,96 +113,16 @@ function addSpending(e) {
 
     var data = formToJSON($ui.addSpendingForm);
 
-    httpClient.postjson(urls.saveSpendingUrl, data)
+    httpClient.postjson(urls.addSpendingUrl, data)
         .then(onAddSpending)
-        .catch(function(error){
+        .catch(error => {
             alert('Произошла ошибка ' + error);
         });
 }
 
 function onAddSpending(result) {
     if (result.status) {
-        updateTable();
-    } else {
-        alert(JSON.stringify(result.message));
-    }
-}
-
-function closest(el, name) {
-    name = name.toUpperCase();
-
-    do {
-        if ( !(el.nodeName && el.nodeName === name) ) continue;
-
-        return el
-    }
-    while ( el = el.parentNode )
-}
-
-function onClickEdit(e) {
-    e.preventDefault();
-
-    let id = closest(this, 'tr').getElementsByClassName('spending-id--input')[0].value;
-    spendingWidget.setEdit(id, true);
-    renderTable();
-}
-
-function onClickSave(e) {
-    e.preventDefault();
-
-    var $tr = closest(this, 'tr');
-
-    var data = {
-        id: $tr.getElementsByClassName('spending-id--input')[0].value,
-        date: $tr.getElementsByClassName('spending-date--input')[0].value,
-        sum: $tr.getElementsByClassName('spending-sum--input')[0].value,
-        text: $tr.getElementsByClassName('spending-text--input')[0].value,
-        category: $tr.getElementsByClassName('spending-category--input')[0].value
-    };
-
-    httpClient.postjson(urls.saveSpendingUrl, data)
-        .then(function(result) {
-            onUpdateSpending(result, data);
-        })
-        .catch(function(error){
-            alert('Произошла ошибка ' + error);
-        });
-}
-
-function onUpdateSpending(result, data) {
-    if (result.status) {
-        spendingWidget.updateData(data.id, data);
-        spendingWidget.setEdit(data.id, false);
-        spendingWidget.render();
-    } else {
-        alert(JSON.stringify(result.message));
-    }
-}
-
-function onClickDelete(e) {
-    e.preventDefault();
-
-    var $tr = closest(this, 'tr');
-
-    var id = $tr.getElementsByClassName('spending-id--input')[0].value;
-
-    var data = {
-        id: id
-    };
-
-    httpClient.postjson(urls.removeSpendingUrl, data)
-        .then(function (result) {
-            onDeleteSpending(result, id);
-        })
-        .catch(function (error) {
-            alert('Произошла ошибка ' + error);
-        });
-}
-
-function onDeleteSpending(result, id) {
-    if (result.status) {
-        spendingWidget.deleteData(id);
-        spendingWidget.render();
+        updatePageData();
     } else {
         alert(JSON.stringify(result.message));
     }
@@ -243,9 +132,10 @@ export default function start() {
     $ui = bindUi();
     setupDatePicker();
     setupEvents();
-    initSpendingWidget();
 
     getCategories()
-        .then(updateTable);
-    updateChart();
+        .then(categories => {
+            init(categories)
+        })
+        .then(updatePageData);
 }

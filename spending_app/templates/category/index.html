@@ -13,8 +13,8 @@
 {% block menu %}
   <ul class="nav nav-tabs">
     <li><a href="/spending">Расходы</a></li>
-    <li><a href="/statistic">Статистика</a></li>
-    <li class="active"><a href="#">Категории</a></li>
+    <li class="disabled"><a href="/statistic">Статистика</a></li>
+    <li class="active"><a>Категории</a></li>
   </ul>
 {% endblock %}
 
@@ -27,19 +27,18 @@
 
   <div class="row">
     <div class="col-sm-4">
-      <!-- Table -->
       <div id="categoryTable"></div>
 
       <form id="addCategoryForm">
         <table class="table table-bordered">
           <tr>
             <td>
-              <div>
-                <input type="text" class="form-control" placeholder="Название">
+              <div class="category_name">
+                {{ form.name(class="form-control", placeholder=form.name.label.text) }}
               </div>
             </td>
             <td>
-              <div>
+              <div class="category_action">
                 <button type=submit class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
               </div>
             </td>

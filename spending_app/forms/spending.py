@@ -9,3 +9,8 @@ class SpendingForm(FlaskForm):
     sum = DecimalField('Сумма', [DataRequired()])
     text = StringField('Описание')
     category = IntegerField('Категория', [DataRequired()])
+
+
+class CategoryForm(FlaskForm):
+    id = IntegerField('Id')
+    name = StringField('Название', [DataRequired()])

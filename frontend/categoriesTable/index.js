@@ -1,37 +1,48 @@
 'use strict';
 
 import './category.css';
+import { init, getCategoryList } from './categoryWidget';
+
 import httpClient from '../core/httpClient';
-import template from './categoriesTable.pug';
+import formToJSON from '../core/formToJSON';
 
 let $ui = {},
     urls = {
-        get_category_list: '/category/get_list'
+        addCategory: '/category/save'
     };
 
 function bindUi() {
     return {
-        categoryTable: document.getElementById('categoryTable')
+        addCategoryForm: document.getElementById('addCategoryForm')
     }
 }
 
-function getCategoryList() {
-    httpClient.getjson(urls.get_category_list)
-        .then((result) => {
-            renderCategoryList(result);
-        })
-        .catch((error) => {
-           alert('Произошла ошибка ' + error);
-        });
-
+function setupEvents() {
+    $ui.addCategoryForm.addEventListener('submit', addCategory);
 }
 
-function renderCategoryList(categoryData) {
-    $ui.categoryTable.innerHTML = template({categories: categoryData.categories});
+function addCategory(e) {
+    e.preventDefault();
+
+    var data = formToJSON($ui.addCategoryForm);
+
+    httpClient.postjson(urls.addCategory, data)
+        .then(onAddCategory)
+        .catch(error => alert(error));
+}
+
+function onAddCategory(result) {
+    if (result.status) {
+        getCategoryList();
+    } else {
+        alert(JSON.stringify(result.message));
+    }
 }
 
 export default function start() {
     $ui = bindUi();
+    setupEvents();
 
+    init();
     getCategoryList();
 }

@@ -1,5 +1,5 @@
 .spending_date {
-    width: 100px;
+    width: 85px;
     text-align: right;
 }
 
@@ -17,7 +17,7 @@
 }
 
 .spending_action {
-    width: 42px;
+    width: 40px;
 }
 
 .action_wrapper {
