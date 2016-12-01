@@ -20,7 +20,7 @@ class SpendingService:
         page = SpendingPage()
         page.year = year
         page.month = month
-        page.mlist = enumerate([calendar.month_abbr[i] for i in range(1, 12)], 1)
+        page.mlist = enumerate([calendar.month_abbr[i] for i in range(1, 13)], 1)
         page.ylist = [2016, 2017, 2018]
         page.balance = self.spending_dao.get_balance_by_month(user_id, year, month)
         return page
