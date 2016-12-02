@@ -41,7 +41,7 @@ def login():
 @mod.route('/logout')
 def logout():
     remove_token()
-    return redirect(url_for('.login_page'))
+    return redirect(url_for('registration.index'))
 
 
 @mod.route('/show')
