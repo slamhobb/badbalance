@@ -16,6 +16,9 @@
 
       <form action="{{ url_for('.register') }}" method=post class="form-signin">
         <h2 class="form-signin-heading">Регистрация</h2>
+        {% if error_message %}
+          <p>{{ error_message }}</p>
+        {% endif %}
 
         {{ form.csrf_token }}
 

@@ -16,6 +16,9 @@
 
       <form action="{{ url_for('.login') }}" method=post class="form-signin">
         <h2 class="form-signin-heading">Авторизация</h2>
+        {% if error_message %}
+          <p>{{ error_message }}</p>
+        {% endif %}
 
         {{ form.csrf_token }}
 

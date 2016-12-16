@@ -4,7 +4,7 @@ from flask import Blueprint, request, jsonify, render_template, redirect, url_fo
 
 from spending_app.infrastructure.web import *
 from spending_app.forms.registration import RegistrationForm
-from spending_app.domain.user import User
+from spending_app.domain.user import UserData
 from spending_app.bussiness.registration import RegistrationService
 from spending_app.bussiness.auth import AuthService
 
@@ -37,25 +37,28 @@ def index():
 
 @mod.route('/registration')
 def registration():
-    return render_template('registration/registration.html', form=RegistrationForm())
+    error_message = request.get('error', '')
+    return render_template('registration/registration.html', form=RegistrationForm(), error_message=error_message)
 
 
 @mod.route('/register', methods=['POST'])
 def register():
-    form = RegistrationForm(request.form)
+    form = RegistrationForm()
 
     if not form.validate_on_submit():
-        return jsonify(status=False, message=form.errors)
+        return redirect(url_for('.registration', error=jsonify(form.errors)))
 
-    user = User(form.data)
+    user_data = UserData(form.data)
 
-    user_id = reg_service.register_user(user)
+    user_id, reg_message = reg_service.register_user(user_data)
 
-    token = auth_service.authenticate(user.login, user.password)
+    if user_id is None:
+        return redirect(url_for('.registration', error=reg_message))
+
+    token, auth_message = auth_service.authenticate(user_data.login, user_data.password)
 
     if token is None:
-        return jsonify(status=False)
+        return redirect(url_for('auth.login_page'))
 
     set_token(token)
     return redirect(url_for('redirect.redirect'))
-    #return jsonify(status=True, user_id=user_id)

@@ -20,7 +20,8 @@ def add_user_context():
 
 @mod.route('/')
 def login_page():
-    return render_template('auth/index.html', form=LoginForm())
+    error_message = request.args.get('error', '')
+    return render_template('auth/index.html', form=LoginForm(), error_message=error_message)
 
 
 @mod.route('/login', methods=['POST'])
@@ -28,12 +29,14 @@ def login():
     form = LoginForm(request.form)
 
     if not form.validate_on_submit():
-        return redirect(url_for('.login_page'))
+        return redirect(url_for('.login_page', error=str(form.errors)))
 
-    token = auth_service.authenticate(form.login.data, form.password.data)
+    token, message = auth_service.authenticate(form.login.data, form.password.data)
 
     if token is not None:
         set_token(token)
+    else:
+        return redirect(url_for('.login_page', error=message))
 
     return redirect(url_for('redirect.redirect'))
 
