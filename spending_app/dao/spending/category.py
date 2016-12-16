@@ -8,8 +8,7 @@ class CategoryDao(BaseDao):
 
     def get_list_by_user(self, user_id):
         sql = self.get_sql('get_category_list_by_user.sql')
-        result = self.query_all(sql, dict(user_id=user_id))
-        return [CategoryList(r) for r in result]
+        return self.query_all(CategoryList, sql, dict(user_id=user_id))
 
     def add(self, category):
         sql = self.get_sql('add_category.sql')

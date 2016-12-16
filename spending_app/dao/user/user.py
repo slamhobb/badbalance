@@ -8,14 +8,11 @@ class UserDao(BaseDao):
 
     def get_by_id(self, user_id):
         sql = self.get_sql('get_by_id.sql')
-        result = self.query_one(sql, dict(user_id=user_id))
-        return User(result)
+        return self.query_one(User, sql, dict(user_id=user_id))
 
     def get_by_login(self, login):
         sql = self.get_sql('get_by_login.sql')
-        result = self.query_one(sql, dict(login=login))
-        return result and User(result) or None
-        #return User(result) if result is not None else None
+        return self.query_one(User, sql, dict(login=login))
 
     def save(self, user):
         if user.id is None or user.id == 0:

@@ -13,7 +13,7 @@ class BaseDao:
         conn.row_factory = sqlite3.Row
         return conn
 
-    def query_one(self, sql, params):
+    def query_one_field(self, cls, sql, params):
         conn = self.__create_connection()
         item = conn.execute(sql, params).fetchone()
         conn.close()
@@ -21,14 +21,24 @@ class BaseDao:
         if item is None:
             return None
 
-        return dict(item)
+        return cls(item[0])
 
-    def query_all(self, sql, params):
+    def query_one(self, cls, sql, params):
+        conn = self.__create_connection()
+        item = conn.execute(sql, params).fetchone()
+        conn.close()
+
+        if item is None:
+            return None
+
+        return cls(dict(item))
+
+    def query_all(self, cls, sql, params):
         conn = self.__create_connection()
         items = conn.execute(sql, params).fetchall()
         conn.close()
 
-        return [dict(item) for item in items]
+        return [cls(dict(item)) for item in items]
 
     def execute(self, sql, params):
         conn = self.__create_connection()

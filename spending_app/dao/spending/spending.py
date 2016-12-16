@@ -9,13 +9,11 @@ class SpendingDao(BaseDao):
 
     def get_list_by_month(self, user_id, year, month):
         sql = self.get_sql('get_list_by_month_and_year.sql')
-        result = self.query_all(sql, dict(user_id=user_id, year=year, month=month))
-        return [SpendingList(r) for r in result]
+        return self.query_all(SpendingList, sql, dict(user_id=user_id, year=year, month=month))
 
     def get_list(self, user_id):
         sql = self.get_sql('get_list.sql')
-        result = self.query_all(sql, dict(user_id=user_id))
-        return [SpendingList(r) for r in result]
+        return self.query_all(SpendingList, sql, dict(user_id=user_id))
 
     def add(self, spending):
         sql = self.get_sql('add.sql')
@@ -31,12 +29,9 @@ class SpendingDao(BaseDao):
 
     def get_balance_by_month(self, user_id, year, month):
         sql = self.get_sql('get_balance_by_month.sql')
-        result = self.query_all(sql, dict(user_id=user_id, year=year, month=month))
-        if len(result) == 0:
-            return 0
-        return int(result[0]['sum'])
+        result = self.query_one_field(int, sql, dict(user_id=user_id, year=year, month=month))
+        return result or 0
 
     def get_statistic(self, user_id, year, month):
         sql = self.get_sql('statistic_by_user.sql')
-        result = self.query_all(sql, dict(user_id=user_id, year=year, month=month))
-        return [Statistic(r) for r in result]
+        return self.query_all(Statistic, sql, dict(user_id=user_id, year=year, month=month))
