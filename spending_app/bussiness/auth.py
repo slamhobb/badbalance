@@ -30,10 +30,14 @@ class AuthService:
         return auth_token.token, None
 
     def get_user_context(self, token):
+        if token is None:
+            return UserContext(None, None, False)
+
         context = self.token_dao.get_user_context_by_token(token)
         if context is None:
-            return None
-        return UserContext(context.user_id, context.login)
+            return UserContext(None, None, False)
+
+        return UserContext(context.user_id, context.login, True)
 
     @staticmethod
     def _generate_token():

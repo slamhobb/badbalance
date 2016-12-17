@@ -1,11 +1,9 @@
 import inject
 
-from functools import wraps
-
-from flask import render_template, request, Blueprint,\
-    redirect, url_for, jsonify, g
+from flask import render_template, request, Blueprint, jsonify, g
 
 from spending_app.infrastructure.web import *
+from spending_app.infrastructure.auth import login_required
 from spending_app.bussiness.spending import SpendingService
 from spending_app.bussiness.auth import AuthService
 from spending_app.domain.spending import Spending
@@ -17,21 +15,9 @@ auth_service = inject.instance(AuthService)
 spending_service = inject.instance(SpendingService)
 
 
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        user_context = getattr(g, 'user_context', None)
-        if user_context is None:
-            return redirect(url_for('redirect.redirect'))
-        return f(*args, **kwargs)
-    return decorated_function
-
-
 @mod.before_request
 def add_user_context():
-    token = get_token()
-    if token is not None:
-        g.user_context = auth_service.get_user_context(token)
+    g.user_context = auth_service.get_user_context(get_token())
 
 
 @mod.route('/')
@@ -78,9 +64,9 @@ def save_spending():
 def remove_spending():
     user_id = g.user_context.user_id
 
-    id = request.get_json()['id']
+    spending_id = request.get_json()['id']
 
-    spending_service.delete(id, user_id)
+    spending_service.delete(spending_id, user_id)
 
     return jsonify(status=True)
 

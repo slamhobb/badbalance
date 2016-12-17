@@ -13,14 +13,12 @@ auth_service = inject.instance(AuthService)
 
 @mod.before_request
 def get_context():
-    token = get_token()
-    if token is not None:
-        g.user_context = auth_service.get_user_context(token)
+    g.user_context = auth_service.get_user_context(get_token())
 
 
 @mod.route('/')
 def redirect():
     user_context = getattr(g, 'user_context', None)
-    if user_context is None:
+    if user_context is None or not user_context.is_authenticated:
         return flask_redirect(url_for('auth.login_page'))
     return flask_redirect(url_for('spending.index'))

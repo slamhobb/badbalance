@@ -17,9 +17,7 @@ auth_service = inject.instance(AuthService)
 
 @mod.before_request
 def get_context():
-    token = get_token()
-    if token is not None:
-        g.user_context = auth_service.get_user_context(token)
+    g.user_context = auth_service.get_user_context(get_token())
 
 
 # @mod.route('/')
