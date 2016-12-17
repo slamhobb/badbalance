@@ -25,9 +25,6 @@ class SpendingService:
         page.balance = self.spending_dao.get_balance_by_month(user_id, year, month)
         return page
 
-    def get_list_by_user(self, user_id):
-        return self.spending_dao.get_list(user_id)
-
     def get_by_month(self, user_id, year, month):
         return self.spending_dao.get_list_by_month(user_id, year, month)
 

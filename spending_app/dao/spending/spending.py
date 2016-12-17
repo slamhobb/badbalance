@@ -11,10 +11,6 @@ class SpendingDao(BaseDao):
         sql = self.get_sql('get_list_by_month_and_year.sql')
         return self.query_all(SpendingList, sql, dict(user_id=user_id, year=year, month=month))
 
-    def get_list(self, user_id):
-        sql = self.get_sql('get_list.sql')
-        return self.query_all(SpendingList, sql, dict(user_id=user_id))
-
     def add(self, spending):
         sql = self.get_sql('add.sql')
         self.execute(sql, spending.to_primitive())

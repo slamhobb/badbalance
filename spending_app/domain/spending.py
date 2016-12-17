@@ -14,7 +14,7 @@ class Spending(Model):
     date = DateType()
     sum = DecimalType()
     text = StringType()
-    category = IntType()
+    category_id = IntType()
 
 
 class SpendingList(Model):
@@ -22,4 +22,4 @@ class SpendingList(Model):
     date = DateType()
     sum = DecimalType()
     text = StringType()
-    category = IntType()
+    category_id = IntType()

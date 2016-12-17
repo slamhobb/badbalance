@@ -28,14 +28,14 @@ def get_context():
 @mod.route('/')
 def index():
     user_context = getattr(g, 'user_context', None)
-    if user_context is not None:
+    if user_context is not None and user_context.is_authenticated:
         return redirect(url_for('spending.index'))
     return render_template('registration/cover.html')
 
 
 @mod.route('/registration')
 def registration():
-    error_message = request.get('error', '')
+    error_message = request.args.get('error', '')
     return render_template('registration/registration.html', form=RegistrationForm(), error_message=error_message)
 
 

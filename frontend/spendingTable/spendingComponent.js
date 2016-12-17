@@ -31,7 +31,7 @@ const spendingComponent = {
 
             prevDate = curDate;
 
-            let categoryIndx = this.categories.map(x => parseInt(x.id)).indexOf(parseInt(item.category));
+            let categoryIndx = this.categories.map(x => parseInt(x.id)).indexOf(parseInt(item.category_id));
 
             formattedItems.push({
                 id: item.id,
@@ -39,7 +39,7 @@ const spendingComponent = {
                 date: item.date,
                 sum: item.sum,
                 text: item.text,
-                categoryId: item.category,
+                categoryId: item.category_id,
                 categoryName: categoryIndx > -1 ? this.categories[categoryIndx].name : 'Неизвестно',
                 edit: item.edit
             });

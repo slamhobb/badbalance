@@ -27,7 +27,7 @@ table(class='spending_table table table-striped table-bordered')
                 input(type='text' class='form-control spending-text--input' name='text' value=item.text)
             td
               div.spending_category
-                select(class='form-control spending-category--input' name='category')
+                select(class='form-control spending-category--input' name='category_id')
                   each category in categories
                     option(value=category.id, selected=(category.id == item.categoryId))
                       =category.name

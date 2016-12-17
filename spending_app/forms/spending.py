@@ -8,7 +8,7 @@ class SpendingForm(FlaskForm):
     date = DateField('Дата', [DataRequired()])
     sum = DecimalField('Сумма', [DataRequired()])
     text = StringField('Описание')
-    category = IntegerField('Категория', [DataRequired()])
+    category_id = IntegerField('Категория', [DataRequired()])
 
 
 class CategoryForm(FlaskForm):

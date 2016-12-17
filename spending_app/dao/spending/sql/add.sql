@@ -3,10 +3,10 @@ insert into spending(
 	date,
 	sum,
 	text,
-	category)
+	category_id)
     values(
 	    :user_id,
 	    :date,
 	    :sum,
 	    :text,
-	    :category);
+	    :category_id);

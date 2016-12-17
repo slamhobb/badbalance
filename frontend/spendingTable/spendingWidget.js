@@ -50,7 +50,7 @@ function onClickSave(event, el) {
         date: $tr.getElementsByClassName('spending-date--input')[0].value,
         sum: $tr.getElementsByClassName('spending-sum--input')[0].value,
         text: $tr.getElementsByClassName('spending-text--input')[0].value,
-        category: $tr.getElementsByClassName('spending-category--input')[0].value
+        category_id: $tr.getElementsByClassName('spending-category--input')[0].value
     };
 
     httpClient.postjson(urls.saveSpendingUrl, data)

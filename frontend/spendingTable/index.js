@@ -14,8 +14,7 @@ let $ui = {},
     urls = {
         addSpendingUrl: '/spending/save',
         getCategoryListUrl: '/category/get_list',
-        statSpendingUrl: '/spending/stat',
-
+        statSpendingUrl: '/spending/stat'
     };
 
 function bindUi() {
@@ -23,7 +22,7 @@ function bindUi() {
         addSpendingForm: document.getElementById('addSpendingForm'),
         monthForm: document.getElementById('monthForm'),
         chart: document.getElementById('chart'),
-        categorySelect: document.querySelector('#addSpendingForm [name=category]')
+        categorySelect: document.querySelector('#addSpendingForm [name=category_id]')
     }
 }
 
