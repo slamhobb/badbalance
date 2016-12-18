@@ -4,6 +4,7 @@ from spending_app import config
 
 def set_token(token):
     session[config.AUTH_TOKEN_NAME] = token
+    session.permanent = True
 
 
 def remove_token():

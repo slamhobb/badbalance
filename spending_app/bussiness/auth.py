@@ -48,4 +48,8 @@ class AuthService:
     def _check_password(password1, password2):
         password1 = bytes(password1, 'utf-8')
         password2 = bytes(password2, 'utf-8')
-        return bcrypt.checkpw(password1, password2)
+
+        try:
+            return bcrypt.checkpw(password1, password2)
+        except ValueError:
+            return False
