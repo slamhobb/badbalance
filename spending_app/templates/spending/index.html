@@ -49,40 +49,42 @@
   <div class="row">
     <div class="col-sm-8">
       <form id="addSpendingForm">
-        <table class="table table-bordered">
-          <tr>
-            <td>
-              <div class="spending_date">
-                {{ form.date(class="form-control", placeholder=form.date.label.text) }}
-              </div>
-            </td>
-            <td>
-              <div class="spending_sum">
-                {{ form.sum(class="form-control pull-right", placeholder=form.sum.label.text) }}
-              </div>
-            </td>
-            <td>
-              <div class="spending_text">
-                {{ form.text(class="form-control", placeholder=form.text.label.text) }}
-              </div>
-            </td>
-            <td>
-              <div class="spending_category">
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <tr>
+              <td>
+                <div class="spending_date">
+                  {{ form.date(class="form-control", placeholder=form.date.label.text) }}
+                </div>
+              </td>
+              <td>
+                <div class="spending_sum">
+                  {{ form.sum(class="form-control pull-right", placeholder=form.sum.label.text) }}
+                </div>
+              </td>
+              <td>
+                <div class="spending_text">
+                  {{ form.text(class="form-control", placeholder=form.text.label.text) }}
+                </div>
+              </td>
+              <td>
+                <div class="spending_category">
 
-                <select class="form-control" name="{{ form.category_id.name }}" title="{{ form.category_id.label.text }}"></select>
-{#                {{ form.category(class="form-control", placeholder=form.category.label.text) }}#}
-              </div>
-            </td>
-            <td>
-              <div class="spending_action">
-                <button type=submit class="btn btn-default btn-sm"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
-              </div>
-            </td>
-          </tr>
-        </table>
+                  <select class="form-control" name="{{ form.category_id.name }}" title="{{ form.category_id.label.text }}"></select>
+  {#                {{ form.category(class="form-control", placeholder=form.category.label.text) }}#}
+                </div>
+              </td>
+              <td>
+                <div class="spending_action">
+                  <button type=submit class="btn btn-default btn-sm"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
       </form>
 
-      <div id="spendingTable"></div>
+      <div id="spendingTable" class="table-responsive"></div>
     </div>
 
     <div class="col-sm-4">

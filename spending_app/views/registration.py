@@ -58,5 +58,5 @@ def register():
     if token is None:
         return redirect(url_for('auth.login_page'))
 
-    set_token(token)
+    set_token(token, False)
     return redirect(url_for('redirect.redirect'))

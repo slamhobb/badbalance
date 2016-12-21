@@ -2,9 +2,9 @@ from flask import session
 from spending_app import config
 
 
-def set_token(token):
+def set_token(token, permanent):
     session[config.AUTH_TOKEN_NAME] = token
-    session.permanent = True
+    session.permanent = permanent
 
 
 def remove_token():

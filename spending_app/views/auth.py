@@ -31,11 +31,10 @@ def login():
 
     token, message = auth_service.authenticate(form.login.data, form.password.data)
 
-    if token is not None:
-        set_token(token)
-    else:
+    if token is None:
         return redirect(url_for('.login_page', error=message))
 
+    set_token(token, form.remember_me.data)
     return redirect(url_for('redirect.redirect'))
 
 
