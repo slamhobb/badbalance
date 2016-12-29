@@ -18,7 +18,7 @@ table(class='spending_table table table-striped table-bordered')
             td
               div.spending_date
                 input(type='hidden' class='spending-id--input' value=item.id)
-                input(type='text' class='form-control dateinput spending-date--input' name='date' value=item.date)
+                input(type='text' class='dateinput spending-date--input' name='date' value=item.date)
             td
               div.spending_sum
                 input(type='text' class='form-control spending-sum--input' name='sum' value=item.sum)
@@ -33,7 +33,7 @@ table(class='spending_table table table-striped table-bordered')
                       =category.name
             td
               div.spending_action
-                button(class='btn btn-default btn-sm spending_save')
+                button(class='btn btn-default btn-sm spending_save', type='button')
                   span(class='glyphicon glyphicon-ok' aria-hidden='true')
           else
             td

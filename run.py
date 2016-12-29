@@ -7,7 +7,7 @@ if __name__ == '__main__':
     basedir = os.path.abspath(os.path.dirname(__file__))
     app.static_folder = os.path.join(basedir, 'static')
 
-    app.run()
+    app.run(host="0.0.0.0")
 
 
 def init_db():
