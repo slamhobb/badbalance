@@ -23,7 +23,7 @@ def add_user_context():
 @mod.route('/')
 @login_required
 def index():
-    model = spending_service.get_index(g.user_context.user_id)
+    model = spending_service.get_index()
     return render_template('spending/index.html', form=SpendingForm(), model=model)
 
 
@@ -80,3 +80,12 @@ def get_statistic(year, month):
     res = [r.to_primitive() for r in res]
 
     return jsonify(stat=res)
+
+
+@mod.route('/balance/<int:year>/<int:month>', methods=['GET'])
+@login_required
+def get_month_balance(year, month):
+    user_id = g.user_context.user_id
+
+    balance = spending_service.get_balance_by_month(user_id, year, month)
+    return jsonify(balance=balance)

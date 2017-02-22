@@ -4,27 +4,29 @@
 
 import './spendingTable.css';
 import { init, redrawSpendingTable } from './spendingWidget';
+import monthBalanceComponent from './components/monthBalanceComponent';
 import template from './options.pug';
 
 import httpClient from '../core/httpClient';
 import Flatpickr from '../datepicker';
 import formToJSON from '../core/formToJSON';
 
-let $ui = {},
-    urls = {
-        addSpendingUrl: '/spending/save',
-        getCategoryListUrl: '/category/get_list',
-        statSpendingUrl: '/spending/stat'
-    };
-
-function bindUi() {
-    return {
+const $ui = {
         addSpendingForm: document.getElementById('addSpendingForm'),
         monthForm: document.getElementById('monthForm'),
         chart: document.getElementById('chart'),
-        categorySelect: document.querySelector('#addSpendingForm [name=category_id]')
-    }
-}
+        categorySelect: document.querySelector('#addSpendingForm [name=category_id]'),
+        monthBalance: document.getElementById('monthBalance')
+    },
+    urls = {
+        addSpendingUrl: '/spending/save',
+        getCategoryListUrl: '/category/get_list',
+        statSpendingUrl: '/spending/stat',
+        getMonthBalance: '/spending/balance'
+    },
+    monthBalance = Object.create(monthBalanceComponent);
+
+monthBalance.init($ui.monthBalance, urls.getMonthBalance);
 
 function setupEvents() {
     $ui.addSpendingForm.addEventListener('submit', addSpending);
@@ -36,8 +38,8 @@ function setupDatePicker() {
 }
 
 function renderChart() {
-    var data = formToJSON($ui.monthForm);
-    var url = urls.statSpendingUrl + '/' + data.year + '/' + data.month;
+    const data = formToJSON($ui.monthForm);
+    const url = urls.statSpendingUrl + '/' + data.year + '/' + data.month;
 
     httpClient.getjson(url)
         .then(drawChart)
@@ -77,10 +79,12 @@ function drawChart(result) {
     });
 }
 
-function renderTable() {
-    var data = formToJSON($ui.monthForm);
-
-    redrawSpendingTable(data.month, data.year);
+function renderBalance(month, year) {
+    httpClient.getjson(urls.getMonthBalance + '/' + year + '/' + month)
+        .then(r => {
+            monthBalance.setBalance(r.balance);
+            monthBalance.render();
+        });
 }
 
 function updatePageData(e) {
@@ -88,7 +92,10 @@ function updatePageData(e) {
         e.preventDefault();
     }
 
-    renderTable();
+    const data = formToJSON($ui.monthForm);
+
+    renderBalance(data.month, data.year);
+    redrawSpendingTable(data.month, data.year);
     renderChart();
 }
 
@@ -128,7 +135,6 @@ function onAddSpending(result) {
 }
 
 export default function start() {
-    $ui = bindUi();
     setupDatePicker();
     setupEvents();
 

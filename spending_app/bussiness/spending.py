@@ -12,7 +12,7 @@ class SpendingService:
     spending_dao = inject.attr(SpendingDao)
     category_dao = inject.attr(CategoryDao)
 
-    def get_index(self, user_id):
+    def get_index(self):
         now = datetime.now()
         year = now.year
         month = now.month
@@ -22,7 +22,6 @@ class SpendingService:
         page.month = month
         page.mlist = enumerate([calendar.month_abbr[i] for i in range(1, 13)], 1)
         page.ylist = [2016, 2017, 2018]
-        page.balance = self.spending_dao.get_balance_by_month(user_id, year, month)
         return page
 
     def get_by_month(self, user_id, year, month):
@@ -51,3 +50,6 @@ class SpendingService:
 
     def delete_category(self, category_id, user_id):
         self.category_dao.delete(category_id, user_id)
+
+    def get_balance_by_month(self, user_id, year, month):
+        return self.spending_dao.get_balance_by_month(user_id, year, month)

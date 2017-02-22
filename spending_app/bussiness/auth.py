@@ -19,7 +19,7 @@ class AuthService:
         user = self.user_dao.get_by_login(login)
 
         if not user or not self._check_password(password, user.password):
-            return None, "Введены не верные логин и пароль"
+            return None, "Введены неверные логин и пароль"
 
         auth_token = AuthToken()
         auth_token.token = self._generate_token()
