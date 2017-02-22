@@ -26,6 +26,8 @@ const $ui = {
     },
     monthBalance = Object.create(monthBalanceComponent);
 
+let myPieChart;
+
 monthBalance.init($ui.monthBalance, urls.getMonthBalance);
 
 function setupEvents() {
@@ -58,11 +60,9 @@ function getRandomColor() {
 }
 
 function drawChart(result) {
-    var ctx = $ui.chart.getContext("2d");
+    const colors = result.stat.map(function () { return getRandomColor(); });
 
-    var colors = result.stat.map(function () { return getRandomColor(); });
-
-    var data = {
+    const data = {
         labels: result.stat.map(function(x) { return x.category }),
         datasets: [
             {
@@ -72,11 +72,18 @@ function drawChart(result) {
             }]
     };
 
-    let myPieChart = new Chart(ctx,{
-        type: 'doughnut',
-        data: data
-        //options: options
-    });
+    if (myPieChart) {
+        myPieChart.data.labels = data.labels;
+        myPieChart.data.datasets = data.datasets;
+        myPieChart.update(0, false);
+    } else {
+        const ctx = $ui.chart.getContext("2d");
+        myPieChart = new Chart(ctx,{
+            type: 'doughnut',
+            data: data
+            //options: options
+        });
+    }
 }
 
 function renderBalance(month, year) {
