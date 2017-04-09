@@ -1,12 +1,14 @@
 'use strict';
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
+
+const path = require('path');
 const webpack = require('webpack');
 
-let ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-    context: __dirname + '/frontend',
+    context: path.resolve(__dirname, 'frontend'),
 
     entry: {
         spending: './spendings',
@@ -14,7 +16,7 @@ module.exports = {
     },
 
     output: {
-        path: 'static/built',
+        path: path.resolve(__dirname, 'static/built'),
         filename: '[name].js'
     },
 
@@ -24,54 +26,37 @@ module.exports = {
         aggregateTimeout: 100
     },
 
-    //devtool: NODE_ENV == 'development' ? 'cheap-inline-module-source-map' : null,
     devtool: NODE_ENV == 'development' ? 'source-map' : null,
 
     plugins: [
-        new webpack.NoErrorsPlugin(),
+        new webpack.NoEmitOnErrorsPlugin(),
         new webpack.DefinePlugin({
-            NODE_ENV: JSON.stringify(NODE_ENV)
+            'process.env.NODE_ENV': JSON.stringify(NODE_ENV)
         }),
         new ExtractTextPlugin('[name].css')
     ],
 
-    resolve: {
-        modulesDirectories: ['node_modules'],
-        extensions: ['', '.js']
-    },
-
-    resolveLoader: {
-        modulesDirectories: ['node_modules'],
-        moduleTemplates: ['*-loader', '*'],
-        extensions: ['', '.js']
-    },
-
     module: {
-        loaders: [{
-            test:   /\.js$/,
-            loader: 'babel',
-            include: __dirname + '/frontend',
-            query: {
-                presets: ['es2015']
-            }
+        rules: [{
+            test: /\.js$/,
+            include: path.resolve(__dirname, 'frontend'),
+            use: 'babel-loader'
+
         }, {
             test: /\.pug$/,
-            loader: 'pug'
+            use: 'pug-loader'
         }, {
             test: /\.css$/,
-            loader: ExtractTextPlugin.extract('style', 'css')
+            use: ExtractTextPlugin.extract({
+                fallback: 'style-loader',
+                use: 'css-loader'
+            })
         }]
     }
-
 };
-
 
 if (NODE_ENV == 'production') {
     module.exports.plugins.push(
-        new webpack.optimize.UglifyJsPlugin({
-            warnings: false,
-            drop_console: true,
-            unsafe: true
-        })
+        new webpack.optimize.UglifyJsPlugin()
     );
 }
