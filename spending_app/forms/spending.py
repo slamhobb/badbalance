@@ -1,9 +1,9 @@
-from flask_wtf import FlaskForm
+from baseForm import BaseForm
 from wtforms import DateField, DecimalField, StringField, IntegerField
 from wtforms.validators import DataRequired
 
 
-class SpendingForm(FlaskForm):
+class SpendingForm(BaseForm):
     id = IntegerField('Id')
     date = DateField('Дата', [DataRequired()])
     sum = DecimalField('Сумма', [DataRequired()])
@@ -11,6 +11,6 @@ class SpendingForm(FlaskForm):
     category_id = IntegerField('Категория', [DataRequired()])
 
 
-class CategoryForm(FlaskForm):
+class CategoryForm(BaseForm):
     id = IntegerField('Id')
     name = StringField('Название', [DataRequired()])

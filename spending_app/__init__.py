@@ -1,7 +1,7 @@
 import locale
 
 from flask import Flask
-from flask_wtf.csrf import CsrfProtect
+from flask_wtf.csrf import CSRFProtect
 from spending_app import dependency_injection
 from spending_app import config
 from spending_app.views.auth import mod as auth
@@ -14,7 +14,7 @@ from spending_app.views.category import mod as category
 locale.setlocale(locale.LC_ALL, "ru_RU.UTF-8")
 
 app = Flask(__name__)
-csrf = CsrfProtect()
+csrf = CSRFProtect()
 csrf.init_app(app)
 
 app.secret_key = config.SECRET_KEY
