@@ -27,6 +27,13 @@ def index():
     return render_template('spending/index.html', form=SpendingForm(), model=model)
 
 
+@mod.route('/reactSpending')
+@login_required
+def reactSpending():
+    model = spending_service.get_index()
+    return render_template('spending/reactSpending.html', form=SpendingForm(), model=model)
+
+
 @mod.route('/list')
 @login_required
 def spending_list():

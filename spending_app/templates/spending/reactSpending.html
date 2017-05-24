@@ -1,0 +1,17 @@
+{% extends 'shared/layout.html' %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='built/reactSpending.js') }}"></script>
+{% endblock %}
+
+{% block menu %}
+  <ul class="nav nav-tabs">
+    <li class="active"><a>Расходы</a></li>
+    <li class="disabled"><a href="/statistic">Статистика</a></li>
+    <li><a href="/category">Категории</a></li>
+  </ul>
+{% endblock %}
+
+{% block body %}
+  <div id="spendingTable"></div>
+{% endblock %}

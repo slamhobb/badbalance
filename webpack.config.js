@@ -12,6 +12,7 @@ module.exports = {
 
     entry: {
         spending: './spendings',
+        reactSpending: './reactSpending/index.js',
         category: './category'
     },
 
@@ -20,13 +21,13 @@ module.exports = {
         filename: '[name].js'
     },
 
-    watch: NODE_ENV == 'development',
+    watch: NODE_ENV === 'development',
 
     watchOptions: {
         aggregateTimeout: 100
     },
 
-    devtool: NODE_ENV == 'development' ? 'source-map' : null,
+    devtool: NODE_ENV === 'development' ? 'source-map' : null,
 
     plugins: [
         new webpack.NoEmitOnErrorsPlugin(),
@@ -55,7 +56,7 @@ module.exports = {
     }
 };
 
-if (NODE_ENV == 'production') {
+if (NODE_ENV === 'production') {
     module.exports.plugins.push(
         new webpack.optimize.UglifyJsPlugin()
     );
