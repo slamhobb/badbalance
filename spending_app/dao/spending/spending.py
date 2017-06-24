@@ -13,7 +13,7 @@ class SpendingDao(BaseDao):
 
     def add(self, spending):
         sql = self.get_sql('add.sql')
-        self.execute(sql, spending.to_primitive())
+        return self.execute(sql, spending.to_primitive())
 
     def update(self, spending):
         sql = self.get_sql('update.sql')

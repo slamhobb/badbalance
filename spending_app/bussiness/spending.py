@@ -30,8 +30,9 @@ class SpendingService:
     def save(self, spending):
         if (spending.id or 0) > 0:
             self.spending_dao.update(spending)
+            return spending.id
         else:
-            self.spending_dao.add(spending)
+            return self.spending_dao.add(spending)
 
     def delete(self, spend_id, user_id):
         self.spending_dao.delete(spend_id, user_id)

@@ -3,6 +3,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import CategoriesList from './CategoriesOptions';
+
 class EditLine extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -17,7 +19,7 @@ class EditLine extends React.PureComponent {
             date: this.props.date,
             sum: this.props.sum,
             text: this.props.text,
-            category: this.props.category
+            category_id: this.props.category_id
         };
     }
 
@@ -26,15 +28,15 @@ class EditLine extends React.PureComponent {
     }
 
     handleChangeSum(e) {
-        this.setState({sum: e.target.value});
+        this.setState({sum: parseInt(e.target.value)});
     }
 
     handleChangeText(e) {
         this.setState({text: e.target.value});
     }
 
-    handleChangeCategory(e) {
-        this.setState({category: e.target.value});
+    handleChangeCategory(category_id) {
+        this.setState({category_id: category_id});
     }
 
     handleSave() {
@@ -42,26 +44,45 @@ class EditLine extends React.PureComponent {
 
         const spending = Object.assign({id: id}, this.state);
 
-        this.props.onSave(id, spending);
+        this.props.onSave(spending);
     }
 
     render() {
+        const categories = this.props.categories;
+
         return(
             <tr>
                 <td>
-                    <input value={this.state.date} onChange={this.handleChangeDate} />
+                    <div className="spending_date">
+                        <input className="form-control"
+                               value={this.state.date} onChange={this.handleChangeDate} />
+                    </div>
                 </td>
                 <td>
-                    <input value={this.state.sum} onChange={this.handleChangeSum} />
+                    <div className="spending_sum">
+                        <input className="form-control"
+                               value={this.state.sum} onChange={this.handleChangeSum} />
+                    </div>
                 </td>
                 <td>
-                    <input value={this.state.text} onChange={this.handleChangeText} />
+                    <div className="spending_text">
+                        <input className="form-control"
+                               value={this.state.text} onChange={this.handleChangeText} />
+                    </div>
                 </td>
                 <td>
-                    <input value={this.state.category} onChange={this.handleChangeCategory} />
+                    <div className="spending_category">
+                        <CategoriesList items={categories}
+                                        value={this.state.category_id}
+                                        onChange={this.handleChangeCategory} />
+                    </div>
                 </td>
                 <td>
-                    <button onClick={this.handleSave}>Сохранить</button>
+                    <div className="spending_action">
+                        <button className="btn btn-default btn-sm" onClick={this.handleSave}>
+                            <span className="glyphicon glyphicon-ok" aria-hidden="true" />
+                        </button>
+                    </div>
                 </td>
             </tr>
         );
@@ -73,7 +94,8 @@ EditLine.propTypes = {
     date: PropTypes.string,
     sum: PropTypes.number,
     text: PropTypes.string,
-    category: PropTypes.string
+    category_id: PropTypes.number,
+    categories: PropTypes.array.isRequired
 };
 
 export default EditLine;

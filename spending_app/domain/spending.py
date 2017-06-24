@@ -5,14 +5,14 @@ from schematics.types import IntType, StringType, DateType, DecimalType
 class SpendingPage(Model):
     year = IntType()
     month = IntType()
-    balance = DecimalType()
+    balance = IntType()
 
 
 class Spending(Model):
     id = IntType()
     user_id = IntType()
     date = DateType()
-    sum = DecimalType()
+    sum = IntType()
     text = StringType()
     category_id = IntType()
 
@@ -20,6 +20,6 @@ class Spending(Model):
 class SpendingList(Model):
     id = IntType()
     date = DateType()
-    sum = DecimalType()
+    sum = IntType()
     text = StringType()
     category_id = IntType()

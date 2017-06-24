@@ -23,13 +23,37 @@ class Line extends React.PureComponent {
     render() {
         return (
             <tr>
-                <td>{this.props.date}</td>
-                <td>{this.props.sum}</td>
-                <td>{this.props.text}</td>
-                <td>{this.props.category}</td>
                 <td>
-                    <button onClick={this.handleEdit}>Ред</button>
-                    <button onClick={this.handleDelete}>Удал</button>
+                    <div className="spending_date">
+                        {this.props.date}
+                    </div>
+                </td>
+                <td>
+                    <div className="spending_sum">
+                        {this.props.sum}
+                    </div>
+                </td>
+                <td>
+                    <div className="spending_text">
+                        {this.props.text}
+                    </div>
+                </td>
+                <td>
+                    <div className="spending_category">
+                        {this.props.category}
+                    </div>
+                </td>
+                <td>
+                    <div className="spending_action">
+                        <div className="action_wrapper">
+                            <a className="spending_edit" onClick={this.handleEdit}>
+                                <span className="glyphicon glyphicon-pencil" aria-hidden="true" />
+                            </a>
+                            <a className="spending_delete" onClick={this.handleDelete}>
+                                <span className="glyphicon glyphicon-trash" aria-hidden="true" />
+                            </a>
+                        </div>
+                    </div>
                 </td>
             </tr>
 

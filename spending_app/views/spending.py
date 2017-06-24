@@ -61,9 +61,9 @@ def save_spending():
     spending = Spending(form.data)
     spending.user_id = g.user_context.user_id
 
-    spending_service.save(spending)
+    id = spending_service.save(spending)
 
-    return jsonify(status=True)
+    return jsonify(status=True,id=id)
 
 
 @mod.route('/remove', methods=['POST'])
