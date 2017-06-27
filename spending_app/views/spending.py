@@ -29,7 +29,7 @@ def index():
 
 @mod.route('/reactSpending')
 @login_required
-def reactSpending():
+def react_spending():
     model = spending_service.get_index()
     return render_template('spending/reactSpending.html', form=SpendingForm(), model=model)
 
@@ -45,9 +45,14 @@ def spending_list():
 @mod.route('/list_month/<int:year>/<int:month>')
 @login_required
 def spending_list_month(year, month):
-    items = spending_service.get_by_month(g.user_context.user_id, year, month)
+    user_id = g.user_context.user_id
+
+    items = spending_service.get_by_month(user_id, year, month)
     items = [i.to_primitive() for i in items]
-    return jsonify(spending=items)
+
+    cats = spending_service.get_category_list(user_id)
+    cats = [c.to_primitive() for c in cats]
+    return jsonify(spending=items, categories=cats)
 
 
 @mod.route('/save', methods=['POST'])

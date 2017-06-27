@@ -13,7 +13,6 @@ class PeriodSelector extends React.PureComponent {
 
         this.handleChaneYear = this.handleChaneYear.bind(this);
         this.handleChaneMonth = this.handleChaneMonth.bind(this);
-        this.handleShow = this.handleShow.bind(this);
 
         this.state = {
             year: this.props.year,
@@ -27,6 +26,11 @@ class PeriodSelector extends React.PureComponent {
         this.setState({
            year: year
         });
+
+        this.props.onChange({
+            year: year,
+            month: this.state.month
+        });
     }
 
     handleChaneMonth(e) {
@@ -35,12 +39,10 @@ class PeriodSelector extends React.PureComponent {
         this.setState({
            month: month
         });
-    }
 
-    handleShow() {
         this.props.onChange({
             year: this.state.year,
-            month: this.state.month
+            month: month
         });
     }
 
@@ -49,20 +51,14 @@ class PeriodSelector extends React.PureComponent {
         const monthList = months.map((m, i) => <option key={i} value={i + 1}>{m}</option>);
 
         return (
-            <div className="form-inline">
-                <div className="form-group">
-                    <select className="form-control"
-                            value={this.state.year} onChange={this.handleChaneYear}>
-                        {yearsList}
-                    </select>
-                </div>
-                <div className="form-group">
-                    <select className="form-control"
-                            value={this.state.month} onChange={this.handleChaneMonth}>
-                        {monthList}
-                    </select>
-                </div>
-                <button className="btn btn-link" onClick={this.handleShow}>Показать</button>
+            <div className="form-inline month_selector">
+                <select className="form-control" value={this.state.year} onChange={this.handleChaneYear}>
+                    {yearsList}
+                </select>
+                &nbsp;
+                <select className="form-control" value={this.state.month} onChange={this.handleChaneMonth}>
+                    {monthList}
+                </select>
             </div>
         )
     }

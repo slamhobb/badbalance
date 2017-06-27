@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 
 import CategoriesList from './CategoriesOptions';
 
+import ReactDatePicker from '../datepicker/rectDatePicker';
+
 class AddSpendingForm extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -16,16 +18,16 @@ class AddSpendingForm extends React.PureComponent {
         this.handleAdd = this.handleAdd.bind(this);
 
         this.state = {
-            date: '',
+            date: this.props.defaultDate,
             sum: '',
             text: '',
             category_id: 1
         };
     }
 
-    handleChangeDate(e) {
+    handleChangeDate(date) {
         this.setState({
-            date: e.target.value
+            date: date
         });
     }
 
@@ -62,49 +64,52 @@ class AddSpendingForm extends React.PureComponent {
         const categories = this.props.categories;
 
         return(
-            <table className="table table-bordered">
-                <tbody>
-                    <tr>
-                        <td>
-                            <div className="spending_date">
-                                <input className="form-control" placeholder="Дата"
-                                    value={this.state.date} onChange={this.handleChangeDate} />
-                            </div>
-                        </td>
-                        <td>
-                            <div className="spending_sum">
-                                <input className="form-control" placeholder="Сумма"
-                                    value={this.state.sum} onChange={this.handleChangeSum} />
-                            </div>
-                        </td>
-                        <td>
-                            <div className="spending_text">
-                                <input className="form-control" placeholder="Текст"
-                                    value={this.state.text} onChange={this.handleChangeText} />
-                            </div>
-                        </td>
-                        <td>
-                            <div className="spending_category">
-                                <CategoriesList items={categories} value={this.state.category_id}
-                                                onChange={this.handleChangeCategory} />
-                            </div>
-                        </td>
-                        <td>
-                            <div className="spending_action">
-                                <button className="btn btn-default btn-sm"
-                                    onClick={this.handleAdd}>
-                                    <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div className="table-responsive">
+                <table className="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div className="spending_date">
+                                    <ReactDatePicker className="form-control" placeholder="Дата"
+                                        defaultValue={this.props.defaultDate} onChange={this.handleChangeDate} />
+                                </div>
+                            </td>
+                            <td>
+                                <div className="spending_sum">
+                                    <input type="text" className="form-control" placeholder="Сумма"
+                                        value={this.state.sum} onChange={this.handleChangeSum} />
+                                </div>
+                            </td>
+                            <td>
+                                <div className="spending_text">
+                                    <input type="text" className="form-control" placeholder="Текст"
+                                        value={this.state.text} onChange={this.handleChangeText} />
+                                </div>
+                            </td>
+                            <td>
+                                <div className="spending_category">
+                                    <CategoriesList items={categories} value={this.state.category_id}
+                                                    onChange={this.handleChangeCategory} />
+                                </div>
+                            </td>
+                            <td>
+                                <div className="spending_action">
+                                    <button className="btn btn-default btn-sm" type="button"
+                                        onClick={this.handleAdd}>
+                                        <span className="glyphicon glyphicon-ok" aria-hidden="true" />
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         );
     }
 }
 
 AddSpendingForm.propTypes = {
+    defaultDate: PropTypes.string,
     categories: PropTypes.array.isRequired,
     onAdd: PropTypes.func.isRequired
 };

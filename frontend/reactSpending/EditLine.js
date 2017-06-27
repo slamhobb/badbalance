@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 
 import CategoriesList from './CategoriesOptions';
 
+import RectDatePicker from '../datepicker/rectDatePicker';
+
 class EditLine extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -23,8 +25,8 @@ class EditLine extends React.PureComponent {
         };
     }
 
-    handleChangeDate(e) {
-        this.setState({date: e.target.value});
+    handleChangeDate(date) {
+        this.setState({date: date});
     }
 
     handleChangeSum(e) {
@@ -54,8 +56,8 @@ class EditLine extends React.PureComponent {
             <tr>
                 <td>
                     <div className="spending_date">
-                        <input className="form-control"
-                               value={this.state.date} onChange={this.handleChangeDate} />
+                        <RectDatePicker className="form-control"
+                               defaultValue={this.props.date} onChange={this.handleChangeDate} />
                     </div>
                 </td>
                 <td>
@@ -79,7 +81,7 @@ class EditLine extends React.PureComponent {
                 </td>
                 <td>
                     <div className="spending_action">
-                        <button className="btn btn-default btn-sm" onClick={this.handleSave}>
+                        <button className="btn btn-default btn-sm" type="button" onClick={this.handleSave}>
                             <span className="glyphicon glyphicon-ok" aria-hidden="true" />
                         </button>
                     </div>
