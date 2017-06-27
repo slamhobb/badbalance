@@ -9,7 +9,7 @@ const defaultOptions = {
 
 export default {
     gettext: function(url){
-        let requestOptions = Object.assign({}, defaultOptions);
+        const requestOptions = Object.assign({}, defaultOptions);
 
         return window.fetch(url, requestOptions)
             .then(handleError)
@@ -17,7 +17,7 @@ export default {
     },
 
     getjson: function(url){
-        let requestOptions = Object.assign({}, defaultOptions);
+        const requestOptions = Object.assign({}, defaultOptions);
 
         return window.fetch(url, requestOptions)
             .then(handleError)
@@ -25,7 +25,7 @@ export default {
     },
 
     post: function(url) {
-        let requestOptions = Object.assign(
+        const requestOptions = Object.assign(
             {},
             defaultOptions,
             {
@@ -39,7 +39,7 @@ export default {
     },
 
     postform: function(url, data){
-        let requestOptions = Object.assign(
+        const requestOptions = Object.assign(
             {},
             defaultOptions,
             {
@@ -57,7 +57,7 @@ export default {
     },
 
     postjson: function(url, data) {
-        let requestOptions = Object.assign(
+        const requestOptions = Object.assign(
             {},
             defaultOptions,
             {
