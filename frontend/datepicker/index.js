@@ -8,7 +8,7 @@ Flatpickr.localize(l10ns.ru);
 
 const defaultOptions = {
     altInput: true,
-    altFormat: "D d"
+    altFormat: 'D d'
 };
 
 Object.assign(Flatpickr.defaultConfig, defaultOptions);
