@@ -65,7 +65,7 @@ Line.propTypes = {
     id: PropTypes.number.isRequired,
     date: PropTypes.string,
     sum: PropTypes.number.isRequired,
-    text: PropTypes.string,
+    text: PropTypes.string.isRequired,
     category: PropTypes.string.isRequired,
     onEdit: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired

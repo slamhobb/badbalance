@@ -33,7 +33,7 @@ class AddSpendingForm extends React.PureComponent {
 
     handleChangeSum(e) {
         this.setState({
-           sum: e.target.value
+            sum: e.target.value
         });
     }
 
@@ -89,7 +89,7 @@ class AddSpendingForm extends React.PureComponent {
                             <td>
                                 <div className="spending_category">
                                     <CategoriesList items={categories} value={this.state.category_id}
-                                                    onChange={this.handleChangeCategory} />
+                                        onChange={this.handleChangeCategory} />
                                 </div>
                             </td>
                             <td>

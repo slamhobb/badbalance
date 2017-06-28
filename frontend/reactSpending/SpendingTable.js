@@ -47,24 +47,24 @@ class SpendingTable extends React.PureComponent {
 
     renderLine(s, categories) {
         return s.edit
-                ? <EditLine
-                    key={s.id}
-                    id={s.id}
-                    date={s.date}
-                    sum={s.sum}
-                    text={s.text}
-                    category_id={s.category_id}
-                    categories={categories}
-                    onSave={this.props.onSave} />
-                : <Line
-                    key={s.id}
-                    id={s.id}
-                    date={s.dateStr}
-                    sum={s.sum}
-                    text={s.text}
-                    category={this.props.categories.get(s.category_id).name}
-                    onEdit={this.props.onEdit}
-                    onDelete={this.props.onDelete} />
+            ? <EditLine
+                key={s.id}
+                id={s.id}
+                date={s.date}
+                sum={s.sum}
+                text={s.text}
+                category_id={s.category_id}
+                categories={categories}
+                onSave={this.props.onSave} />
+            : <Line
+                key={s.id}
+                id={s.id}
+                date={s.dateStr}
+                sum={s.sum}
+                text={s.text}
+                category={this.props.categories.get(s.category_id).name}
+                onEdit={this.props.onEdit}
+                onDelete={this.props.onDelete} />;
     }
 
     render() {

@@ -21,7 +21,7 @@ class CategoriesOptions extends React.PureComponent {
             value: value
         });
 
-        this.props.onChange(value)
+        this.props.onChange(value);
     }
 
     render() {
@@ -31,7 +31,7 @@ class CategoriesOptions extends React.PureComponent {
 
         return(
             <select className="form-control" title="Категория"
-                    value={this.state.value} onChange={this.handleChange}>
+                value={this.state.value} onChange={this.handleChange}>
                 {options}
             </select>
         );

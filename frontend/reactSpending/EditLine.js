@@ -57,26 +57,26 @@ class EditLine extends React.PureComponent {
                 <td>
                     <div className="spending_date">
                         <RectDatePicker className="form-control"
-                               defaultValue={this.props.date} onChange={this.handleChangeDate} />
+                            defaultValue={this.props.date} onChange={this.handleChangeDate} />
                     </div>
                 </td>
                 <td>
                     <div className="spending_sum">
                         <input className="form-control"
-                               value={this.state.sum} onChange={this.handleChangeSum} />
+                            value={this.state.sum} onChange={this.handleChangeSum} />
                     </div>
                 </td>
                 <td>
                     <div className="spending_text">
                         <input className="form-control"
-                               value={this.state.text} onChange={this.handleChangeText} />
+                            value={this.state.text} onChange={this.handleChangeText} />
                     </div>
                 </td>
                 <td>
                     <div className="spending_category">
                         <CategoriesList items={categories}
-                                        value={this.state.category_id}
-                                        onChange={this.handleChangeCategory} />
+                            value={this.state.category_id}
+                            onChange={this.handleChangeCategory} />
                     </div>
                 </td>
                 <td>
@@ -92,12 +92,13 @@ class EditLine extends React.PureComponent {
 }
 
 EditLine.propTypes = {
-    id: PropTypes.number,
-    date: PropTypes.string,
-    sum: PropTypes.number,
-    text: PropTypes.string,
-    category_id: PropTypes.number,
-    categories: PropTypes.array.isRequired
+    id: PropTypes.number.isRequired,
+    date: PropTypes.string.isRequired,
+    sum: PropTypes.number.isRequired,
+    text: PropTypes.string.isRequired,
+    category_id: PropTypes.number.isRequired,
+    categories: PropTypes.array.isRequired,
+    onSave: PropTypes.func.isRequired
 };
 
 export default EditLine;

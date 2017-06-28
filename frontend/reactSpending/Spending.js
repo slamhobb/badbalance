@@ -110,11 +110,11 @@ class Spending extends React.PureComponent {
     refreshTable(year, month) {
         HttpClient.getjson(this.props.getSpendingUrl + '/' + year + '/' + month)
             .then(result => {
-               this.setState({
-                   items: this.getMap(result.spending),
-                   categories: this.getMap(result.categories)
-               });
-        });
+                this.setState({
+                    items: this.getMap(result.spending),
+                    categories: this.getMap(result.categories)
+                });
+            });
     }
 
     componentDidMount() {
@@ -145,7 +145,7 @@ class Spending extends React.PureComponent {
                     month={month}
                     onChange={this.changePeriod} />
                 <AddForm defaultDate={this.props.curDate.toISOString()}
-                         categories={categories} onAdd={this.onAdd}/>
+                    categories={categories} onAdd={this.onAdd}/>
                 <SpendingTable
                     items={items}
                     categories={this.state.categories}
@@ -154,7 +154,7 @@ class Spending extends React.PureComponent {
                     onSave={this.onSave}
                     onDelete={this.onDelete} />
             </div>
-        )
+        );
     }
 }
 
@@ -162,6 +162,7 @@ Spending.propTypes = {
     curDate: PropTypes.instanceOf(Date).isRequired,
     saveSpendingUrl: PropTypes.string.isRequired,
     getSpendingUrl:  PropTypes.string.isRequired,
+    removeSpendingUrl: PropTypes.string.isRequired
 };
 
 export default Spending;

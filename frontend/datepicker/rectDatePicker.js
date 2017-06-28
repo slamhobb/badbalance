@@ -18,7 +18,7 @@ class ReactDatePicker extends React.PureComponent {
 
     render() {
         return <input className={this.props.className} defaultValue={this.props.defaultValue}
-                      placeholder={this.props.placeholder} ref={e => this.inputElement = e} />
+            placeholder={this.props.placeholder} ref={e => this.inputElement = e} />;
     }
 }
 

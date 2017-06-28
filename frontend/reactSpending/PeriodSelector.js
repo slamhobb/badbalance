@@ -24,7 +24,7 @@ class PeriodSelector extends React.PureComponent {
         const year = parseInt(e.target.value);
 
         this.setState({
-           year: year
+            year: year
         });
 
         this.props.onChange({
@@ -37,7 +37,7 @@ class PeriodSelector extends React.PureComponent {
         const month = parseInt(e.target.value);
 
         this.setState({
-           month: month
+            month: month
         });
 
         this.props.onChange({
@@ -60,7 +60,7 @@ class PeriodSelector extends React.PureComponent {
                     {monthList}
                 </select>
             </div>
-        )
+        );
     }
 }
 
