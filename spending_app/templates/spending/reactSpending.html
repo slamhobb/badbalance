@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block scripts %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
   <script src="{{ url_for('static', filename='built/reactSpending.js') }}"></script>
 {% endblock %}
 
@@ -17,9 +18,5 @@
 {% endblock %}
 
 {% block body %}
-  <div class="row">
-    <div class="col-sm-8">
-      <div id="spendingTable"></div>
-    </div>
-  </div>
+  <div id="spending"></div>
 {% endblock %}

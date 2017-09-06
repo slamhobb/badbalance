@@ -15,5 +15,5 @@ ReactDOM.render(
         saveSpendingUrl='/spending/save'
         removeSpendingUrl='/spending/remove'
     />,
-    document.getElementById('spendingTable')
+    document.getElementById('spending')
 );

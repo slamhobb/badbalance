@@ -8,6 +8,7 @@ import PeriodSelector from './PeriodSelector';
 import AddForm from './AddSpendingForm';
 import SpendingTable from './SpendingTable';
 
+import BadChart from '../chart';
 
 import HttpClient from '../core/httpClient';
 
@@ -15,15 +16,17 @@ class Spending extends React.PureComponent {
     constructor(props) {
         super(props);
 
-        this.getMap = this.getMap.bind(this);
-
         this.onEdit = this.onEdit.bind(this);
         this.onDelete = this.onDelete.bind(this);
         this.onSave = this.onSave.bind(this);
         this.onAdd = this.onAdd.bind(this);
+        this.onChangePeriod = this.onChangePeriod.bind(this);
 
-        this.changePeriod = this.changePeriod.bind(this);
         this.refreshTable = this.refreshTable.bind(this);
+        this.refreshChart = this.refreshChart.bind(this);
+
+        this.year = this.props.curDate.getFullYear();
+        this.month = this.props.curDate.getMonth() + 1;
 
         this.state = {
             items: new Map(),
@@ -53,6 +56,8 @@ class Spending extends React.PureComponent {
                     newItems.delete(id);
                     this.setState({items: newItems});
 
+                    this.refreshChart(this.year, this.month);
+
                 } else {
                     alert(JSON.stringify(result.message));
                 }
@@ -79,6 +84,8 @@ class Spending extends React.PureComponent {
                     newItems.set(spending.id, spending);
                     this.setState({items: newItems});
 
+                    this.refreshChart(this.year, this.month);
+
                 } else {
                     alert(JSON.stringify(result.message));
                 }
@@ -96,6 +103,9 @@ class Spending extends React.PureComponent {
                     const newItems = new Map(this.state.items);
                     newItems.set(spending.id, spending);
                     this.setState({items: newItems});
+
+                    this.refreshChart(this.year, this.month);
+
                 } else {
                     alert(JSON.stringify(result.message));
                 }
@@ -103,8 +113,12 @@ class Spending extends React.PureComponent {
             .catch(error => alert('Произошла ошибка ' + error));
     }
 
-    changePeriod(period) {
-        this.refreshTable(period.year, period.month);
+    onChangePeriod(period) {
+        this.year = period.year;
+        this.month = period.month;
+
+        this.refreshTable(this.year, this.month);
+        this.refreshChart(this.year, this.month);
     }
 
     refreshTable(year, month) {
@@ -117,11 +131,18 @@ class Spending extends React.PureComponent {
             });
     }
 
-    componentDidMount() {
-        const year = this.props.curDate.getFullYear();
-        const month = this.props.curDate.getMonth() + 1;
+    refreshChart(year, month) {
+        HttpClient.getjson('/spending/stat/' + year + '/' + month)
+            .then(result => {
+                this.setState({
+                    stat: result
+                });
+            });
+    }
 
-        this.refreshTable(year, month);
+    componentDidMount() {
+        this.refreshTable(this.year, this.month);
+        this.refreshChart(this.year, this.month);
     }
 
     render() {
@@ -134,6 +155,7 @@ class Spending extends React.PureComponent {
 
         const categories = Array.from(this.state.categories.values());
 
+        // берём иммено из props что-бы не перерисовывать PeriodSelector каждый раз
         const year = this.props.curDate.getFullYear();
         const month = this.props.curDate.getMonth() + 1;
 
@@ -143,16 +165,23 @@ class Spending extends React.PureComponent {
                 <PeriodSelector
                     year={year}
                     month={month}
-                    onChange={this.changePeriod} />
-                <AddForm defaultDate={this.props.curDate.toISOString()}
-                    categories={categories} onAdd={this.onAdd}/>
-                <SpendingTable
-                    items={items}
-                    categories={this.state.categories}
-                    onAdd={this.onAdd}
-                    onEdit={this.onEdit}
-                    onSave={this.onSave}
-                    onDelete={this.onDelete} />
+                    onChange={this.onChangePeriod} />
+                <div className="row">
+                    <div className="col-sm-8">
+                        <AddForm defaultDate={this.props.curDate.toISOString().slice(0, 10)}
+                            categories={categories} onAdd={this.onAdd}/>
+                        <SpendingTable
+                            items={items}
+                            categories={this.state.categories}
+                            onAdd={this.onAdd}
+                            onEdit={this.onEdit}
+                            onSave={this.onSave}
+                            onDelete={this.onDelete} />
+                    </div>
+                    <div className="col-sm-4">
+                        <BadChart data={this.state.stat} />
+                    </div>
+                </div>
             </div>
         );
     }
