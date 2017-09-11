@@ -5,10 +5,26 @@ import React from 'react';
 export default function Header() {
     return (
         <tr>
-            <td>Дата</td>
-            <td>Сумма</td>
-            <td>Описание</td>
-            <td>Категория</td>
+            <td>
+                <div className="spending_date">
+                    День
+                </div>
+            </td>
+            <td>
+                <div className="spending_sum">
+                    Сумма
+                </div>
+            </td>
+            <td>
+                <div className="spending_text">
+                    Описание
+                </div>
+            </td>
+            <td>
+                <div className="spending_category">
+                    Категория
+                </div>
+            </td>
             <td></td>
         </tr>
     );

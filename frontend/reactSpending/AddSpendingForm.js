@@ -82,7 +82,7 @@ class AddSpendingForm extends React.PureComponent {
                             </td>
                             <td>
                                 <div className="spending_text">
-                                    <input type="text" className="form-control" placeholder="Текст"
+                                    <input type="text" className="form-control" placeholder="Описание"
                                         value={this.state.text} onChange={this.handleChangeText} />
                                 </div>
                             </td>

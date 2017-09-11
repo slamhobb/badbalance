@@ -20,16 +20,16 @@ def add_user_context():
     g.user_context = auth_service.get_user_context(get_token())
 
 
-@mod.route('/')
+@mod.route('/old_Spending')
 @login_required
-def index():
+def old_spending():
     model = spending_service.get_index()
     return render_template('spending/index.html', form=SpendingForm(), model=model)
 
 
-@mod.route('/reactSpending')
+@mod.route('/')
 @login_required
-def react_spending():
+def index():
     model = spending_service.get_index()
     return render_template('spending/reactSpending.html', form=SpendingForm(), model=model)
 
