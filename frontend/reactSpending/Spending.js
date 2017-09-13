@@ -145,6 +145,10 @@ class Spending extends React.PureComponent {
         this.refreshChart(this.year, this.month);
     }
 
+    dateToString(date) {
+        return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+    }
+
     render() {
         const items = Array.from(this.state.items.values());
 
@@ -168,12 +172,13 @@ class Spending extends React.PureComponent {
                     onChange={this.onChangePeriod} />
                 <div className="row">
                     <div className="col-sm-8">
-                        <AddForm defaultDate={this.props.curDate.toISOString().slice(0, 10)}
-                            categories={categories} onAdd={this.onAdd}/>
+                        <AddForm
+                            defaultDate={this.dateToString(this.props.curDate)}
+                            categories={categories}
+                            onAdd={this.onAdd}/>
                         <SpendingTable
                             items={items}
                             categories={this.state.categories}
-                            onAdd={this.onAdd}
                             onEdit={this.onEdit}
                             onSave={this.onSave}
                             onDelete={this.onDelete} />

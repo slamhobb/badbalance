@@ -17,7 +17,7 @@ create table spending(
   id integer primary key autoincrement,
   user_id integer not null,
   date text not null,
-  sum decimal not null,
+  sum integer not null,
   text text not null,
   category_id integer not null
 );
@@ -52,7 +52,7 @@ create table incoming(
   id integer primary key autoincrement,
   user_id integer not null,
   date text not null,
-  sum decimal no null,
+  sum integer no null,
   text text not null
 );
 
