@@ -24,7 +24,7 @@ def login_page():
 
 @mod.route('/login', methods=['POST'])
 def login():
-    form = LoginForm(request.form)
+    form = LoginForm()
 
     if not form.validate_on_submit():
         return redirect(url_for('.login_page', error=str(form.errors)))
@@ -42,15 +42,3 @@ def login():
 def logout():
     remove_token()
     return redirect(url_for('registration.index'))
-
-
-@mod.route('/show')
-def show_user():
-    user_context = getattr(g, 'user_context', None)
-    if user_context is not None:
-        return str(g.user_context.user_id)
-    else:
-        return 'Не авторизирован'
-
-
-

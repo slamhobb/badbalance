@@ -1,0 +1,93 @@
+{% extends 'shared/layout.html' %}
+
+{% block styles %}
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='built/spending.css') }}">
+{% endblock %}
+
+
+{% block scripts %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+  <script src="{{ url_for('static', filename='built/spending.js') }}"></script>
+{% endblock %}
+
+
+{% block menu %}
+  <ul class="nav nav-tabs">
+    <li class="active"><a>Расходы</a></li>
+    <li class="disabled"><a href="/statistic">Статистика</a></li>
+    <li><a href="/category">Категории</a></li>
+  </ul>
+{% endblock %}
+
+
+{% block body %}
+
+  <div id="monthBalance"></div>
+
+  <div class="month_selector">
+    <form id="monthForm" class="form-inline">
+      <div class="form-group">
+        <select class="form-control" name="year" title="Год">
+          {% for y in model.ylist %}
+            <option value="{{ y }}" {% if y == model.year %}selected{% endif %}>{{ y }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <select class="form-control" name="month" title="Месяц">
+          {% for i, m in model.mlist %}
+            <option value="{{ i }}" {% if i == model.month %}selected{% endif %}>{{ m }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn btn-link">Показать</button>
+    </form>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-8">
+      <form id="addSpendingForm">
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <tr>
+              <td>
+                <div class="spending_date">
+                  {{ form.date(class="", placeholder=form.date.label.text) }}
+                </div>
+              </td>
+              <td>
+                <div class="spending_sum">
+                  {{ form.sum(class="form-control", placeholder=form.sum.label.text) }}
+                </div>
+              </td>
+              <td>
+                <div class="spending_text">
+                  {{ form.text(class="form-control", placeholder=form.text.label.text) }}
+                </div>
+              </td>
+              <td>
+                <div class="spending_category">
+
+                  <select class="form-control" name="{{ form.category_id.name }}" title="{{ form.category_id.label.text }}"></select>
+  {#                {{ form.category(class="form-control", placeholder=form.category.label.text) }}#}
+                </div>
+              </td>
+              <td>
+                <div class="spending_action">
+                  <button type=submit class="btn btn-default btn-sm"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </form>
+
+      <div id="spendingTable" class="table-responsive"></div>
+    </div>
+
+    <div class="col-sm-4">
+      <canvas id="chart" width="260" height="260"></canvas>
+    </div>
+  </div>
+
+{% endblock %}

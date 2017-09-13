@@ -20,7 +20,7 @@
           <p>{{ error_message }}</p>
         {% endif %}
 
-        {{ form.csrf_token }}
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 
         <label for="inputEmail" class="sr-only">{{ form.login.label.text }}</label>
         <input type="email" id="inputEmail" class="form-control" placeholder="{{ form.login.label.text }}" name="{{ form.login.name }}" required autofocus>

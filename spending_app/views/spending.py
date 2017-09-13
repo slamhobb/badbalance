@@ -2,7 +2,7 @@ import inject
 
 from flask import render_template, request, Blueprint, jsonify, g
 
-from spending_app.infrastructure.web import *
+from spending_app.infrastructure.web import get_token
 from spending_app.infrastructure.auth import login_required
 from spending_app.bussiness.spending import SpendingService
 from spending_app.bussiness.auth import AuthService
@@ -24,22 +24,14 @@ def add_user_context():
 @login_required
 def old_spending():
     model = spending_service.get_index()
-    return render_template('spending/index.html', form=SpendingForm(), model=model)
+    return render_template('spending/oldSpending.html', form=SpendingForm(), model=model)
 
 
 @mod.route('/')
 @login_required
 def index():
     model = spending_service.get_index()
-    return render_template('spending/reactSpending.html', form=SpendingForm(), model=model)
-
-
-@mod.route('/list')
-@login_required
-def spending_list():
-    items = spending_service.get_list_by_user(g.user_context.user_id)
-    items = [i.to_primitive() for i in items]
-    return jsonify(spending=items)
+    return render_template('spending/index.html', form=SpendingForm(), model=model)
 
 
 @mod.route('/list_month/<int:year>/<int:month>')
@@ -68,7 +60,7 @@ def save_spending():
 
     id = spending_service.save(spending)
 
-    return jsonify(status=True,id=id)
+    return jsonify(status=True, id=id)
 
 
 @mod.route('/remove', methods=['POST'])

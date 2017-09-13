@@ -10,6 +10,7 @@ from spending_app.views.statistic import mod as statistic
 from spending_app.views.registration import mod as registration
 from spending_app.views.redirect import mod as redirect
 from spending_app.views.category import mod as category
+from spending_app.views.incoming import mod as incoming
 
 locale.setlocale(locale.LC_ALL, "ru_RU.UTF-8")
 
@@ -25,3 +26,4 @@ app.register_blueprint(redirect, url_prefix='/redirect')
 app.register_blueprint(spending, url_prefix='/spending')
 app.register_blueprint(statistic, url_prefix='/statistic')
 app.register_blueprint(category, url_prefix='/category')
+app.register_blueprint(incoming, url_prefix='/incoming')
