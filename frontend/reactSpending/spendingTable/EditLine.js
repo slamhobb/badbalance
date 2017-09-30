@@ -3,9 +3,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import CategoriesList from './CategoriesOptions';
+import CategoriesList from '../CategoriesOptions';
 
-import RectDatePicker from '../datepicker/rectDatePicker';
+import RectDatePicker from '../../datepicker/rectDatePicker';
 
 class EditLine extends React.PureComponent {
     constructor(props) {
@@ -30,11 +30,15 @@ class EditLine extends React.PureComponent {
     }
 
     handleChangeSum(e) {
-        this.setState({sum: parseInt(e.target.value)});
+        const sum = parseInt(e.target.value);
+
+        this.setState({sum: sum});
     }
 
     handleChangeText(e) {
-        this.setState({text: e.target.value});
+        const text = e.target.value;
+
+        this.setState({text: text});
     }
 
     handleChangeCategory(category_id) {

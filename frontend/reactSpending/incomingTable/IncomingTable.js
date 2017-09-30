@@ -7,9 +7,11 @@ import Header from './Header';
 import Line from './Line';
 import EditLine from './EditLine';
 
+import './incomingTable.css';
+
 const days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
 
-class SpendingTable extends React.PureComponent {
+class IncomingTable extends React.PureComponent {
     constructor(props) {
         super(props);
 
@@ -39,13 +41,12 @@ class SpendingTable extends React.PureComponent {
                 dateStr: dateStr,
                 sum: item.sum,
                 text: item.text,
-                category_id: item.category_id,
                 edit: item.edit
             };
         });
     }
 
-    renderLine(s, categories) {
+    renderLine(s) {
         return s.edit
             ? <EditLine
                 key={s.id}
@@ -53,8 +54,6 @@ class SpendingTable extends React.PureComponent {
                 date={s.date}
                 sum={s.sum}
                 text={s.text}
-                category_id={s.category_id}
-                categories={categories}
                 onSave={this.props.onSave} />
             : <Line
                 key={s.id}
@@ -62,24 +61,21 @@ class SpendingTable extends React.PureComponent {
                 date={s.dateStr}
                 sum={s.sum}
                 text={s.text}
-                category={this.props.categories.get(s.category_id).name}
                 onEdit={this.props.onEdit}
                 onDelete={this.props.onDelete} />;
     }
 
     render() {
-        const categories = Array.from(this.props.categories.values());
-
         let items = this.props.items;
         items = items.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         const formattedItems = this.formatItems(items);
 
-        const listItems = formattedItems.map(s => this.renderLine(s, categories));
+        const listItems = formattedItems.map(s => this.renderLine(s));
 
         return (
             <div className="table-responsive">
-                <table className="spending_table table table-striped table-bordered">
+                <table className="incoming_table table table-striped table-bordered">
                     <thead>
                         <Header/>
                     </thead>
@@ -92,12 +88,11 @@ class SpendingTable extends React.PureComponent {
     }
 }
 
-SpendingTable.propTypes = {
+IncomingTable.propTypes = {
     items: PropTypes.array.isRequired,
-    categories: PropTypes.instanceOf(Map).isRequired,
     onEdit: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired
 };
 
-export default SpendingTable;
+export default IncomingTable;

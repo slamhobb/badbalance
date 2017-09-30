@@ -33,7 +33,7 @@ def save():
 
     incoming_id = incoming_service.save(incoming)
 
-    return jsonify(status=True, data=incoming_id)
+    return jsonify(status=True, id=incoming_id)
 
 
 @mod.route('/remove', methods=['POST'])
@@ -56,4 +56,4 @@ def get_list(year, month):
     items = incoming_service.get_list(user_id, year, month)
     items = [i.to_primitive() for i in items]
 
-    return jsonify(status=True, data=items)
+    return jsonify(status=True, incoming=items)

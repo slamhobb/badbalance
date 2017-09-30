@@ -14,7 +14,7 @@ export default function formToJSON(form) {
         obj = {};
         obj[name] = value;
 
-        Object.assign(result, obj)
+        Object.assign(result, obj);
     }
 
     return result;

@@ -25,7 +25,11 @@ export default function Header() {
                     Категория
                 </div>
             </td>
-            <td></td>
+            <td>
+                <div className="spending_action">
+                    &nbsp;
+                </div>
+            </td>
         </tr>
     );
 }

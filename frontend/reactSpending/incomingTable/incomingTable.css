@@ -1,0 +1,36 @@
+.incoming_date {
+    width: 85px;
+    text-align: right;
+}
+
+.incoming_sum {
+    width: 75px;
+    text-align: right;
+}
+
+.incoming_text {
+    width: 338px;
+}
+
+.incoming_action {
+    width: 41px;
+}
+
+.action_wrapper {
+    display: none;
+}
+
+.incoming_table tr:hover .action_wrapper {
+    display: inline-block;
+}
+
+.incoming_edit,
+.incoming_delete {
+    margin: 0 6px 0 0;
+    color: #c8c8c8;
+}
+
+.incoming_edit:hover,
+.incoming_delete:hover {
+    color: #ff5a00;
+}

@@ -40,7 +40,7 @@ class Line extends React.PureComponent {
                 </td>
                 <td>
                     <div className="spending_category">
-                        {this.props.category}
+                        {this.props.categoryName}
                     </div>
                 </td>
                 <td>
@@ -66,7 +66,7 @@ Line.propTypes = {
     date: PropTypes.string,
     sum: PropTypes.number.isRequired,
     text: PropTypes.string.isRequired,
-    category: PropTypes.string.isRequired,
+    categoryName: PropTypes.string.isRequired,
     onEdit: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired
 };

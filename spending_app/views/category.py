@@ -26,6 +26,12 @@ def index():
     return render_template('category/index.html', form=CategoryForm())
 
 
+@mod.route('/oldCategory', methods=['GET'])
+@login_required
+def old_category():
+    return render_template('category/oldCategory.html', form=CategoryForm())
+
+
 @mod.route('/get_list', methods=['GET'])
 @login_required
 def get_list():
@@ -34,7 +40,7 @@ def get_list():
     res = spending_service.get_category_list(user_id)
     res = [r.to_primitive() for r in res]
 
-    return jsonify(categories=res)
+    return jsonify(status=True, categories=res)
 
 
 @mod.route('/save', methods=['POST'])

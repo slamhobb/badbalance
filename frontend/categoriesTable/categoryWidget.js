@@ -16,7 +16,7 @@ let $ui = {},
 function bindUi() {
     return {
         categoryTable: document.getElementById('categoryTable')
-    }
+    };
 }
 
 function setupEvents() {
@@ -98,7 +98,7 @@ function getCategoryList() {
             component.render();
         })
         .catch(error => {
-           alert('Произошла ошибка ' + error);
+            alert('Произошла ошибка ' + error);
         });
 }
 
@@ -110,4 +110,4 @@ function init() {
     component.init($ui.categoryTable);
 }
 
-export { init, getCategoryList }
+export { init, getCategoryList };

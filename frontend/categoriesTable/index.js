@@ -14,7 +14,7 @@ let $ui = {},
 function bindUi() {
     return {
         addCategoryForm: document.getElementById('addCategoryForm')
-    }
+    };
 }
 
 function setupEvents() {

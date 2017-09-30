@@ -13,7 +13,8 @@ module.exports = {
     entry: {
         spending: './spendings',
         reactSpending: './reactSpending/index.js',
-        category: './category'
+        category: './category',
+        reactCategory: './reactCategory/index.js'
     },
 
     output: {

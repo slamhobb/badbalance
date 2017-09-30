@@ -3,9 +3,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import CategoriesList from './CategoriesOptions';
+import CategoriesList from '../CategoriesOptions';
 
-import ReactDatePicker from '../datepicker/rectDatePicker';
+import ReactDatePicker from '../../datepicker/rectDatePicker';
 
 class AddSpendingForm extends React.PureComponent {
     constructor(props) {
