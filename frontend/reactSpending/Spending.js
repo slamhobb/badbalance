@@ -73,7 +73,10 @@ class Spending extends React.PureComponent {
     }
 
     dateToString(date) {
-        return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+        let localDate = date;
+        localDate.setMinutes(localDate.getMinutes() + localDate.getTimezoneOffset());
+
+        return localDate.toISOString().slice(0, 10);
     }
 
     successResult(result) {
