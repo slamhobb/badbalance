@@ -49,23 +49,26 @@ class EditLine extends React.PureComponent {
         return(
             <tr>
                 <td>
-                    <div>
-                        <RectDatePicker defaultValue={this.props.date} onChange={this.handleChangeDate} />
+                    <div className="incoming_date">
+                        <RectDatePicker className="form-control"
+                            defaultValue={this.props.date} onChange={this.handleChangeDate} />
                     </div>
                 </td>
                 <td>
-                    <div>
-                        <input value={this.state.sum} onChange={this.handleChangeSum} />
+                    <div className="incoming_sum">
+                        <input className="form-control"
+                            value={this.state.sum} onChange={this.handleChangeSum} />
                     </div>
                 </td>
                 <td>
-                    <div>
-                        <input value={this.state.text} onChange={this.handleChangeText} />
+                    <div className="incoming_text">
+                        <input className="form-control"
+                            value={this.state.text} onChange={this.handleChangeText} />
                     </div>
                 </td>
                 <td>
-                    <div>
-                        <button type="button" onClick={this.handleSave}>
+                    <div className="incoming_action">
+                        <button className="btn btn-default btn-sm" type="button" onClick={this.handleSave}>
                             <span className="glyphicon glyphicon-ok" aria-hidden="true" />
                         </button>
                     </div>
