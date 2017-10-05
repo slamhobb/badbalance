@@ -56,4 +56,5 @@ create table incoming(
   text text not null
 );
 
-create index ix_incoming_user_id on incoming(id);
+create unique index ux_incoming_id on incoming(id);
+create index ix_incoming_user_id on incoming(user_id);
