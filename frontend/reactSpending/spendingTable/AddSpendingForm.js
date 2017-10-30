@@ -57,6 +57,11 @@ class AddSpendingForm extends React.PureComponent {
             category_id: parseInt(this.state.category_id)
         };
 
+        this.setState({
+            sum: '',
+            text: ''
+        });
+
         this.props.onAdd(data);
     }
 

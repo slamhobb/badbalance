@@ -7,8 +7,11 @@ class EditLine extends React.PureComponent {
     constructor(props) {
         super(props);
 
+        this.handleChangeName = this.handleChangeName.bind(this);
+        this.handleSave = this.handleSave.bind(this);
+
         this.state = {
-            name: ''
+            name: this.props.name
         };
     }
 
