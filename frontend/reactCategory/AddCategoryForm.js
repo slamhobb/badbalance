@@ -15,7 +15,9 @@ class AddCategoryForm extends React.PureComponent {
         };
     }
 
-    handleChangeName(name) {
+    handleChangeName(e) {
+        const name = e.target.value;
+
         this.setState({
             name: name
         });
@@ -37,7 +39,7 @@ class AddCategoryForm extends React.PureComponent {
                         <td>
                             <div className="category_name">
                                 <input type="text" className="form-control" placeholder="Название"
-                                    value={this.state.sum} onChange={this.handleChangeName} />
+                                    value={this.state.name} onChange={this.handleChangeName} />
                             </div>
                         </td>
                         <td>
