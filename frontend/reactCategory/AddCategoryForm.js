@@ -36,8 +36,8 @@ class AddCategoryForm extends React.PureComponent {
                     <tr>
                         <td>
                             <div className="category_name">
-                                <input type="text" className="form-control" placeholder="Сумма"
-                                    value={this.state.sum} onChange={this.handleChangeSum} />
+                                <input type="text" className="form-control" placeholder="Название"
+                                    value={this.state.sum} onChange={this.handleChangeName} />
                             </div>
                         </td>
                         <td>
