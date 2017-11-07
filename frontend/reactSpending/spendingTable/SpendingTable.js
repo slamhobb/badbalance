@@ -73,7 +73,11 @@ class SpendingTable extends React.PureComponent {
         const categories = Array.from(this.props.categories.values());
 
         let items = this.props.items;
-        items = items.sort((a, b) => new Date(b.date) - new Date(a.date));
+        items = items.sort((a, b) => {
+            const diff = new Date(b.date) - new Date(a.date);
+
+            return diff === 0 ? b.id - a.id : diff;
+        });
 
         const formattedItems = this.formatItems(items);
 

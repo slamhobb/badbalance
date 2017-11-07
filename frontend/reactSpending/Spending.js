@@ -26,16 +26,16 @@ class Spending extends React.PureComponent {
         this.handleChangePeriod = this.handleChangePeriod.bind(this);
         this.handleSwitchTable = this.handleSwitchTable.bind(this);
 
-        this.onEdit = this.onEdit.bind(this);
-        this.onDelete = this.onDelete.bind(this);
-        this.onSave = this.onSave.bind(this);
-        this.onAdd = this.onAdd.bind(this);
+        this.handleEditSpending = this.handleEditSpending.bind(this);
+        this.handleDeleteSpending = this.handleDeleteSpending.bind(this);
+        this.handleSaveSpending = this.handleSaveSpending.bind(this);
+        this.handleAddSpending = this.handleAddSpending.bind(this);
         this.refreshTable = this.refreshTable.bind(this);
 
-        this.onEditIncoming = this.onEditIncoming.bind(this);
-        this.onDeleteIncoming = this.onDeleteIncoming.bind(this);
-        this.onSaveIncoming = this.onSaveIncoming.bind(this);
-        this.onAddIncoming = this.onAddIncoming.bind(this);
+        this.handleEditIncoming = this.handleEditIncoming.bind(this);
+        this.handleDeleteIncoming = this.handleDeleteIncoming.bind(this);
+        this.handleSaveIncoming = this.handleSaveIncoming.bind(this);
+        this.handleAddIncoming = this.handleAddIncoming.bind(this);
         this.refreshTableIncoming = this.refreshTableIncoming.bind(this);
 
         this.refreshChart = this.refreshChart.bind(this);
@@ -153,7 +153,7 @@ class Spending extends React.PureComponent {
         });
     }
 
-    onAdd(spending) {
+    handleAddSpending(spending) {
         HttpClient.postjson(this.props.saveSpendingUrl, spending)
             .then(this.successResult)
             .then(result => {
@@ -180,7 +180,7 @@ class Spending extends React.PureComponent {
             .catch(error => alert('Произошла ошибка ' + error));
     }
 
-    onSave(spending) {
+    handleSaveSpending(spending) {
         const data = {
             id: spending.id,
             date: spending.date,
@@ -201,14 +201,14 @@ class Spending extends React.PureComponent {
             .catch(error => alert('Произошла ошибка ' + error));
     }
 
-    onEdit(id) {
+    handleEditSpending(id) {
         const newItems = new Map(this.state.items);
         newItems.get(id).edit = true;
 
         this.setState({items: newItems});
     }
 
-    onDelete(id) {
+    handleDeleteSpending(id) {
         HttpClient.postjson(this.props.removeSpendingUrl, {id: id})
             .then(this.successResult)
             .then(() => {
@@ -223,7 +223,7 @@ class Spending extends React.PureComponent {
             });
     }
 
-    onAddIncoming(incoming) {
+    handleAddIncoming(incoming) {
         HttpClient.postjson(this.props.saveIncomingUrl, incoming)
             .then(this.successResult)
             .then(result => {
@@ -248,7 +248,7 @@ class Spending extends React.PureComponent {
             .catch(error => alert('Произошла ошибка ' + error));
     }
 
-    onSaveIncoming(incoming) {
+    handleSaveIncoming(incoming) {
         const data = {
             id: incoming.id,
             date: incoming.date,
@@ -266,14 +266,14 @@ class Spending extends React.PureComponent {
             .catch(error => alert('Произошла ошибка ' + error));
     }
 
-    onEditIncoming(id) {
+    handleEditIncoming(id) {
         const newItems = new Map(this.state.incomingItems);
         newItems.get(id).edit = true;
 
         this.setState({incomingItems: newItems});
     }
 
-    onDeleteIncoming(id) {
+    handleDeleteIncoming(id) {
         HttpClient.postjson(this.props.removeIncomingUrl, {id: id})
             .then(this.successResult)
             .then(() => {
@@ -293,12 +293,12 @@ class Spending extends React.PureComponent {
             <div>
                 <AddIncomingForm
                     defaultDate={this.dateToString(this.props.curDate)}
-                    onAdd={this.onAddIncoming}/>
+                    onAdd={this.handleAddIncoming}/>
                 <IncomingTable
                     items={items}
-                    onEdit={this.onEditIncoming}
-                    onSave={this.onSaveIncoming}
-                    onDelete={this.onDeleteIncoming} />
+                    onEdit={this.handleEditIncoming}
+                    onSave={this.handleSaveIncoming}
+                    onDelete={this.handleDeleteIncoming} />
             </div>
         );
     }
@@ -343,13 +343,13 @@ class Spending extends React.PureComponent {
                             <AddForm
                                 defaultDate={this.dateToString(this.props.curDate)}
                                 categories={categories}
-                                onAdd={this.onAdd}/>
+                                onAdd={this.handleAddSpending}/>
                             <SpendingTable
                                 items={items}
                                 categories={this.state.categories}
-                                onEdit={this.onEdit}
-                                onSave={this.onSave}
-                                onDelete={this.onDelete} />
+                                onEdit={this.handleEditSpending}
+                                onSave={this.handleSaveSpending}
+                                onDelete={this.handleDeleteSpending} />
                         </div>
                         <div className={this.state.visibleTable === 'incoming' ? 'show' : 'hidden'}>
                             { incomingElement }
