@@ -11,9 +11,7 @@ module.exports = {
     context: path.resolve(__dirname, 'frontend'),
 
     entry: {
-        spending: './spendings',
         reactSpending: './reactSpending/index.js',
-        category: './category',
         reactCategory: './reactCategory/index.js'
     },
 
@@ -43,10 +41,6 @@ module.exports = {
             test: /\.js$/,
             include: path.resolve(__dirname, 'frontend'),
             use: 'babel-loader'
-
-        }, {
-            test: /\.pug$/,
-            use: 'pug-loader'
         }, {
             test: /\.css$/,
             use: ExtractTextPlugin.extract({
