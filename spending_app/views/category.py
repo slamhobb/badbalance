@@ -26,12 +26,6 @@ def index():
     return render_template('category/index.html', form=CategoryForm())
 
 
-@mod.route('/oldCategory', methods=['GET'])
-@login_required
-def old_category():
-    return render_template('category/oldCategory.html', form=CategoryForm())
-
-
 @mod.route('/get_list', methods=['GET'])
 @login_required
 def get_list():

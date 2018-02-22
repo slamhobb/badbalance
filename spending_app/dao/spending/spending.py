@@ -23,11 +23,6 @@ class SpendingDao(BaseDao):
         sql = self.get_sql('delete.sql')
         self.execute(sql, dict(id=spend_id, user_id=user_id))
 
-    def get_balance_by_month(self, user_id, year, month):
-        sql = self.get_sql('get_balance_by_month.sql')
-        result = self.query_one_field(int, sql, dict(user_id=user_id, year=year, month=month))
-        return result or 0
-
     def get_statistic(self, user_id, year, month):
         sql = self.get_sql('statistic_by_user.sql')
         return self.query_all(Statistic, sql, dict(user_id=user_id, year=year, month=month))

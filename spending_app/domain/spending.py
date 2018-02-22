@@ -2,12 +2,6 @@ from schematics.models import Model
 from schematics.types import IntType, StringType, DateType
 
 
-class SpendingPage(Model):
-    year = IntType()
-    month = IntType()
-    balance = IntType()
-
-
 class Spending(Model):
     id = IntType()
     user_id = IntType()

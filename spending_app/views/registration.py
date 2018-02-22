@@ -20,11 +20,6 @@ def get_context():
     g.user_context = auth_service.get_user_context(get_token())
 
 
-# @mod.route('/')
-# def index():
-#     return render_template('registration/index.html', form=RegistrationForm())
-
-
 @mod.route('/')
 def index():
     user_context = getattr(g, 'user_context', None)

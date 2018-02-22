@@ -20,18 +20,10 @@ def add_user_context():
     g.user_context = auth_service.get_user_context(get_token())
 
 
-@mod.route('/oldSpending')
-@login_required
-def old_spending():
-    model = spending_service.get_index()
-    return render_template('spending/oldSpending.html', form=SpendingForm(), model=model)
-
-
 @mod.route('/')
 @login_required
 def index():
-    model = spending_service.get_index()
-    return render_template('spending/index.html', form=SpendingForm(), model=model)
+    return render_template('spending/index.html')
 
 
 @mod.route('/list_month/<int:year>/<int:month>')
@@ -84,13 +76,3 @@ def get_statistic(year, month):
     res = [r.to_primitive() for r in res]
 
     return jsonify(status=True, stat=res)
-
-
-# TODO: удалить вместо со старой страницей spending
-@mod.route('/balance/<int:year>/<int:month>', methods=['GET'])
-@login_required
-def get_month_balance(year, month):
-    user_id = g.user_context.user_id
-
-    balance = spending_service.get_balance_by_month(user_id, year, month)
-    return jsonify(balance=balance)
