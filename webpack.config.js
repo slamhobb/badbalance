@@ -43,10 +43,15 @@ module.exports = {
             use: 'babel-loader'
         }, {
             test: /\.css$/,
+            include: path.resolve(__dirname, 'frontend'),
             use: ExtractTextPlugin.extract({
                 fallback: 'style-loader',
                 use: 'css-loader'
             })
+        }, {
+            test: /\.svg$/,
+            include: path.resolve(__dirname, 'frontend'),
+            loader: 'svg-inline-loader?removeSVGTagAttrs=false'
         }]
     }
 };

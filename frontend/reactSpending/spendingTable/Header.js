@@ -2,16 +2,18 @@
 
 import React from 'react';
 
+import { Dots } from '../../svg/Svg';
+
 export default function Header() {
     return (
         <tr>
             <td>
-                <div className="spending_date">
+                <div className="spending_date text-right">
                     День
                 </div>
             </td>
             <td>
-                <div className="spending_sum">
+                <div className="spending_sum text-right">
                     Сумма
                 </div>
             </td>

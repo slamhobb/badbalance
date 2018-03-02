@@ -30,8 +30,9 @@ class SpendingService:
     def save_category(self, category):
         if (category.id or 0) > 0:
             self.category_dao.update(category)
+            return category.id
         else:
-            self.category_dao.add(category)
+            return self.category_dao.add(category)
 
     def delete_category(self, category_id, user_id):
         self.category_dao.delete(category_id, user_id)

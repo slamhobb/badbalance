@@ -11,8 +11,8 @@ class PeriodSelector extends React.PureComponent {
     constructor(props) {
         super(props);
 
-        this.handleChaneYear = this.handleChaneYear.bind(this);
-        this.handleChaneMonth = this.handleChaneMonth.bind(this);
+        this.handleChangeYear = this.handleChangeYear.bind(this);
+        this.handleChangeMonth = this.handleChangeMonth.bind(this);
 
         this.state = {
             year: this.props.year,
@@ -20,7 +20,7 @@ class PeriodSelector extends React.PureComponent {
         };
     }
 
-    handleChaneYear(e) {
+    handleChangeYear(e) {
         const year = parseInt(e.target.value);
 
         this.setState({
@@ -33,7 +33,7 @@ class PeriodSelector extends React.PureComponent {
         });
     }
 
-    handleChaneMonth(e) {
+    handleChangeMonth(e) {
         const month = parseInt(e.target.value);
 
         this.setState({
@@ -51,12 +51,12 @@ class PeriodSelector extends React.PureComponent {
         const monthList = months.map((m, i) => <option key={i} value={i + 1}>{m}</option>);
 
         return (
-            <div className="form-inline month_selector">
-                <select className="form-control" value={this.state.year} onChange={this.handleChaneYear}>
+            <div className="form-inline">
+                <select className="form-control" value={this.state.year} onChange={this.handleChangeYear}>
                     {yearsList}
                 </select>
                 &nbsp;
-                <select className="form-control" value={this.state.month} onChange={this.handleChaneMonth}>
+                <select className="form-control" value={this.state.month} onChange={this.handleChangeMonth}>
                     {monthList}
                 </select>
             </div>

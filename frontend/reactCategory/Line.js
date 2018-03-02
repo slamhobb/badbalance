@@ -3,6 +3,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { PencilIcon, TrashcanIcon } from '../svg/Svg';
+
 class Line extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -10,12 +12,16 @@ class Line extends React.PureComponent {
         this.handleDelete = this.handleDelete.bind(this);
     }
 
-    handleEdit() {
+    handleEdit(e) {
+        e.preventDefault();
+
         let id = this.props.id;
         this.props.onEdit(id);
     }
 
-    handleDelete() {
+    handleDelete(e) {
+        e.preventDefault();
+
         let id = this.props.id;
         this.props.onDelete(id);
     }
@@ -31,11 +37,11 @@ class Line extends React.PureComponent {
                 <td>
                     <div className="category_action">
                         <div className="action_wrapper">
-                            <a className="category_edit" onClick={this.handleEdit}>
-                                <span className="glyphicon glyphicon-pencil" aria-hidden="true" />
+                            <a href="#" className="category_edit" onClick={this.handleEdit}>
+                                <PencilIcon />
                             </a>
-                            <a className="category_delete" onClick={this.handleDelete}>
-                                <span className="glyphicon glyphicon-trash" aria-hidden="true" />
+                            <a href="#" className="category_delete" onClick={this.handleDelete}>
+                                <TrashcanIcon />
                             </a>
                         </div>
                     </div>

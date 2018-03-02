@@ -12,7 +12,7 @@ class CategoryDao(BaseDao):
 
     def add(self, category):
         sql = self.get_sql('add_category.sql')
-        self.execute(sql, category.to_primitive())
+        return self.execute(sql, category.to_primitive())
 
     def update(self, category):
         sql = self.get_sql('update_category.sql')

@@ -1,4 +1,4 @@
-{% extends 'shared/layout.html' %}
+{% extends 'shared/layout4.html' %}
 
 {% block styles %}
 {% endblock %}
@@ -10,9 +10,15 @@
 
 {% block menu %}
   <ul class="nav nav-tabs">
-    <li><a href="/spending">Расходы</a></li>
-    <li class="active"><a>Статистика</a></li>
-    <li><a href="/category">Категории</a></li>
+    <li class="nav-item">
+      <a class="nav-link" href="/spending">Расходы</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active">Статистика</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/category">Категории</a>
+    </li>
   </ul>
 {% endblock %}
 

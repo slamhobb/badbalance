@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 
 import RectDatePicker from '../../datepicker/rectDatePicker';
 
+import { CheckIcon } from '../../svg/Svg';
+
 class EditLine extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -68,8 +70,8 @@ class EditLine extends React.PureComponent {
                 </td>
                 <td>
                     <div className="incoming_action">
-                        <button className="btn btn-default btn-sm" type="button" onClick={this.handleSave}>
-                            <span className="glyphicon glyphicon-ok" aria-hidden="true" />
+                        <button className="btn btn-outline-secondary" type="button" onClick={this.handleSave}>
+                            <CheckIcon />
                         </button>
                     </div>
                 </td>

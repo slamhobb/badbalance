@@ -5,11 +5,9 @@ import PropTypes from 'prop-types';
 
 function MonthBalance(props) {
     return (
-        <div className="balance-sum">
-            <p>
-                Расход за месяц: {props.balance}
-            </p>
-        </div>
+        <p>
+            Расход за месяц: {props.balance}
+        </p>
     );
 }
 

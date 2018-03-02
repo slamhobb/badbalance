@@ -1,13 +1,9 @@
-.tab_title {
-    padding: 25px 0 15px 0;
-}
-
 .category_name {
-    width: 200px;
+    width: 14rem;
 }
 
 .category_action {
-   width: 41px;
+   width: 2.6rem;
 }
 
 .action_wrapper {

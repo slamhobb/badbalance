@@ -38,9 +38,9 @@ class Switcher extends React.PureComponent {
         const isIncoming = this.props.currentTable === 'incoming';
 
         return (
-            <div className="btn-group" role="group" aria-label="...">
-                <a className={isSpending ? 'btn btn-primary active disable-switcher' : 'btn btn-default' } role="button" onClick={this.handleClickSpending}>Расходы</a>
-                <a className={isIncoming ? 'btn btn-primary active disable-switcher' : 'btn btn-default' } role="button" onClick={this.handleClickIncoming}>Доходы</a>
+            <div className="btn-group" role="group" aria-label="switcher">
+                <a className={isSpending ? 'btn btn-primary active disable-switcher' : 'btn btn-light' } role="button" onClick={this.handleClickSpending}>Расходы</a>
+                <a className={isIncoming ? 'btn btn-primary active disable-switcher' : 'btn btn-light' } role="button" onClick={this.handleClickIncoming}>Доходы</a>
             </div>
         );
     }

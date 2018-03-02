@@ -8,7 +8,8 @@ import Flatpickr from './index';
 class ReactDatePicker extends React.PureComponent {
     componentDidMount() {
         this.datePicker = new Flatpickr(this.inputElement, {
-            onChange: (selectedDates, dateStr) => this.props.onChange(dateStr)
+            onChange: (selectedDates, dateStr) => this.props.onChange(dateStr),
+            altInputClass: this.props.className
         });
     }
 
@@ -17,7 +18,7 @@ class ReactDatePicker extends React.PureComponent {
     }
 
     render() {
-        return <input className={this.props.className} defaultValue={this.props.defaultValue}
+        return <input defaultValue={this.props.defaultValue}
             placeholder={this.props.placeholder} ref={e => this.inputElement = e} />;
     }
 }

@@ -1,19 +1,17 @@
 .incoming_date {
-    width: 85px;
-    text-align: right;
+    width: 4.2rem;
 }
 
 .incoming_sum {
-    width: 75px;
-    text-align: right;
+    width: 4.9rem;
 }
 
 .incoming_text {
-    width: 338px;
+    width: 22.3rem;
 }
 
 .incoming_action {
-    width: 41px;
+    width: 2.6rem;
 }
 
 .action_wrapper {

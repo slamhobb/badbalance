@@ -3,6 +3,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { CheckIcon } from '../svg/Svg';
+
 class AddCategoryForm extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -33,7 +35,7 @@ class AddCategoryForm extends React.PureComponent {
 
     render() {
         return(
-            <table className="table table-bordered">
+            <table className="table table-bordered table-sm">
                 <tbody>
                     <tr>
                         <td>
@@ -44,8 +46,8 @@ class AddCategoryForm extends React.PureComponent {
                         </td>
                         <td>
                             <div className="category_action">
-                                <button className="btn btn-default btn-sm" type="button" onClick={this.handleAdd}>
-                                    <span className="glyphicon glyphicon-ok" aria-hidden="true" />
+                                <button className="btn btn-outline-secondary" type="button" onClick={this.handleAdd}>
+                                    <CheckIcon />
                                 </button>
                             </div>
                         </td>

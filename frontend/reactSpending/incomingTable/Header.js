@@ -6,12 +6,12 @@ export default function Header() {
     return (
         <tr>
             <td>
-                <div className="incoming_date">
+                <div className="incoming_date text-right">
                     День
                 </div>
             </td>
             <td>
-                <div className="incoming_sum">
+                <div className="incoming_sum text-right">
                     Сумма
                 </div>
             </td>

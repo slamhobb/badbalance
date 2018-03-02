@@ -105,20 +105,23 @@ class Category extends React.PureComponent {
         const items = Array.from(this.state.items.values());
 
         return (
-            <div className="row">
-                <div className="col-sm-4">
-                    <div className="tab_title">
-                        <p>Редактирование списка категорий:</p>
+            <React.Fragment>
+                <div className="row mt-4 mb-3">
+                    <div className="col-sm-4">
+                        <p>Редактирование списка категорий</p>
                     </div>
-
-                    <AddCategoryForm onAdd={this.handleAdd}/>
-                    <CategoryTable
-                        items={items}
-                        onEdit={this.handleEdit}
-                        onSave={this.handleSave}
-                        onDelete={this.handleDelete}/>
                 </div>
-            </div>
+                <div className="row">
+                    <div className="col-sm-4">
+                        <AddCategoryForm onAdd={this.handleAdd}/>
+                        <CategoryTable
+                            items={items}
+                            onEdit={this.handleEdit}
+                            onSave={this.handleSave}
+                            onDelete={this.handleDelete}/>
+                    </div>
+                </div>
+            </React.Fragment>
         );
     }
 }

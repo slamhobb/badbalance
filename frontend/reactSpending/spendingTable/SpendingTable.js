@@ -48,6 +48,8 @@ class SpendingTable extends React.PureComponent {
     }
 
     renderLine(s, categories) {
+        const category = this.props.categories.get(s.category_id);
+
         return s.edit
             ? <EditLine
                 key={s.id}
@@ -64,7 +66,7 @@ class SpendingTable extends React.PureComponent {
                 date={s.dateStr}
                 sum={s.sum}
                 text={s.text}
-                categoryName={this.props.categories.get(s.category_id).name}
+                categoryName={category ? category.name : ""}
                 onEdit={this.props.onEdit}
                 onDelete={this.props.onDelete} />;
     }
@@ -85,7 +87,7 @@ class SpendingTable extends React.PureComponent {
 
         return (
             <div className="table-responsive">
-                <table className="spending_table table table-striped table-bordered">
+                <table className="spending_table table table-bordered table-striped table-sm">
                     <thead>
                         <Header/>
                     </thead>

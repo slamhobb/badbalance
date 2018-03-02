@@ -17,15 +17,15 @@ class CategoryTable extends React.PureComponent {
 
     renderLine(c) {
         return c.edit
-            ? <EditLine id={c.id} name={c.name} onSave={this.props.onSave}/>
-            : <Line id={c.id} name={c.name} onEdit={this.props.onEdit} onDelete={this.props.onDelete} />;
+            ? <EditLine key={c.id} id={c.id} name={c.name} onSave={this.props.onSave}/>
+            : <Line key={c.id} id={c.id} name={c.name} onEdit={this.props.onEdit} onDelete={this.props.onDelete} />;
     }
 
     render() {
         const items = this.props.items.map(this.renderLine);
 
         return (
-            <table className="category_table table table-striped table-bordered">
+            <table className="category_table table table-bordered table-sm">
                 <thead>
                     <tr>
                         <td>

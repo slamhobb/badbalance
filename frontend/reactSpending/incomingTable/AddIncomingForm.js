@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 
 import ReactDatePicker from '../../datepicker/rectDatePicker';
 
+import { CheckIcon } from '../../svg/Svg';
+
 class AddIncomingForm extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -52,7 +54,7 @@ class AddIncomingForm extends React.PureComponent {
     render() {
         return(
             <div className="table-responsive">
-                <table className="table table-bordered">
+                <table className="table table-bordered table-sm">
                     <tbody>
                         <tr>
                             <td>
@@ -69,15 +71,15 @@ class AddIncomingForm extends React.PureComponent {
                             </td>
                             <td>
                                 <div className="incoming_text">
-                                    <input type="text" className="form-control" placeholder="Текст"
+                                    <input type="text" className="form-control" placeholder="Описание"
                                         value={this.state.text} onChange={this.handleChangeText} />
                                 </div>
                             </td>
                             <td>
                                 <div className="incoming_action">
-                                    <button className="btn btn-default btn-sm" type="button"
+                                    <button className="btn btn-outline-secondary" type="button"
                                         onClick={this.handleAdd}>
-                                        <span className="glyphicon glyphicon-ok" aria-hidden="true" />
+                                        <CheckIcon />
                                     </button>
                                 </div>
                             </td>

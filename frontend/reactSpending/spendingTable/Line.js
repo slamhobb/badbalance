@@ -3,6 +3,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { PencilIcon, TrashcanIcon } from '../../svg/Svg';
+
 class Line extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -10,12 +12,16 @@ class Line extends React.PureComponent {
         this.handleDelete = this.handleDelete.bind(this);
     }
 
-    handleEdit() {
+    handleEdit(e) {
+        e.preventDefault();
+
         let id = this.props.id;
         this.props.onEdit(id);
     }
 
-    handleDelete() {
+    handleDelete(e) {
+        e.preventDefault();
+
         let id = this.props.id;
         this.props.onDelete(id);
     }
@@ -24,18 +30,19 @@ class Line extends React.PureComponent {
         return (
             <tr>
                 <td>
-                    <div className="spending_date">
+                    <div className="spending_date text-right">
                         {this.props.date}
                     </div>
                 </td>
                 <td>
-                    <div className="spending_sum">
+                    <div className="spending_sum text-right">
                         {this.props.sum}
                     </div>
                 </td>
                 <td>
                     <div className="spending_text">
                         {this.props.text}
+
                     </div>
                 </td>
                 <td>
@@ -46,11 +53,11 @@ class Line extends React.PureComponent {
                 <td>
                     <div className="spending_action">
                         <div className="action_wrapper">
-                            <a className="spending_edit" onClick={this.handleEdit}>
-                                <span className="glyphicon glyphicon-pencil" aria-hidden="true" />
+                            <a href="#" className="spending_edit" onClick={this.handleEdit}>
+                                <PencilIcon />
                             </a>
-                            <a className="spending_delete" onClick={this.handleDelete}>
-                                <span className="glyphicon glyphicon-trash" aria-hidden="true" />
+                            <a href="#" className="spending_delete" onClick={this.handleDelete}>
+                                <TrashcanIcon />
                             </a>
                         </div>
                     </div>

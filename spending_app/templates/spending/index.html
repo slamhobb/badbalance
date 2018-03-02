@@ -1,4 +1,4 @@
-{% extends 'shared/layout.html' %}
+{% extends 'shared/layout4.html' %}
 
 {% block styles %}
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='built/reactSpending.css') }}">
@@ -11,9 +11,15 @@
 
 {% block menu %}
   <ul class="nav nav-tabs">
-    <li class="active"><a>Расходы</a></li>
-    <li class="disabled"><a href="/statistic">Статистика</a></li>
-    <li><a href="/category">Категории</a></li>
+    <li class="nav-item">
+      <a class="nav-link active">Расходы</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" href="/statistic">Статистика</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/category">Категории</a>
+    </li>
   </ul>
 {% endblock %}
 

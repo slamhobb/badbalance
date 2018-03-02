@@ -45,9 +45,9 @@ def save():
     category = Category(form.data)
     category.user_id = g.user_context.user_id
 
-    spending_service.save_category(category)
+    id = spending_service.save_category(category)
 
-    return jsonify(status=True)
+    return jsonify(status=True, id=id)
 
 
 @mod.route('/delete', methods=['POST'])

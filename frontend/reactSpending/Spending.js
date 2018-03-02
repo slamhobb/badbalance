@@ -73,7 +73,7 @@ class Spending extends React.PureComponent {
     }
 
     dateToString(date) {
-        let localDate = date;
+        let localDate = new Date(date);
         localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset());
 
         return localDate.toISOString().slice(0, 10);
@@ -318,13 +318,13 @@ class Spending extends React.PureComponent {
         const incomingElement = this.state.showIncoming ? this.renderIncoming() : '';
 
         return (
-            <div>
-                <div className="row">
+            <React.Fragment>
+                <div className="row mt-4 mb-3">
                     <div className="col-sm-8">
                         <MonthBalance balance={balance} />
                     </div>
                 </div>
-                <div className="row">
+                <div className="row mb-3 ">
                     <div className="col-sm-4">
                         <PeriodSelector
                             year={year}
@@ -332,14 +332,16 @@ class Spending extends React.PureComponent {
                             onChange={this.handleChangePeriod} />
                     </div>
                     <div className="col-sm-4">
-                        <div className="pull-right">
-                            <Switcher currentTable={this.state.visibleTable} onSwitch={this.handleSwitchTable}/>
+                        <div className="d-flex">
+                            <div className="ml-sm-auto">
+                                <Switcher currentTable={this.state.visibleTable} onSwitch={this.handleSwitchTable}/>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-sm-8">
-                        <div className={this.state.visibleTable === 'spending' ? 'show' : 'hidden'}>
+                        <div className={this.state.visibleTable === 'spending' ? 'd-block' : 'd-none'}>
                             <AddForm
                                 defaultDate={this.dateToString(this.props.curDate)}
                                 categories={categories}
@@ -351,7 +353,7 @@ class Spending extends React.PureComponent {
                                 onSave={this.handleSaveSpending}
                                 onDelete={this.handleDeleteSpending} />
                         </div>
-                        <div className={this.state.visibleTable === 'incoming' ? 'show' : 'hidden'}>
+                        <div className={this.state.visibleTable === 'incoming' ? 'd-block' : 'd-none'}>
                             { incomingElement }
                         </div>
                     </div>
@@ -359,7 +361,7 @@ class Spending extends React.PureComponent {
                         <BadChart data={this.state.stat} />
                     </div>
                 </div>
-            </div>
+            </React.Fragment>
         );
     }
 }

@@ -1,23 +1,21 @@
 .spending_date {
-    width: 85px;
-    text-align: right;
+    width: 4.2rem;
 }
 
 .spending_sum {
-    width: 75px;
-    text-align: right;
+    width: 4.9rem;
 }
 
 .spending_text {
-    width: 220px;
+    width: 15rem;
 }
 
 .spending_category {
-    width: 100px;
+    width: 6.5rem;
 }
 
 .spending_action {
-    width: 41px;
+    width: 2.6rem;
 }
 
 .action_wrapper {
@@ -37,12 +35,4 @@
 .spending_edit:hover,
 .spending_delete:hover {
     color: #ff5a00;
-}
-
-.month_selector {
-    margin-bottom: 20px;
-}
-
-.balance-sum {
-    padding: 25px 0 15px 0;
 }

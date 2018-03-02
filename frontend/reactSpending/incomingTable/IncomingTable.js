@@ -79,7 +79,7 @@ class IncomingTable extends React.PureComponent {
 
         return (
             <div className="table-responsive">
-                <table className="incoming_table table table-striped table-bordered">
+                <table className="incoming_table table table-bordered table-striped table-sm">
                     <thead>
                         <Header/>
                     </thead>

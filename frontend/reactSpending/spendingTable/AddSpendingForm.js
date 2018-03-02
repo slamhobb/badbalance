@@ -7,6 +7,8 @@ import CategoriesList from '../CategoriesOptions';
 
 import ReactDatePicker from '../../datepicker/rectDatePicker';
 
+import { CheckIcon } from '../../svg/Svg';
+
 class AddSpendingForm extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -70,7 +72,7 @@ class AddSpendingForm extends React.PureComponent {
 
         return(
             <div className="table-responsive">
-                <table className="table table-bordered">
+                <table className="table table-bordered table-sm">
                     <tbody>
                         <tr>
                             <td>
@@ -99,10 +101,11 @@ class AddSpendingForm extends React.PureComponent {
                             </td>
                             <td>
                                 <div className="spending_action">
-                                    <button className="btn btn-default btn-sm" type="button"
+                                    <button className="btn btn-outline-secondary" type="button"
                                         onClick={this.handleAdd}>
-                                        <span className="glyphicon glyphicon-ok" aria-hidden="true" />
+                                            <CheckIcon />
                                     </button>
+
                                 </div>
                             </td>
                         </tr>
