@@ -71,47 +71,45 @@ class AddSpendingForm extends React.PureComponent {
         const categories = this.props.categories;
 
         return(
-            <div className="table-responsive">
-                <table className="table table-bordered table-sm">
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div className="spending_date">
-                                    <ReactDatePicker className="form-control" placeholder="Дата"
-                                        defaultValue={this.props.defaultDate} onChange={this.handleChangeDate} />
-                                </div>
-                            </td>
-                            <td>
-                                <div className="spending_sum">
-                                    <input type="text" className="form-control" placeholder="Сумма"
-                                        value={this.state.sum} onChange={this.handleChangeSum} />
-                                </div>
-                            </td>
-                            <td>
-                                <div className="spending_text">
-                                    <input type="text" className="form-control" placeholder="Описание"
-                                        value={this.state.text} onChange={this.handleChangeText} />
-                                </div>
-                            </td>
-                            <td>
-                                <div className="spending_category">
-                                    <CategoriesList items={categories} value={this.state.category_id}
-                                        onChange={this.handleChangeCategory} />
-                                </div>
-                            </td>
-                            <td>
-                                <div className="spending_action">
-                                    <button className="btn btn-outline-secondary" type="button"
-                                        onClick={this.handleAdd}>
-                                            <CheckIcon />
-                                    </button>
+            <table className="table table-bordered table-sm">
+                <tbody>
+                    <tr>
+                        <td>
+                            <div className="spending_date">
+                                <ReactDatePicker className="form-control" placeholder="Дата"
+                                    defaultValue={this.props.defaultDate} onChange={this.handleChangeDate} />
+                            </div>
+                        </td>
+                        <td>
+                            <div className="spending_sum">
+                                <input type="text" className="form-control" placeholder="Сумма"
+                                    value={this.state.sum} onChange={this.handleChangeSum} />
+                            </div>
+                        </td>
+                        <td>
+                            <div className="spending_text">
+                                <input type="text" className="form-control" placeholder="Описание"
+                                    value={this.state.text} onChange={this.handleChangeText} />
+                            </div>
+                        </td>
+                        <td>
+                            <div className="spending_category">
+                                <CategoriesList items={categories} value={this.state.category_id}
+                                    onChange={this.handleChangeCategory} />
+                            </div>
+                        </td>
+                        <td>
+                            <div className="spending_action">
+                                <button className="btn btn-outline-secondary" type="button"
+                                    onClick={this.handleAdd}>
+                                        <CheckIcon />
+                                </button>
 
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         );
     }
 }

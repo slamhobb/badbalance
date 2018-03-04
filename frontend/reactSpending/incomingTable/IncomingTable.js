@@ -3,6 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import AddIncomingForm from './AddIncomingForm';
 import Header from './Header';
 import Line from './Line';
 import EditLine from './EditLine';
@@ -79,6 +80,9 @@ class IncomingTable extends React.PureComponent {
 
         return (
             <div className="table-responsive">
+                <AddIncomingForm
+                    defaultDate={this.props.curDate}
+                    onAdd={this.props.onAdd} />
                 <table className="incoming_table table table-bordered table-striped table-sm">
                     <thead>
                         <Header/>
@@ -94,6 +98,8 @@ class IncomingTable extends React.PureComponent {
 
 IncomingTable.propTypes = {
     items: PropTypes.array.isRequired,
+    curDate: PropTypes.string.isRequired,
+    onAdd: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired

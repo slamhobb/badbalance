@@ -3,6 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import AddSpendingForm from './AddSpendingForm';
 import Header from './Header';
 import Line from './Line';
 import EditLine from './EditLine';
@@ -87,6 +88,10 @@ class SpendingTable extends React.PureComponent {
 
         return (
             <div className="table-responsive">
+                <AddSpendingForm
+                    defaultDate={this.props.curDate}
+                    categories={categories}
+                    onAdd={this.props.onAdd} />
                 <table className="spending_table table table-bordered table-striped table-sm">
                     <thead>
                         <Header/>
@@ -103,6 +108,8 @@ class SpendingTable extends React.PureComponent {
 SpendingTable.propTypes = {
     items: PropTypes.array.isRequired,
     categories: PropTypes.instanceOf(Map).isRequired,
+    curDate: PropTypes.string.isRequired,
+    onAdd: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired

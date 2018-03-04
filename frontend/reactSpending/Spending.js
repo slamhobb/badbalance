@@ -287,24 +287,24 @@ class Spending extends React.PureComponent {
     }
 
     renderIncoming() {
+        if (!this.state.showIncoming) {
+            return null;
+        }
+
         const items = Array.from(this.state.incomingItems.values());
 
         return (
-            <div>
-                <AddIncomingForm
-                    defaultDate={this.dateToString(this.props.curDate)}
-                    onAdd={this.handleAddIncoming}/>
-                <IncomingTable
-                    items={items}
-                    onEdit={this.handleEditIncoming}
-                    onSave={this.handleSaveIncoming}
-                    onDelete={this.handleDeleteIncoming} />
-            </div>
+            <IncomingTable
+                items={items}
+                curDate={this.dateToString(this.props.curDate)}
+                onAdd={this.handleAddIncoming}
+                onEdit={this.handleEditIncoming}
+                onSave={this.handleSaveIncoming}
+                onDelete={this.handleDeleteIncoming} />
         );
     }
 
     render() {
-        const categories = Array.from(this.state.categories.values());
         const items = Array.from(this.state.items.values());
 
         const balance = items.reduce((sum, item) => {
@@ -314,8 +314,6 @@ class Spending extends React.PureComponent {
         // берём иммено из props что-бы не перерисовывать PeriodSelector каждый раз
         const year = this.props.curDate.getFullYear();
         const month = this.props.curDate.getMonth() + 1;
-
-        const incomingElement = this.state.showIncoming ? this.renderIncoming() : '';
 
         return (
             <React.Fragment>
@@ -342,19 +340,17 @@ class Spending extends React.PureComponent {
                 <div className="row">
                     <div className="col-sm-8">
                         <div className={this.state.visibleTable === 'spending' ? 'd-block' : 'd-none'}>
-                            <AddForm
-                                defaultDate={this.dateToString(this.props.curDate)}
-                                categories={categories}
-                                onAdd={this.handleAddSpending}/>
                             <SpendingTable
                                 items={items}
                                 categories={this.state.categories}
+                                curDate={this.dateToString(this.props.curDate)}
+                                onAdd={this.handleAddSpending}
                                 onEdit={this.handleEditSpending}
                                 onSave={this.handleSaveSpending}
                                 onDelete={this.handleDeleteSpending} />
                         </div>
                         <div className={this.state.visibleTable === 'incoming' ? 'd-block' : 'd-none'}>
-                            { incomingElement }
+                            { this.renderIncoming() }
                         </div>
                     </div>
                     <div className="col-sm-4">
