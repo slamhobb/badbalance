@@ -34,7 +34,9 @@ class EditLine extends React.PureComponent {
     handleChangeSum(e) {
         const sum = parseInt(e.target.value);
 
-        this.setState({sum: sum});
+        if (!isNaN(sum)) {
+            this.setState({sum: sum});
+        }
     }
 
     handleChangeText(e) {

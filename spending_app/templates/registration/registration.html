@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang=en>
+<html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>Плохой баланс</title>
 
@@ -11,27 +11,23 @@
 
   </head>
 
-  <body>
-    <div class="container">
-
-      <form action="{{ url_for('.register') }}" method=post class="form-signin">
-        <h2 class="form-signin-heading">Регистрация</h2>
-        {% if error_message %}
+  <body class="text-center">
+    <form action="{{ url_for('.register') }}" method=post class="form-signin">
+      <h1 class="h3 mb-3 font-weight-normal">Регистрация</h1>
+      {% if error_message %}
           <p>{{ error_message }}</p>
-        {% endif %}
+      {% endif %}
 
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 
-        <label for="inputEmail" class="sr-only">{{ form.login.label.text }}</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="{{ form.login.label.text }}" name="{{ form.login.name }}" required autofocus>
+      <label for="inputEmail" class="sr-only">{{ form.login.label.text }}</label>
+      <input type="email" id="inputEmail" class="form-control" placeholder="{{ form.login.label.text }}" name="{{ form.login.name }}" required autofocus>
 
-        <label for="inputPassword" class="sr-only">{{ form.password.label.text }}</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="{{ form.password.label.text }}" name="{{ form.password.name }}" required>
+      <label for="inputPassword" class="sr-only">{{ form.password.label.text }}</label>
+      <input type="password" id="inputPassword" class="form-control" placeholder="{{ form.password.label.text }}" name="{{ form.password.name }}" required>
 
-        <button class="btn btn-lg btn-primary btn-block" type=submit>Регистрация</button>
-      </form>
-
-    </div>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Регистрация</button>
+    </form>
 
   </body>
 </html>

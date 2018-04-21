@@ -6,38 +6,34 @@
 
     <title>Плохой баланс</title>
 
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='built/bootstrap4/css/bootstrap.min.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='built/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='signin.css') }}">
 
   </head>
 
-  <body>
-    <div class="container">
+  <body class="text-center">
+    <form action="{{ url_for('.login') }}" method=post class="form-signin">
+      <h1 class="h3 mb-3 font-weight-normal">Авторизация</h1>
 
-      <form action="{{ url_for('.login') }}" method=post class="form-signin">
-        <h2 class="form-signin-heading">Авторизация</h2>
-        {% if error_message %}
+      {% if error_message %}
           <p>{{ error_message }}</p>
-        {% endif %}
+      {% endif %}
 
-        {{ form.csrf_token }}
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 
-        <label for="inputEmail" class="sr-only">{{ form.login.label.text }}</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="{{ form.login.label.text }}" name="{{ form.login.name }}" required autofocus>
+      <label for="inputEmail" class="sr-only">{{ form.login.label.text }}</label>
+      <input type="email" id="inputEmail" class="form-control" placeholder="{{ form.login.label.text }}" name="{{ form.login.name }}" required autofocus>
 
-        <label for="inputPassword" class="sr-only">{{ form.password.label.text }}</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="{{ form.password.label.text }}" name="{{ form.password.name }}" required>
+      <label for="inputPassword" class="sr-only">{{ form.password.label.text }}</label>
+      <input type="password" id="inputPassword" class="form-control" placeholder="{{ form.password.label.text }}" name="{{ form.password.name }}" required>
 
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" name="{{ form.remember_me.name }}"> {{ form.remember_me.label.text }}
-          </label>
-        </div>
+      <div class="checkbox mb-3">
+        <label>
+          <input type="checkbox" name="{{ form.remember_me.name }}"> {{ form.remember_me.label.text }}
+        </label>
+      </div>
 
-        <button class="btn btn-lg btn-primary btn-block" type=submit>Войти</button>
-      </form>
-
-    </div>
-
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
+    </form>
   </body>
 </html>
