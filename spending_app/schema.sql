@@ -5,7 +5,7 @@ create table category (
   user_id integer not null
 );
 
-create unique index ux_category_id on category(id);
+create index ix_category_id on category(id);
 create index ix_category_user_id on category(user_id);
 
 insert into category(name, user_id)
@@ -22,7 +22,7 @@ create table spending(
   category_id integer not null
 );
 
-create unique index ux_spending_id on spending(id);
+create index ix_spending_id on spending(id);
 create index ix_spending_user_id on spending(user_id);
 create index ix_spending_category_id on spending(category_id);
 
@@ -34,7 +34,7 @@ create table user(
   password text not null
 );
 
-create unique index ux_user_id on user(id);
+create index ix_user_id on user(id);
 
 
 drop table if exists auth_token;
@@ -44,8 +44,8 @@ create table auth_token(
   user_id integer not null
 );
 
-create unique index ux_auth_token_id on auth_token(id);
-create unique index ux_auth_token_token_user_id on auth_token(token, user_id);
+create index ix_auth_token_id on auth_token(id);
+create index ix_auth_token_token_user_id on auth_token(token, user_id);
 
 drop table if exists incoming;
 create table incoming(
@@ -56,5 +56,5 @@ create table incoming(
   text text not null
 );
 
-create unique index ux_incoming_id on incoming(id);
+create index ix_incoming_id on incoming(id);
 create index ix_incoming_user_id on incoming(user_id);

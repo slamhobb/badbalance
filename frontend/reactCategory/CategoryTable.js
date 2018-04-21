@@ -25,7 +25,7 @@ class CategoryTable extends React.PureComponent {
         const items = this.props.items.map(this.renderLine);
 
         return (
-            <table className="category_table table table-bordered table-sm">
+            <table className="category_table table table-bordered table-md">
                 <thead>
                     <tr>
                         <td>

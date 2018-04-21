@@ -83,7 +83,7 @@ class IncomingTable extends React.PureComponent {
                 <AddIncomingForm
                     defaultDate={this.props.curDate}
                     onAdd={this.props.onAdd} />
-                <table className="incoming_table table table-bordered table-striped table-sm">
+                <table className="incoming_table table table-bordered table-striped table-md">
                     <thead>
                         <Header/>
                     </thead>

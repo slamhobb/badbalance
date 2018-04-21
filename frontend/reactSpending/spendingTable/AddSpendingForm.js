@@ -71,7 +71,7 @@ class AddSpendingForm extends React.PureComponent {
         const categories = this.props.categories;
 
         return(
-            <table className="table table-bordered table-sm">
+            <table className="table table-bordered table-md">
                 <tbody>
                     <tr>
                         <td>
@@ -102,7 +102,7 @@ class AddSpendingForm extends React.PureComponent {
                             <div className="spending_action">
                                 <button className="btn btn-outline-secondary" type="button"
                                     onClick={this.handleAdd}>
-                                        <CheckIcon />
+                                    <CheckIcon />
                                 </button>
 
                             </div>

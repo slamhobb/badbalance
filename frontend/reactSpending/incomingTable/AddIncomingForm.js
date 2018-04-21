@@ -53,7 +53,7 @@ class AddIncomingForm extends React.PureComponent {
 
     render() {
         return(
-            <table className="table table-bordered table-sm">
+            <table className="table table-bordered table-md">
                 <tbody>
                     <tr>
                         <td>

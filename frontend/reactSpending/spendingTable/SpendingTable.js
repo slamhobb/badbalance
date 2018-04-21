@@ -8,6 +8,8 @@ import Header from './Header';
 import Line from './Line';
 import EditLine from './EditLine';
 
+import TableFilter from './TableFilter';
+
 import './spendingTable.css';
 
 const days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
@@ -17,6 +19,15 @@ class SpendingTable extends React.PureComponent {
         super(props);
 
         this.renderLine = this.renderLine.bind(this);
+        this.handleToggle = this.handleToggle.bind(this);
+        this.handleChangeFilter = this.handleChangeFilter.bind(this);
+        this.handleChangeCategoryFilter = this.handleChangeCategoryFilter.bind(this);
+
+        this.state = {
+            filterEnable: false,
+            filter: '',
+            categoryFilter: ''
+        };
     }
 
     formatItems(items) {
@@ -48,6 +59,27 @@ class SpendingTable extends React.PureComponent {
         });
     }
 
+    filterItems(itemsForFilter) {
+        let items = itemsForFilter.slice();
+
+        if (!this.state.filterEnable) {
+            return items;
+        }
+
+        const { filter, categoryFilter } = this.state;
+        const categories = this.props.categories;
+
+        if (filter !== '') {
+            items = items.filter(x => x.text.toLowerCase().indexOf(filter) !== -1);
+        }
+
+        if (categoryFilter !== '') {
+            items = items.filter(x => categories.get(x.category_id).name.toLowerCase().indexOf(categoryFilter) !== -1);
+        }
+
+        return items;
+    }
+
     renderLine(s, categories) {
         const category = this.props.categories.get(s.category_id);
 
@@ -67,9 +99,29 @@ class SpendingTable extends React.PureComponent {
                 date={s.dateStr}
                 sum={s.sum}
                 text={s.text}
-                categoryName={category ? category.name : ""}
+                categoryName={category ? category.name : ''}
                 onEdit={this.props.onEdit}
                 onDelete={this.props.onDelete} />;
+    }
+
+    handleToggle() {
+        this.setState((prevState) => ({ filterEnable: !prevState.filterEnable }));
+    }
+
+    handleChangeFilter(e) {
+        const filter = e.target.value;
+
+        this.setState({
+            filter: filter.toLowerCase()
+        });
+    }
+
+    handleChangeCategoryFilter(e) {
+        const filter = e.target.value;
+
+        this.setState({
+            categoryFilter: filter.toLowerCase()
+        });
     }
 
     render() {
@@ -82,6 +134,10 @@ class SpendingTable extends React.PureComponent {
             return diff === 0 ? b.id - a.id : diff;
         });
 
+        // важно сначала фильтровать, а затем уже делать formatItems,
+        // т.к. при форматировании проставляется дата
+        items = this.filterItems(items);
+
         const formattedItems = this.formatItems(items);
 
         const listItems = formattedItems.map(s => this.renderLine(s, categories));
@@ -92,9 +148,13 @@ class SpendingTable extends React.PureComponent {
                     defaultDate={this.props.curDate}
                     categories={categories}
                     onAdd={this.props.onAdd} />
-                <table className="spending_table table table-bordered table-striped table-sm">
+                <table className="spending_table table table-bordered table-striped table-md">
                     <thead>
-                        <Header/>
+                        <Header onToggleFilter={this.handleToggle}/>
+                        <TableFilter visible={this.state.filterEnable}
+                            filter={this.state.filter} categoryFilter={this.state.categoryFilter}
+                            onChange={this.handleChangeFilter}
+                            onChangeCategoryFilter={this.handleChangeCategoryFilter} />
                     </thead>
                     <tbody>
                         {listItems}

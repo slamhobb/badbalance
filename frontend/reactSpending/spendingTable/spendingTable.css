@@ -7,7 +7,7 @@
 }
 
 .spending_text {
-    width: 15rem;
+    width: 21rem;
 }
 
 .spending_category {
@@ -35,4 +35,8 @@
 .spending_edit:hover,
 .spending_delete:hover {
     color: #ff5a00;
+}
+
+.spending_filter {
+    color: #c8c8c8;
 }

@@ -1,10 +1,11 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import { Dots } from '../../svg/Svg';
+import { FilterIcon } from '../../svg/Svg';
 
-export default function Header() {
+function Header(props) {
     return (
         <tr>
             <td>
@@ -29,9 +30,17 @@ export default function Header() {
             </td>
             <td>
                 <div className="spending_action">
-                    &nbsp;
+                    <a className="spending_filter" href="#" onClick={props.onToggleFilter}>
+                        <FilterIcon />
+                    </a>
                 </div>
             </td>
         </tr>
     );
 }
+
+Header.propTypes = {
+    onToggleFilter: PropTypes.func.isRequired
+};
+
+export default Header;
