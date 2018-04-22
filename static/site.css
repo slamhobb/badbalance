@@ -1,9 +1,6 @@
 html {
     position: relative;
     min-height: 100%;
-    
-/*    font-size: 14px;
-    line-height: 20px;*/
 }
 
 body {
@@ -26,11 +23,5 @@ footer {
 .octicon {
     display: inline-block;
     /*vertical-align: text-top;*/
-    fill: currentColor;
-}
-
-.octicon-header {
-    display: inline-block;
-    vertical-align: text-top;
     fill: currentColor;
 }

@@ -7,12 +7,8 @@ import MonthBalance from './MonthBalance';
 import PeriodSelector from './PeriodSelector';
 import Switcher from './Switcher';
 
-// spending
-import AddForm from './spendingTable/AddSpendingForm';
 import SpendingTable from './spendingTable/SpendingTable';
 
-// incoming
-import AddIncomingForm from './incomingTable/AddIncomingForm';
 import IncomingTable from './incomingTable/IncomingTable';
 
 import BadChart from '../chart';
