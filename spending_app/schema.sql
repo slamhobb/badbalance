@@ -23,8 +23,7 @@ create table spending(
 );
 
 create index ix_spending_id on spending(id);
-create index ix_spending_user_id on spending(user_id);
-create index ix_spending_category_id on spending(category_id);
+create index ix_spending_user_id_date on spending(user_id, date);
 
 
 drop table if exists user;
@@ -45,7 +44,7 @@ create table auth_token(
 );
 
 create index ix_auth_token_id on auth_token(id);
-create index ix_auth_token_token_user_id on auth_token(token, user_id);
+create unique index ux_auth_token_token_user_id on auth_token(token, user_id);
 
 drop table if exists incoming;
 create table incoming(
@@ -57,4 +56,4 @@ create table incoming(
 );
 
 create index ix_incoming_id on incoming(id);
-create index ix_incoming_user_id on incoming(user_id);
+create index ix_incoming_user_id_date on incoming(user_id, date);
