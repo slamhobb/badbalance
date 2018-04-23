@@ -104,7 +104,9 @@ class SpendingTable extends React.PureComponent {
                 onDelete={this.props.onDelete} />;
     }
 
-    handleToggle() {
+    handleToggle(e) {
+        e.preventDefault();
+
         this.setState((prevState) => ({ filterEnable: !prevState.filterEnable }));
     }
 
