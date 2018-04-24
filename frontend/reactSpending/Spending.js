@@ -3,7 +3,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import MonthBalance from './MonthBalance';
 import PeriodSelector from './PeriodSelector';
 import Switcher from './Switcher';
 
@@ -14,6 +13,11 @@ import IncomingTable from './incomingTable/IncomingTable';
 import BadChart from '../chart';
 
 import HttpClient from '../core/httpClient';
+
+const tableType = {
+    spending: 'spending',
+    incoming: 'incoming'
+};
 
 class Spending extends React.PureComponent {
     constructor(props) {
@@ -44,7 +48,7 @@ class Spending extends React.PureComponent {
             categories: new Map(),
             incomingItems: new Map(),
             showIncoming: false,
-            visibleTable: 'spending'
+            visibleTable: tableType.spending
         };
     }
 
@@ -129,14 +133,14 @@ class Spending extends React.PureComponent {
     handleSwitchTable() {
         let table;
 
-        if (this.state.visibleTable === 'spending')
+        if (this.state.visibleTable === tableType.spending)
         {
-            table = 'incoming';
+            table = tableType.incoming;
         }
 
-        if (this.state.visibleTable === 'incoming')
+        if (this.state.visibleTable === tableType.incoming)
         {
-            table = 'spending';
+            table = tableType.spending;
         }
 
         if (!this.state.showIncoming) {
@@ -301,11 +305,17 @@ class Spending extends React.PureComponent {
     }
 
     render() {
-        const items = Array.from(this.state.items.values());
+        const items = this.state.visibleTable === tableType.spending
+            ? Array.from(this.state.items.values())
+            : Array.from(this.state.incomingItems.values());
 
         const balance = items.reduce((sum, item) => {
             return sum + item.sum;
         }, 0);
+
+        const balanceText = this.state.visibleTable === tableType.spending
+            ? `Расход за месяц: ${balance}`
+            : `Доход за месяц: ${balance}`;
 
         // берём иммено из props что-бы не перерисовывать PeriodSelector каждый раз
         const year = this.props.curDate.getFullYear();
@@ -315,7 +325,7 @@ class Spending extends React.PureComponent {
             <React.Fragment>
                 <div className="row mt-4 mb-3">
                     <div className="col-sm-8">
-                        <MonthBalance balance={balance} />
+                        <p>{balanceText}</p>
                     </div>
                 </div>
                 <div className="row mb-3 ">
@@ -335,7 +345,7 @@ class Spending extends React.PureComponent {
                 </div>
                 <div className="row">
                     <div className="col-sm-8">
-                        <div className={this.state.visibleTable === 'spending' ? 'd-block' : 'd-none'}>
+                        <div className={this.state.visibleTable === tableType.spending ? 'd-block' : 'd-none'}>
                             <SpendingTable
                                 items={items}
                                 categories={this.state.categories}
@@ -345,7 +355,7 @@ class Spending extends React.PureComponent {
                                 onSave={this.handleSaveSpending}
                                 onDelete={this.handleDeleteSpending} />
                         </div>
-                        <div className={this.state.visibleTable === 'incoming' ? 'd-block' : 'd-none'}>
+                        <div className={this.state.visibleTable === tableType.incoming ? 'd-block' : 'd-none'}>
                             { this.renderIncoming() }
                         </div>
                     </div>

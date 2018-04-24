@@ -48,6 +48,11 @@ class AddIncomingForm extends React.PureComponent {
             text: this.state.text,
         };
 
+        this.setState({
+            sum: '',
+            text: ''
+        });
+
         this.props.onAdd(data);
     }
 
