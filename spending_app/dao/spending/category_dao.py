@@ -1,4 +1,4 @@
-from spending_app.dao.base import BaseDao
+from spending_app.dao.base_dao import BaseDao
 from spending_app.domain.category import CategoryList
 
 
@@ -12,11 +12,11 @@ class CategoryDao(BaseDao):
 
     def add(self, category):
         sql = self.get_sql('add_category.sql')
-        return self.execute(sql, category.to_primitive())
+        return self.execute(sql, category.to_dict())
 
     def update(self, category):
         sql = self.get_sql('update_category.sql')
-        self.execute(sql, category.to_primitive())
+        self.execute(sql, category.to_dict())
 
     def delete(self, category_id, user_id):
         sql = self.get_sql('delete_category.sql')

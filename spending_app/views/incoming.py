@@ -4,8 +4,8 @@ from flask import request, Blueprint, jsonify, g
 
 from spending_app.infrastructure.web import get_token
 from spending_app.infrastructure.auth import login_required
-from spending_app.bussiness.incoming import IncomingService
-from spending_app.bussiness.auth import AuthService
+from spending_app.bussiness.incoming_service import IncomingService
+from spending_app.bussiness.auth_service import AuthService
 from spending_app.domain.incoming import Incoming
 from spending_app.forms.incoming import IncomingForm
 
@@ -28,8 +28,10 @@ def save():
     if not form.validate_on_submit():
         return jsonify(status=False, message=form.errors)
 
-    incoming = Incoming(form.data)
-    incoming.user_id = g.user_context.user_id
+    adict = dict(form.data)
+    adict['user_id'] = g.user_context.user_id
+
+    incoming = Incoming.from_dict(adict)
 
     incoming_id = incoming_service.save(incoming)
 
@@ -54,6 +56,6 @@ def get_list(year, month):
     user_id = g.user_context.user_id
 
     items = incoming_service.get_list(user_id, year, month)
-    items = [i.to_primitive() for i in items]
+    items = [i.to_dict() for i in items]
 
     return jsonify(status=True, incoming=items)

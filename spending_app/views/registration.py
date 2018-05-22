@@ -5,8 +5,8 @@ from flask import Blueprint, request, jsonify, render_template, redirect, url_fo
 from spending_app.infrastructure.web import *
 from spending_app.forms.registration import RegistrationForm
 from spending_app.domain.user import UserData
-from spending_app.bussiness.registration import RegistrationService
-from spending_app.bussiness.auth import AuthService
+from spending_app.bussiness.registration_service import RegistrationService
+from spending_app.bussiness.auth_service import AuthService
 
 mod = Blueprint('registration', __name__)
 
@@ -41,7 +41,7 @@ def register():
     if not form.validate_on_submit():
         return redirect(url_for('.registration', error=jsonify(form.errors)))
 
-    user_data = UserData(form.data)
+    user_data = UserData.from_dict(form.data)
 
     user_id, reg_message = reg_service.register_user(user_data)
 

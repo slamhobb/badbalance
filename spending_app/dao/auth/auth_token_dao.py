@@ -1,4 +1,4 @@
-from spending_app.dao.base import BaseDao
+from spending_app.dao.base_dao import BaseDao
 from spending_app.domain.auth import UserContext
 
 
@@ -12,4 +12,4 @@ class AuthTokenDao(BaseDao):
 
     def insert_token(self, auth_token):
         sql = self.get_sql('insert_token.sql')
-        self.execute(sql, auth_token.to_primitive())
+        self.execute(sql, auth_token.to_dict())

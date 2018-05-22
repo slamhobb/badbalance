@@ -1,4 +1,4 @@
-from spending_app.dao.base import BaseDao
+from spending_app.dao.base_dao import BaseDao
 from spending_app.domain.incoming import IncomingList
 
 
@@ -8,11 +8,11 @@ class IncomingDao(BaseDao):
 
     def add(self, incoming):
         sql = self.get_sql('add_incoming.sql')
-        return self.execute(sql, incoming.to_primitive())
+        return self.execute(sql, incoming.to_dict())
 
     def update(self, incoming):
         sql = self.get_sql('update_incoming.sql')
-        self.execute(sql, incoming.to_primitive())
+        self.execute(sql, incoming.to_dict())
 
     def delete(self, id, user_id):
         sql = self.get_sql('delete_incoming.sql')

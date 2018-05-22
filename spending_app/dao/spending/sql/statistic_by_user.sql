@@ -1,5 +1,5 @@
 select
-	sum(sum)    as sum,
+	sum(s.sum)    as sum,
 	min(c.name) as category
 	from spending as s
 		inner join category as c on

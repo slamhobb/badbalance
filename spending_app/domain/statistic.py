@@ -1,7 +1,22 @@
-from schematics.models import Model
-from schematics.types import StringType, DecimalType
+class Statistic(object):
 
+    def __init__(self, sum, category):
+        self.sum = sum
+        self.category = category
 
-class Statistic(Model):
-    sum = DecimalType()
-    category = StringType()
+    @classmethod
+    def from_dict(cls, adict):
+        statistic = Statistic(
+            sum=adict['sum'],
+            category=adict['category']
+        )
+
+        return statistic
+
+    def to_dict(self):
+        adict = {
+            'sum': self.sum,
+            'category': self.category
+        }
+
+        return adict

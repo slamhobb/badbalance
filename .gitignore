@@ -2,7 +2,7 @@
 __pycache__
 *.pyc
 
-# ided
+# idea
 .idea/
 
 #nmp modules
@@ -10,3 +10,6 @@ node_modules
 
 #built static
 static/built
+
+#python test cache
+.pytest_cache

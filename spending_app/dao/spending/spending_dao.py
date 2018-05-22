@@ -1,4 +1,4 @@
-from spending_app.dao.base import BaseDao
+from spending_app.dao.base_dao import BaseDao
 from spending_app.domain.spending import SpendingList
 from spending_app.domain.statistic import Statistic
 
@@ -13,11 +13,11 @@ class SpendingDao(BaseDao):
 
     def add(self, spending):
         sql = self.get_sql('add.sql')
-        return self.execute(sql, spending.to_primitive())
+        return self.execute(sql, spending.to_dict())
 
     def update(self, spending):
         sql = self.get_sql('update.sql')
-        self.execute(sql, spending.to_primitive())
+        self.execute(sql, spending.to_dict())
 
     def delete(self, spend_id, user_id):
         sql = self.get_sql('delete.sql')

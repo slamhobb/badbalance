@@ -4,8 +4,8 @@ from flask import render_template, request, Blueprint, jsonify, g
 
 from spending_app.infrastructure.web import get_token
 from spending_app.infrastructure.auth import login_required
-from spending_app.bussiness.spending import SpendingService
-from spending_app.bussiness.auth import AuthService
+from spending_app.bussiness.spending_service import SpendingService
+from spending_app.bussiness.auth_service import AuthService
 from spending_app.domain.spending import Spending
 from spending_app.forms.spending import SpendingForm
 
@@ -32,10 +32,10 @@ def spending_list_month(year, month):
     user_id = g.user_context.user_id
 
     items = spending_service.get_by_month(user_id, year, month)
-    items = [i.to_primitive() for i in items]
+    items = [i.to_dict() for i in items]
 
     cats = spending_service.get_category_list(user_id)
-    cats = [c.to_primitive() for c in cats]
+    cats = [c.to_dict() for c in cats]
     return jsonify(status=True, spending=items, categories=cats)
 
 
@@ -47,8 +47,10 @@ def save_spending():
     if not form.validate_on_submit():
         return jsonify(status=False, message=form.errors)
 
-    spending = Spending(form.data)
-    spending.user_id = g.user_context.user_id
+    adict = dict(form.data)
+    adict['user_id'] = g.user_context.user_id
+
+    spending = Spending.from_dict(adict)
 
     id = spending_service.save(spending)
 
@@ -72,7 +74,7 @@ def remove_spending():
 def get_statistic(year, month):
     user_id = g.user_context.user_id
 
-    res = spending_service.get_statistic(user_id, year, month)
-    res = [r.to_primitive() for r in res]
+    result = spending_service.get_statistic(user_id, year, month)
+    result = [r.to_dict() for r in result]
 
-    return jsonify(status=True, stat=res)
+    return jsonify(status=True, stat=result)

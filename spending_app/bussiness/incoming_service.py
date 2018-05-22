@@ -1,6 +1,6 @@
 import inject
 
-from spending_app.dao.incoming.incoming import IncomingDao
+from spending_app.dao.incoming.incoming_dao import IncomingDao
 
 
 class IncomingService:

@@ -5,8 +5,8 @@ import os
 
 import inject
 
-from spending_app.dao.user.user import UserDao
-from spending_app.dao.auth.auth import AuthTokenDao
+from spending_app.dao.user.user_dao import UserDao
+from spending_app.dao.auth.auth_token_dao import AuthTokenDao
 from spending_app.domain.auth import AuthToken
 from spending_app.infrastructure.auth import UserContext
 
@@ -21,9 +21,7 @@ class AuthService:
         if not user or not self._check_password(password, user.password):
             return None, "Введены неверные логин и пароль"
 
-        auth_token = AuthToken()
-        auth_token.token = self._generate_token()
-        auth_token.user_id = user.id
+        auth_token = AuthToken(token=self._generate_token(), user_id=user.id)
 
         self.token_dao.insert_token(auth_token)
 

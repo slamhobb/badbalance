@@ -1,4 +1,4 @@
-from spending_app.dao.base import BaseDao
+from spending_app.dao.base_dao import BaseDao
 from spending_app.domain.user import User
 
 
@@ -17,7 +17,7 @@ class UserDao(BaseDao):
     def save(self, user):
         if user.id is None or user.id == 0:
             sql = self.get_sql('insert.sql')
-            user.id = self.execute(sql, user.to_primitive())
+            user.id = self.execute(sql, user.to_dict())
         else:
             sql = self.get_sql('update.sql')
-            self.execute(sql, user.to_primitive())
+            self.execute(sql, user.to_dict())

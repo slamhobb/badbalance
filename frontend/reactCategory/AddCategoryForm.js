@@ -30,6 +30,10 @@ class AddCategoryForm extends React.PureComponent {
             name: this.state.name
         };
 
+        this.setState({
+            name: ''
+        });
+
         this.props.onAdd(data);
     }
 

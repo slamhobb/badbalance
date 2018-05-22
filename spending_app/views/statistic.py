@@ -4,7 +4,7 @@ from flask import render_template, Blueprint, g
 
 from spending_app.infrastructure.web import *
 from spending_app.infrastructure.auth import login_required
-from spending_app.bussiness.auth import AuthService
+from spending_app.bussiness.auth_service import AuthService
 
 mod = Blueprint('statistic', __name__)
 

@@ -4,7 +4,7 @@ from flask import Blueprint, g, url_for
 from flask import redirect as flask_redirect
 
 from spending_app.infrastructure.web import *
-from spending_app.bussiness.auth import AuthService
+from spending_app.bussiness.auth_service import AuthService
 
 mod = Blueprint('redirect', __name__)
 

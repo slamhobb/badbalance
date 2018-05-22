@@ -3,7 +3,7 @@ import inject
 from flask import Blueprint, redirect, render_template, request, url_for, g
 
 from spending_app.infrastructure.web import *
-from spending_app.bussiness.auth import AuthService
+from spending_app.bussiness.auth_service import AuthService
 from spending_app.forms.auth import LoginForm
 
 mod = Blueprint('auth', __name__)

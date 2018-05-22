@@ -4,8 +4,8 @@ from flask import render_template, g, jsonify, request, Blueprint
 
 from spending_app.infrastructure.web import *
 from spending_app.infrastructure.auth import login_required
-from spending_app.bussiness.auth import AuthService
-from spending_app.bussiness.spending import SpendingService
+from spending_app.bussiness.auth_service import AuthService
+from spending_app.bussiness.spending_service import SpendingService
 from spending_app.domain.category import Category
 from spending_app.forms.spending import CategoryForm
 
@@ -31,10 +31,10 @@ def index():
 def get_list():
     user_id = g.user_context.user_id
 
-    res = spending_service.get_category_list(user_id)
-    res = [r.to_primitive() for r in res]
+    result = spending_service.get_category_list(user_id)
+    result = [r.to_dict() for r in result]
 
-    return jsonify(status=True, categories=res)
+    return jsonify(status=True, categories=result)
 
 
 @mod.route('/save', methods=['POST'])
@@ -42,8 +42,10 @@ def get_list():
 def save():
     form = CategoryForm()
 
-    category = Category(form.data)
-    category.user_id = g.user_context.user_id
+    adict = dict(form.data)
+    adict['user_id'] = g.user_context.user_id
+
+    category = Category.from_dict(adict)
 
     id = spending_service.save_category(category)
 

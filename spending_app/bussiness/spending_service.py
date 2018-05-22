@@ -1,7 +1,7 @@
 import inject
 
-from spending_app.dao.spending.spending import SpendingDao
-from spending_app.dao.spending.category import CategoryDao
+from spending_app.dao.spending.spending_dao import SpendingDao
+from spending_app.dao.spending.category_dao import CategoryDao
 
 
 class SpendingService:
