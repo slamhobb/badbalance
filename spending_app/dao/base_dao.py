@@ -37,16 +37,6 @@ class BaseDao:
 
         return cls.from_dict(item)
 
-    def query_one_dict(self, sql, params):
-        conn = self.__create_connection()
-        item = conn.execute(sql, params).fetchone()
-        conn.close()
-
-        if item is None:
-            return None
-
-        return dict(item)
-
     def query_all(self, cls, sql, params):
         conn = self.__create_connection()
         items = conn.execute(sql, params).fetchall()
