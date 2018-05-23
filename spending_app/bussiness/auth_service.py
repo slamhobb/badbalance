@@ -9,9 +9,11 @@ from spending_app.dao.user.user_dao import UserDao
 from spending_app.dao.auth.auth_token_dao import AuthTokenDao
 from spending_app.domain.auth import AuthToken
 from spending_app.infrastructure.auth import UserContext
+from spending_app.infrastructure.cache import Cache
 
 
 class AuthService:
+    cache = inject.attr(Cache)
     user_dao = inject.attr(UserDao)
     token_dao = inject.attr(AuthTokenDao)
 
@@ -31,11 +33,28 @@ class AuthService:
         if token is None:
             return UserContext(None, None, False)
 
-        context = self.token_dao.get_user_context_by_token(token)
+        context = self._get_user_context(token)
+
         if context is None:
             return UserContext(None, None, False)
 
         return UserContext(context.user_id, context.login, True)
+
+    def _get_user_context(self, token):
+        cache_value = self.cache.get_value(token)
+
+        if cache_value is None:
+            context = self.token_dao.get_user_context_by_token(token)
+
+            if context is None:
+                return None
+
+            self.cache.set_value(token, context)
+
+            return context
+
+        return cache_value
+
 
     @staticmethod
     def _generate_token():
