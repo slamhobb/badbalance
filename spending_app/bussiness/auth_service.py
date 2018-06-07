@@ -33,28 +33,27 @@ class AuthService:
         if token is None:
             return UserContext(None, None, False)
 
-        context = self._get_user_context(token)
+        auth_user = self._get_auth_user(token)
 
-        if context is None:
+        if auth_user is None:
             return UserContext(None, None, False)
 
-        return UserContext(context.user_id, context.login, True)
+        return UserContext(auth_user.user_id, auth_user.login, True)
 
-    def _get_user_context(self, token):
-        cache_value = self.cache.get_value(token)
+    def _get_auth_user(self, token):
+        auth_user = self.cache.get_value(token)
 
-        if cache_value is None:
-            context = self.token_dao.get_user_context_by_token(token)
+        if auth_user is not None:
+            return auth_user
 
-            if context is None:
-                return None
+        auth_user = self.token_dao.get_auth_user_by_token(token)
 
-            self.cache.set_value(token, context)
+        if auth_user is None:
+            return None
 
-            return context
+        self.cache.set_value(token, auth_user)
 
-        return cache_value
-
+        return auth_user
 
     @staticmethod
     def _generate_token():

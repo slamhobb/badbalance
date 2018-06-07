@@ -23,8 +23,8 @@ class AuthToken(object):
         return adict
 
 
-class UserContext(object):
-    """User context for authenticated user"""
+class AuthUser(object):
+    """Authenticated user"""
 
     def __init__(self, user_id, login):
         self.user_id = user_id
@@ -32,12 +32,12 @@ class UserContext(object):
 
     @classmethod
     def from_dict(cls, adict):
-        user_context = UserContext(
+        auth_user = AuthUser(
             user_id=adict['user_id'],
             login=adict['login']
         )
 
-        return user_context
+        return auth_user
 
     def to_dict(self):
         adict = {
