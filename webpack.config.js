@@ -5,9 +5,13 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 const path = require('path');
 const webpack = require('webpack');
 
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 module.exports = {
+    mode: NODE_ENV,
+
     context: path.resolve(__dirname, 'frontend'),
 
     entry: {
@@ -20,8 +24,6 @@ module.exports = {
         filename: '[name].js'
     },
 
-    watch: NODE_ENV === 'development',
-
     watchOptions: {
         aggregateTimeout: 100
     },
@@ -30,10 +32,9 @@ module.exports = {
 
     plugins: [
         new webpack.NoEmitOnErrorsPlugin(),
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify(NODE_ENV)
-        }),
-        new ExtractTextPlugin('[name].css')
+        new MiniCssExtractPlugin({
+            filename: '[name].css'
+        })
     ],
 
     module: {
@@ -44,10 +45,10 @@ module.exports = {
         }, {
             test: /\.css$/,
             include: path.resolve(__dirname, 'frontend'),
-            use: ExtractTextPlugin.extract({
-                fallback: 'style-loader',
-                use: 'css-loader'
-            })
+            use: [
+                MiniCssExtractPlugin.loader,
+                "css-loader"
+            ]
         }, {
             test: /\.svg$/,
             include: path.resolve(__dirname, 'frontend'),
@@ -57,7 +58,10 @@ module.exports = {
 };
 
 if (NODE_ENV === 'production') {
-    module.exports.plugins.push(
-        new webpack.optimize.UglifyJsPlugin()
-    );
+    module.exports.optimization = {
+        minimizer: [
+            new UglifyJsPlugin(),
+            new OptimizeCSSAssetsPlugin()
+        ]
+    };
 }
