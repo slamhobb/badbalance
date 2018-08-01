@@ -9,7 +9,7 @@ __pycache__
 node_modules
 
 #built static
-static/built
+static/build
 
 #python test cache
 .pytest_cache

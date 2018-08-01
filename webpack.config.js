@@ -16,7 +16,7 @@ module.exports = {
     },
 
     output: {
-        path: path.resolve(__dirname, 'static/built'),
+        path: path.resolve(__dirname, 'static/build'),
         filename: '[name].js'
     },
 
@@ -26,7 +26,7 @@ module.exports = {
         aggregateTimeout: 100
     },
 
-    devtool: NODE_ENV === 'development' ? 'source-map' : false,
+    devtool: NODE_ENV === 'development' ? 'inline-source-map' : false,
 
     plugins: [
         new webpack.NoEmitOnErrorsPlugin(),
