@@ -304,6 +304,21 @@ class Spending extends React.PureComponent {
         );
     }
 
+    renderSpending() {
+        const items = Array.from(this.state.items.values());
+
+        return (
+            <SpendingTable
+                items={items}
+                categories={this.state.categories}
+                curDate={this.dateToString(this.props.curDate)}
+                onAdd={this.handleAddSpending}
+                onEdit={this.handleEditSpending}
+                onSave={this.handleSaveSpending}
+                onDelete={this.handleDeleteSpending} />
+        );
+    }
+
     render() {
         const items = this.state.visibleTable === tableType.spending
             ? Array.from(this.state.items.values())
@@ -346,14 +361,7 @@ class Spending extends React.PureComponent {
                 <div className="row">
                     <div className="col-sm-8">
                         <div className={this.state.visibleTable === tableType.spending ? 'd-block' : 'd-none'}>
-                            <SpendingTable
-                                items={items}
-                                categories={this.state.categories}
-                                curDate={this.dateToString(this.props.curDate)}
-                                onAdd={this.handleAddSpending}
-                                onEdit={this.handleEditSpending}
-                                onSave={this.handleSaveSpending}
-                                onDelete={this.handleDeleteSpending} />
+                            { this.renderSpending() }
                         </div>
                         <div className={this.state.visibleTable === tableType.incoming ? 'd-block' : 'd-none'}>
                             { this.renderIncoming() }
