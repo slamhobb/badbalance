@@ -3,7 +3,7 @@ class Incoming(object):
     def __init__(self, id, user_id, date, sum, text):
         self.id = id
         self.user_id = user_id
-        self.date = date
+        self.date = date.strftime('%Y-%m-%d')
         self.sum = sum
         self.text = text
 
