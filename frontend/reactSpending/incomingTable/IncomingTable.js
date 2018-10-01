@@ -51,17 +51,21 @@ class IncomingTable extends React.PureComponent {
         return s.edit
             ? <EditLine
                 key={s.id}
-                id={s.id}
-                date={s.date}
-                sum={s.sum}
-                text={s.text}
+                item={{
+                    id: s.id,
+                    date: s.date,
+                    sum: s.sum,
+                    text: s.text
+                }}
                 onSave={this.props.onSave} />
             : <Line
                 key={s.id}
-                id={s.id}
-                date={s.dateStr}
-                sum={s.sum}
-                text={s.text}
+                item={{
+                    id: s.id,
+                    date: s.dateStr,
+                    sum: s.sum,
+                    text: s.text
+                }}
                 onEdit={this.props.onEdit}
                 onDelete={this.props.onDelete} />;
     }

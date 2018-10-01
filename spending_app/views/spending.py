@@ -62,6 +62,7 @@ def save_spending():
 def remove_spending():
     user_id = g.user_context.user_id
 
+    # TODO: использовать форму
     spending_id = request.get_json()['id']
 
     spending_service.delete(spending_id, user_id)

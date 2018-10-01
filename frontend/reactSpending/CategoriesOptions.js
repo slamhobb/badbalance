@@ -8,18 +8,10 @@ class CategoriesOptions extends React.PureComponent {
         super(props);
 
         this.handleChange = this.handleChange.bind(this);
-
-        this.state = {
-            value: props.value
-        };
     }
 
     handleChange(e) {
         const value = parseInt(e.target.value);
-
-        this.setState({
-            value: value
-        });
 
         this.props.onChange(value);
     }
@@ -31,7 +23,7 @@ class CategoriesOptions extends React.PureComponent {
 
         return(
             <select className="form-control" title="Категория"
-                value={this.state.value} onChange={this.handleChange}>
+                value={this.props.value} onChange={this.handleChange}>
                 {options}
             </select>
         );
@@ -40,7 +32,10 @@ class CategoriesOptions extends React.PureComponent {
 
 CategoriesOptions.propTypes = {
     value: PropTypes.number.isRequired,
-    items: PropTypes.array.isRequired,
+    items: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    })).isRequired,
     onChange: PropTypes.func.isRequired
 };
 

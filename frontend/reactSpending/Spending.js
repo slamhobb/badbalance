@@ -14,6 +14,8 @@ import BadChart from '../chart';
 
 import HttpClient from '../core/httpClient';
 
+import {dateToString} from '../tools/dateTools';
+
 const tableType = {
     spending: 'spending',
     incoming: 'incoming'
@@ -40,21 +42,23 @@ class Spending extends React.PureComponent {
 
         this.refreshChart = this.refreshChart.bind(this);
 
-        this.year = this.props.curDate.getFullYear();
-        this.month = this.props.curDate.getMonth() + 1;
+        const {year, month} = this.getYearMonth(this.props.curDate);
 
         this.state = {
             items: new Map(),
             categories: new Map(),
             incomingItems: new Map(),
             showIncoming: false,
-            visibleTable: tableType.spending
+            visibleTable: tableType.spending,
+
+            year: year,
+            month: month
         };
     }
 
     componentDidMount() {
-        this.refreshTable(this.year, this.month);
-        this.refreshChart(this.year, this.month);
+        this.refreshTable();
+        this.refreshChart();
     }
 
     getYearMonth(date) {
@@ -72,13 +76,6 @@ class Spending extends React.PureComponent {
         return map;
     }
 
-    dateToString(date) {
-        let localDate = new Date(date);
-        localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset());
-
-        return localDate.toISOString().slice(0, 10);
-    }
-
     successResult(result) {
         if (result.status) {
             return result;
@@ -88,18 +85,23 @@ class Spending extends React.PureComponent {
     }
 
     handleChangePeriod(period) {
-        this.year = period.year;
-        this.month = period.month;
+        this.setState({
+            year: period.year,
+            month: period.month
+        }, () => {
+            this.refreshTable();
+            this.refreshChart();
 
-        this.refreshTable(this.year, this.month);
-        this.refreshChart(this.year, this.month);
-
-        if (this.state.showIncoming) {
-            this.refreshTableIncoming(this.year, this.month);
-        }
+            if (this.state.showIncoming) {
+                this.refreshTableIncoming();
+            }
+        });
     }
 
-    refreshTable(year, month) {
+    refreshTable() {
+        const year = this.state.year;
+        const month = this.state.month;
+
         HttpClient.getjson(this.props.getSpendingUrl + '/' + year + '/' + month)
             .then(this.successResult)
             .then(result => {
@@ -110,7 +112,10 @@ class Spending extends React.PureComponent {
             });
     }
 
-    refreshTableIncoming(year, month) {
+    refreshTableIncoming() {
+        const year = this.state.year;
+        const month = this.state.month;
+
         HttpClient.getjson(this.props.getIncomingUrl + '/' + year + '/' + month)
             .then(this.successResult)
             .then(result => {
@@ -120,7 +125,10 @@ class Spending extends React.PureComponent {
             });
     }
 
-    refreshChart(year, month) {
+    refreshChart() {
+        const year = this.state.year;
+        const month = this.state.month;
+
         HttpClient.getjson('/spending/stat/' + year + '/' + month)
             .then(this.successResult)
             .then(result => {
@@ -144,7 +152,7 @@ class Spending extends React.PureComponent {
         }
 
         if (!this.state.showIncoming) {
-            this.refreshTableIncoming(this.year, this.month);
+            this.refreshTableIncoming();
         }
 
         this.setState({
@@ -154,12 +162,19 @@ class Spending extends React.PureComponent {
     }
 
     handleAddSpending(spending) {
-        HttpClient.postjson(this.props.saveSpendingUrl, spending)
+        const data = {
+            date: spending.date,
+            sum: spending.sum,
+            text: spending.text,
+            category_id: spending.category_id
+        };
+
+        HttpClient.postjson(this.props.saveSpendingUrl, data)
             .then(this.successResult)
             .then(result => {
                 const curDate = {
-                    year: this.year,
-                    month: this.month
+                    year: this.state.year,
+                    month: this.state.month
                 };
 
                 const newDate = this.getYearMonth(spending.date);
@@ -175,7 +190,7 @@ class Spending extends React.PureComponent {
                 newItems.set(spending.id, spending);
                 this.setState({items: newItems});
 
-                this.refreshChart(this.year, this.month);
+                this.refreshChart();
             })
             .catch(error => alert('Произошла ошибка ' + error));
     }
@@ -196,7 +211,7 @@ class Spending extends React.PureComponent {
                 newItems.set(spending.id, spending);
                 this.setState({items: newItems});
 
-                this.refreshChart(this.year, this.month);
+                this.refreshChart();
             })
             .catch(error => alert('Произошла ошибка ' + error));
     }
@@ -216,20 +231,24 @@ class Spending extends React.PureComponent {
                 newItems.delete(id);
                 this.setState({items: newItems});
 
-                this.refreshChart(this.year, this.month);
+                this.refreshChart();
             })
-            .catch(error => {
-                alert('Произошла ошибка ' + error);
-            });
+            .catch(error => alert('Произошла ошибка ' + error));
     }
 
     handleAddIncoming(incoming) {
-        HttpClient.postjson(this.props.saveIncomingUrl, incoming)
+        const data = {
+            date: incoming.date,
+            sum: incoming.sum,
+            text: incoming.text
+        };
+
+        HttpClient.postjson(this.props.saveIncomingUrl, data)
             .then(this.successResult)
             .then(result => {
                 const curDate = {
-                    year: this.year,
-                    month: this.month
+                    year: this.state.year,
+                    month: this.state.month
                 };
 
                 const newDate = this.getYearMonth(incoming.date);
@@ -281,9 +300,7 @@ class Spending extends React.PureComponent {
                 newItems.delete(id);
                 this.setState({incomingItems: newItems});
             })
-            .catch(error => {
-                alert('Произошла ошибка ' + error);
-            });
+            .catch(error => alert('Произошла ошибка ' + error));
     }
 
     renderIncoming() {
@@ -296,7 +313,7 @@ class Spending extends React.PureComponent {
         return (
             <IncomingTable
                 items={items}
-                curDate={this.dateToString(this.props.curDate)}
+                curDate={dateToString(this.props.curDate)}
                 onAdd={this.handleAddIncoming}
                 onEdit={this.handleEditIncoming}
                 onSave={this.handleSaveIncoming}
@@ -311,7 +328,7 @@ class Spending extends React.PureComponent {
             <SpendingTable
                 items={items}
                 categories={this.state.categories}
-                curDate={this.dateToString(this.props.curDate)}
+                curDate={dateToString(this.props.curDate)}
                 onAdd={this.handleAddSpending}
                 onEdit={this.handleEditSpending}
                 onSave={this.handleSaveSpending}
@@ -332,10 +349,6 @@ class Spending extends React.PureComponent {
             ? `Расход за месяц: ${balance}`
             : `Доход за месяц: ${balance}`;
 
-        // берём иммено из props что-бы не перерисовывать PeriodSelector каждый раз
-        const year = this.props.curDate.getFullYear();
-        const month = this.props.curDate.getMonth() + 1;
-
         return (
             <React.Fragment>
                 <div className="row mt-4 mb-3">
@@ -343,14 +356,14 @@ class Spending extends React.PureComponent {
                         <p>{balanceText}</p>
                     </div>
                 </div>
-                <div className="row mb-3 ">
-                    <div className="col-sm-4">
+                <div className="row">
+                    <div className="col-sm-4 mb-3">
                         <PeriodSelector
-                            year={year}
-                            month={month}
+                            year={this.state.year}
+                            month={this.state.month}
                             onChange={this.handleChangePeriod} />
                     </div>
-                    <div className="col-sm-4">
+                    <div className="col-sm-4 mb-3">
                         <div className="d-flex">
                             <div className="ml-sm-auto">
                                 <Switcher currentTable={this.state.visibleTable} onSwitch={this.handleSwitchTable}/>

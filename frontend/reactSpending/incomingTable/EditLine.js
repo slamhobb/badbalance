@@ -3,7 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import RectDatePicker from '../../datepicker/rectDatePicker';
+import RectDatePicker from '../../datepicker/reactDatePicker';
 
 import { CheckIcon } from '../../svg/Svg';
 
@@ -17,9 +17,9 @@ class EditLine extends React.PureComponent {
         this.handleSave = this.handleSave.bind(this);
 
         this.state = {
-            date: this.props.date,
-            sum: this.props.sum,
-            text: this.props.text,
+            date: this.props.item.date,
+            sum: this.props.item.sum,
+            text: this.props.item.text,
         };
     }
 
@@ -42,7 +42,7 @@ class EditLine extends React.PureComponent {
     }
 
     handleSave() {
-        const id = this.props.id;
+        const id = this.props.item.id;
 
         const spending = Object.assign({id: id}, this.state);
 
@@ -55,7 +55,7 @@ class EditLine extends React.PureComponent {
                 <td>
                     <div className="incoming_date">
                         <RectDatePicker className="form-control"
-                            defaultValue={this.props.date} onChange={this.handleChangeDate} />
+                            defaultValue={this.props.item.date} onChange={this.handleChangeDate} />
                     </div>
                 </td>
                 <td>
@@ -83,10 +83,12 @@ class EditLine extends React.PureComponent {
 }
 
 EditLine.propTypes = {
-    id: PropTypes.number.isRequired,
-    date: PropTypes.string.isRequired,
-    sum: PropTypes.number.isRequired,
-    text: PropTypes.string.isRequired,
+    item: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        date: PropTypes.string.isRequired,
+        sum: PropTypes.number.isRequired,
+        text: PropTypes.string.isRequired
+    }),
     onSave: PropTypes.func.isRequired
 };
 

@@ -96,9 +96,7 @@ class Category extends React.PureComponent {
                 newItems.delete(id);
                 this.setState({items: newItems});
             })
-            .catch(error => {
-                alert('Произошла ошибка ' + error);
-            });
+            .catch(error => alert('Произошла ошибка ' + error));
     }
 
     render() {
@@ -106,12 +104,9 @@ class Category extends React.PureComponent {
 
         return (
             <React.Fragment>
-                <div className="row mt-4 mb-3">
-                    <div className="col-sm-4">
-                        <p>Редактирование списка категорий</p>
-                    </div>
-                </div>
-                <div className="row">
+                <h2 className="mt-4">Редактирование списка категорий</h2>
+
+                <div className="row mt-4">
                     <div className="col-sm-4">
                         <AddCategoryForm onAdd={this.handleAdd}/>
                         <CategoryTable

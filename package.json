@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/slamhobb/badbalance#readme",
   "devDependencies": {
+    "autoprefixer": "^9.1.5",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",
@@ -29,6 +30,7 @@
     "eslint-plugin-react": "^7.10.0",
     "mini-css-extract-plugin": "^0.4.1",
     "optimize-css-assets-webpack-plugin": "^5.0.0",
+    "postcss-loader": "^3.0.0",
     "style-loader": "^0.21.0",
     "svg-inline-loader": "^0.8.0",
     "uglifyjs-webpack-plugin": "^1.2.7",

@@ -46,6 +46,7 @@ create table auth_token(
 create index ix_auth_token_id on auth_token(id);
 create unique index ux_auth_token_token_user_id on auth_token(token, user_id);
 
+
 drop table if exists incoming;
 create table incoming(
   id integer primary key autoincrement,
@@ -57,3 +58,28 @@ create table incoming(
 
 create index ix_incoming_id on incoming(id);
 create index ix_incoming_user_id_date on incoming(user_id, date);
+
+
+drop table if exists debt;
+create table debt(
+  id integer primary key autoincrement,
+  user_id integer not null,
+  name text not null,
+  closed boolean not null
+);
+
+create index ix_debt_id on debt(id);
+create index ix_debt_user_id on debt(user_id);
+
+
+drop table if exists debt_item;
+create table debt_item(
+  id integer primary key autoincrement,
+  debt_id integer not null,
+  date text not null,
+  sum integer not null,
+  text text not null
+);
+
+create index ix_debt_item_id on debt_item(id);
+create index ix_debt_item_debt_id on debt_item(debt_id);

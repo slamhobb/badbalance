@@ -31,5 +31,6 @@ def create_app():
     app.register_blueprint(statistic, url_prefix='/statistic')
     app.register_blueprint(category, url_prefix='/category')
     app.register_blueprint(incoming, url_prefix='/incoming')
+    app.register_blueprint(debt, url_prefix='/debt')
 
     return app

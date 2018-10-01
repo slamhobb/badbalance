@@ -56,6 +56,7 @@ def save():
 def remove():
     user_id = g.user_context.user_id
 
+    # TODO: использовать форму
     category_id = request.get_json()['id']
 
     spending_service.delete_category(category_id, user_id)

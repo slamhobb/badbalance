@@ -11,37 +11,32 @@ class PeriodSelector extends React.PureComponent {
     constructor(props) {
         super(props);
 
+        const nextYear = new Date().getFullYear() + 1;
+
+        while (years[years.length-1] !== nextYear) {
+            const last = years[years.length-1];
+
+            years.push(last + 1);
+        }
+
         this.handleChangeYear = this.handleChangeYear.bind(this);
         this.handleChangeMonth = this.handleChangeMonth.bind(this);
-
-        this.state = {
-            year: this.props.year,
-            month: this.props.month
-        };
     }
 
     handleChangeYear(e) {
         const year = parseInt(e.target.value);
 
-        this.setState({
-            year: year
-        });
-
         this.props.onChange({
             year: year,
-            month: this.state.month
+            month: this.props.month
         });
     }
 
     handleChangeMonth(e) {
         const month = parseInt(e.target.value);
 
-        this.setState({
-            month: month
-        });
-
         this.props.onChange({
-            year: this.state.year,
+            year: this.props.year,
             month: month
         });
     }
@@ -52,11 +47,11 @@ class PeriodSelector extends React.PureComponent {
 
         return (
             <div className="form-inline">
-                <select className="form-control" value={this.state.year} onChange={this.handleChangeYear}>
+                <select className="form-control" value={this.props.year} onChange={this.handleChangeYear}>
                     {yearsList}
                 </select>
                 &nbsp;
-                <select className="form-control" value={this.state.month} onChange={this.handleChangeMonth}>
+                <select className="form-control" value={this.props.month} onChange={this.handleChangeMonth}>
                     {monthList}
                 </select>
             </div>

@@ -43,6 +43,7 @@ def save():
 def remove():
     user_id = g.user_context.user_id
 
+    # TODO: использовать форму
     incoming_id = request.get_json()['id']
 
     incoming_service.delete(incoming_id, user_id)

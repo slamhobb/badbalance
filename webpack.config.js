@@ -6,8 +6,9 @@ const path = require('path');
 const webpack = require('webpack');
 
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const AutoPrefixer = require('autoprefixer');
 
 module.exports = {
     mode: NODE_ENV,
@@ -16,7 +17,8 @@ module.exports = {
 
     entry: {
         reactSpending: './reactSpending/index.js',
-        reactCategory: './reactCategory/index.js'
+        reactCategory: './reactCategory/index.js',
+        debt: './debt/index.js'
     },
 
     output: {
@@ -47,7 +49,17 @@ module.exports = {
             include: path.resolve(__dirname, 'frontend'),
             use: [
                 MiniCssExtractPlugin.loader,
-                "css-loader"
+                'css-loader',
+                {
+                    loader: 'postcss-loader',
+                    options: {
+                        ident: 'postcss',
+                        sourceMap: NODE_ENV === 'development',
+                        plugins: [
+                            AutoPrefixer
+                        ]
+                    }
+                }
             ]
         }, {
             test: /\.svg$/,

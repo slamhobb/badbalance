@@ -1,4 +1,4 @@
-from spending_app.forms.baseForm import BaseForm
+from spending_app.forms.base_form import BaseForm
 from wtforms import DateField, StringField, IntegerField
 from wtforms.validators import DataRequired
 

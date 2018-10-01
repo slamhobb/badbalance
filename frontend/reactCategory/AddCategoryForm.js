@@ -44,7 +44,7 @@ class AddCategoryForm extends React.PureComponent {
                     <tr>
                         <td>
                             <div className="category_name">
-                                <input type="text" className="form-control" placeholder="Название"
+                                <input type="text" className="form-control" placeholder="Новая категория"
                                     value={this.state.name} onChange={this.handleChangeName} />
                             </div>
                         </td>

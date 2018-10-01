@@ -1,18 +1,17 @@
 {% extends 'shared/layout.html' %}
 
 {% block styles %}
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='build/reactSpending.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='build/debt.css') }}">
 {% endblock %}
 
 {% block scripts %}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
-  <script src="{{ url_for('static', filename='build/reactSpending.js') }}"></script>
+  <script src="{{ url_for('static', filename='build/debt.js') }}"></script>
 {% endblock %}
 
 {% block menu %}
   <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link active">Расходы</a>
+      <a class="nav-link" href="/spending">Расходы</a>
     </li>
     <li class="nav-item">
       <a class="nav-link disabled" href="/statistic">Статистика</a>
@@ -21,11 +20,11 @@
       <a class="nav-link" href="/category">Категории</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="/debt">Долги</a>
+      <a class="nav-link active" href="/debt">Долги</a>
     </li>
   </ul>
 {% endblock %}
 
 {% block body %}
-  <div id="spending"></div>
+  <div id="debt-js"></div>
 {% endblock %}
