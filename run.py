@@ -1,7 +1,9 @@
 import os
 
-from spending_app import app
+from spending_app import create_app
 from spending_app.dao.base_dao import BaseDao
+
+app = create_app()
 
 if __name__ == '__main__':
     basedir = os.path.abspath(os.path.dirname(__file__))

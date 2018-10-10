@@ -1,1 +1,1 @@
-from spending_app.main import app
+from .main import create_app

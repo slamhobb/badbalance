@@ -1,3 +1,4 @@
 import inject
 
-inject.configure()
+def configure_inject():
+    inject.configure()
