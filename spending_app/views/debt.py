@@ -26,6 +26,14 @@ def index():
     return render_template('debt/index.html')
 
 
+@mod.route('/list', methods=['GET'])
+@login_required
+def get_debts():
+    list = debt_service.get_items_for_not_closed_debts(g.user_context.user_id)
+
+    return jsonify(status=True, items=list)
+
+
 @mod.route('/add', methods=['POST'])
 def create_debt():
     form = CreateDebtForm()
@@ -39,6 +47,22 @@ def create_debt():
     debt_id = debt_service.add_debt(user_id, name)
 
     return jsonify(status=True, id=debt_id)
+
+
+@mod.route('/remove', methods=['POST'])
+@login_required
+def delete_debt():
+    form = DeleteDebtForm()
+
+    if not form.validate_on_submit():
+        return jsonify(status=False, message=form.errors)
+
+    user_id = g.user_context.user_id
+    debt_id = form.data['id']
+
+    debt_service.delete_debt(debt_id, user_id)
+
+    return jsonify(status=True)
 
 
 @mod.route('/add_item', methods=['POST'])
@@ -60,22 +84,6 @@ def save_debt_item():
     return jsonify(status=True, id=debt_item_id)
 
 
-@mod.route('/remove', methods=['POST'])
-@login_required
-def delete_debt():
-    form = DeleteDebtForm()
-
-    if not form.validate_on_submit():
-        return jsonify(status=False, message=form.errors)
-
-    user_id = g.user_context.user_id
-    debt_id = form.data['id']
-
-    debt_service.delete_debt(debt_id, user_id)
-
-    return jsonify(status=True)
-
-
 @mod.route('/remove_item', methods=['POST'])
 @login_required
 def delete_debt_item():
@@ -91,11 +99,3 @@ def delete_debt_item():
     debt_service.delete_debt_item(debt_item_id, debt_id, user_id)
 
     return jsonify(status=True)
-
-
-@mod.route('/list', methods=['GET'])
-@login_required
-def get_debts():
-    list = debt_service.get_items_for_not_closed_debts(g.user_context.user_id)
-
-    return jsonify(status=True, items=list)

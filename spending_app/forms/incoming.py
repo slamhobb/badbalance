@@ -8,3 +8,7 @@ class IncomingForm(BaseForm):
     date = DateField('Дата', [DataRequired()])
     sum = IntegerField('Сумма', [DataRequired()])
     text = StringField('Описание', [DataRequired()])
+
+
+class DeleteIncomingForm(BaseForm):
+    id = IntegerField('Id')

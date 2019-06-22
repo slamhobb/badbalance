@@ -1,13 +1,13 @@
 import inject
 
-from flask import render_template, g, jsonify, request, Blueprint
+from flask import render_template, g, jsonify, Blueprint
 
 from spending_app.infrastructure.web import *
 from spending_app.infrastructure.auth import login_required
 from spending_app.bussiness.auth_service import AuthService
 from spending_app.bussiness.spending_service import SpendingService
 from spending_app.domain.category import Category
-from spending_app.forms.spending import CategoryForm
+from spending_app.forms.spending import CategoryForm, DeleteCategoryForm
 
 mod = Blueprint('category', __name__)
 
@@ -42,6 +42,9 @@ def get_list():
 def save():
     form = CategoryForm()
 
+    if not form.validate_on_submit():
+        return jsonify(status=False, message=form.errors)
+
     adict = dict(form.data)
     adict['user_id'] = g.user_context.user_id
 
@@ -54,10 +57,13 @@ def save():
 
 @mod.route('/delete', methods=['POST'])
 def remove():
-    user_id = g.user_context.user_id
+    form = DeleteCategoryForm()
 
-    # TODO: использовать форму
-    category_id = request.get_json()['id']
+    if not form.validate_on_submit():
+        return jsonify(status=False, message=form.errors)
+
+    user_id = g.user_context.user_id
+    category_id = form.data['id']
 
     spending_service.delete_category(category_id, user_id)
 

@@ -11,6 +11,14 @@ class SpendingForm(BaseForm):
     category_id = IntegerField('Категория', [DataRequired()])
 
 
+class DeleteSpendingForm(BaseForm):
+    id = IntegerField('Id')
+
+
 class CategoryForm(BaseForm):
     id = IntegerField('Id')
     name = StringField('Название', [DataRequired()])
+
+
+class DeleteCategoryForm(BaseForm):
+    id = IntegerField('Id')

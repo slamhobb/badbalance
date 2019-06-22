@@ -78,7 +78,7 @@ class Debt extends React.Component {
                 const debtId = parseInt(result.id);
 
                 const newDebt = {
-                    id: debtId,
+                    debt_id: debtId,
                     name: data.name,
                     items: new Map()
                 };
@@ -96,8 +96,6 @@ class Debt extends React.Component {
         const data = {
             id: debtId
         };
-
-        alert(debtId);
 
         HttpClient.postjson(this.props.deleteDebtUrl, data)
             .then(this.successResult)

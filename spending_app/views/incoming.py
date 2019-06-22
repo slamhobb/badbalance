@@ -1,13 +1,13 @@
 import inject
 
-from flask import request, Blueprint, jsonify, g
+from flask import Blueprint, jsonify, g
 
 from spending_app.infrastructure.web import get_token
 from spending_app.infrastructure.auth import login_required
 from spending_app.bussiness.incoming_service import IncomingService
 from spending_app.bussiness.auth_service import AuthService
 from spending_app.domain.incoming import Incoming
-from spending_app.forms.incoming import IncomingForm
+from spending_app.forms.incoming import IncomingForm, DeleteIncomingForm
 
 mod = Blueprint('incoming', __name__)
 
@@ -41,10 +41,13 @@ def save():
 @mod.route('/remove', methods=['POST'])
 @login_required
 def remove():
-    user_id = g.user_context.user_id
+    form = DeleteIncomingForm()
 
-    # TODO: использовать форму
-    incoming_id = request.get_json()['id']
+    if not form.validate_on_submit():
+        return jsonify(status=False, message=form.errors)
+
+    user_id = g.user_context.user_id
+    incoming_id = form.data['id']
 
     incoming_service.delete(incoming_id, user_id)
 

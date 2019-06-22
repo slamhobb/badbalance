@@ -1,13 +1,13 @@
 import inject
 
-from flask import render_template, request, Blueprint, jsonify, g
+from flask import render_template, Blueprint, jsonify, g
 
 from spending_app.infrastructure.web import get_token
 from spending_app.infrastructure.auth import login_required
 from spending_app.bussiness.spending_service import SpendingService
 from spending_app.bussiness.auth_service import AuthService
 from spending_app.domain.spending import Spending
-from spending_app.forms.spending import SpendingForm
+from spending_app.forms.spending import SpendingForm, DeleteSpendingForm
 
 mod = Blueprint('spending', __name__)
 
@@ -60,10 +60,13 @@ def save_spending():
 @mod.route('/remove', methods=['POST'])
 @login_required
 def remove_spending():
-    user_id = g.user_context.user_id
+    form = DeleteSpendingForm()
 
-    # TODO: использовать форму
-    spending_id = request.get_json()['id']
+    if not form.validate_on_submit():
+        return jsonify(status=False, message=form.errors)
+
+    user_id = g.user_context.user_id
+    spending_id = form.data['id']
 
     spending_service.delete(spending_id, user_id)
 
