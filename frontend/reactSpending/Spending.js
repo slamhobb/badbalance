@@ -207,8 +207,22 @@ class Spending extends React.PureComponent {
         HttpClient.postjson(this.props.saveSpendingUrl, data)
             .then(this.successResult)
             .then(() => {
+                const curDate = {
+                    year: this.state.year,
+                    month: this.state.month
+                };
+
+                const newDate = this.getYearMonth(spending.date);
+
                 const newItems = new Map(this.state.items);
-                newItems.set(spending.id, spending);
+
+                // если элемент переходит в другой месяц, то удаляем его
+                if (curDate.year !== newDate.year || curDate.month !== newDate.month) {
+                    newItems.delete(spending.id);
+                } else {
+                    newItems.set(spending.id, spending);
+                }
+
                 this.setState({items: newItems});
 
                 this.refreshChart();
@@ -278,8 +292,23 @@ class Spending extends React.PureComponent {
         HttpClient.postjson(this.props.saveIncomingUrl, data)
             .then(this.successResult)
             .then(() => {
+                const curDate = {
+                    year: this.state.year,
+                    month: this.state.month
+                };
+
+                const newDate = this.getYearMonth(incoming.date);
+
                 const newItems = new Map(this.state.incomingItems);
-                newItems.set(incoming.id, incoming);
+
+                // если элемент переходит в другой месяц, то удаляем его
+                if (curDate.year !== newDate.year || curDate.month !== newDate.month) {
+                    newItems.delete(incoming.id);
+                } else {
+                    newItems.set(incoming.id, incoming);
+                }
+
+
                 this.setState({incomingItems: newItems});
             })
             .catch(error => alert('Произошла ошибка ' + error));
