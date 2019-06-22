@@ -16,6 +16,7 @@ from spending_app.views.redirect import mod as redirect
 from spending_app.views.category import mod as category
 from spending_app.views.incoming import mod as incoming
 from spending_app.views.debt import mod as debt
+from spending_app.views.tool import mod as tool
 
 def create_app():
     app = Flask(__name__)
@@ -32,5 +33,6 @@ def create_app():
     app.register_blueprint(category, url_prefix='/category')
     app.register_blueprint(incoming, url_prefix='/incoming')
     app.register_blueprint(debt, url_prefix='/debt')
+    app.register_blueprint(tool, url_prefix='/tool')
 
     return app
