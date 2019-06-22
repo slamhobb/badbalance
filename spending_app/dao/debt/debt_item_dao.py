@@ -14,6 +14,10 @@ class DebtItemDao(BaseDao):
         sql = self.get_sql('get_debt_items_by_user_id.sql')
         return self.query_all(DebtItem, sql, dict(user_id=user_id))
 
+    def count_items_by_debt_id(self, debt_id, user_id):
+        sql = self.get_sql('count_items_by_debt_id.sql')
+        return self.query_one_field(int, sql, dict(debt_id=debt_id, user_id=user_id))
+
     def delete_item(self, id):
         sql = self.get_sql('delete_debt_item.sql')
         self.execute(sql, dict(id=id))

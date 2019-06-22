@@ -24,8 +24,13 @@ class DebtService:
         return 0
 
     def delete_debt(self, debt_id, user_id):
-        # TODO: перед удалением проверить что нет debt_item внутри
-        self.debt_dao.delete(debt_id, user_id)
+        count = self.debt_item_dao.count_items_by_debt_id(debt_id, user_id)
+
+        if count == 0:
+            self.debt_dao.delete(debt_id, user_id)
+            return True
+
+        return False
 
     def delete_debt_item(self, debt_item_id, debt_id, user_id):
         debt = self.debt_dao.get_by_id(debt_id, user_id)

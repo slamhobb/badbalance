@@ -60,7 +60,10 @@ def delete_debt():
     user_id = g.user_context.user_id
     debt_id = form.data['id']
 
-    debt_service.delete_debt(debt_id, user_id)
+    success = debt_service.delete_debt(debt_id, user_id)
+
+    if not success:
+        return jsonify(status=False, message='Сначала удалите все записи внутри долга')
 
     return jsonify(status=True)
 
