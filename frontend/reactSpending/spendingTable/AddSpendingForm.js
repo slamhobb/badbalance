@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import CategoriesList from '../CategoriesOptions';
 
-import ReactDatePicker from '../../datepicker/reactDatePicker';
+import ReactDatePicker from '../../datepicker';
 
 import { CheckIcon } from '../../svg/Svg';
 

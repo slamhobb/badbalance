@@ -1,17 +1,32 @@
 'use strict';
 
-import Flatpickr from './flatpickr';
-import l10ns from './ru.js';
-import './flatpickr.min.css';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-Flatpickr.localize(l10ns.ru);
+import flatpickr from './flatpickr';
 
-const defaultOptions = {
-    altInput: true,
-    altFormat: 'D d'
+class ReactDatePicker extends React.PureComponent {
+    componentDidMount() {
+        this.datePicker = new flatpickr(this.inputElement, {
+            onChange: (selectedDates, dateStr) => this.props.onChange(dateStr)
+        });
+    }
+
+    componentWillUnmount() {
+        this.datePicker.destroy();
+    }
+
+    render() {
+        return <input className={this.props.className} defaultValue={this.props.defaultValue}
+            placeholder={this.props.placeholder} ref={e => this.inputElement = e} />;
+    }
+}
+
+ReactDatePicker.propTypes = {
+    defaultValue: PropTypes.string,
+    className: PropTypes.string,
+    onChange: PropTypes.func,
+    placeholder: PropTypes.string
 };
 
-Object.assign(Flatpickr.defaultConfig, defaultOptions);
-
-export default Flatpickr;
-
+export default ReactDatePicker;

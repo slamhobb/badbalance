@@ -3,7 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import RectDatePicker from '../../datepicker/reactDatePicker';
+import RectDatePicker from '../../datepicker';
 
 import { CheckIcon } from '../../svg/Svg';
 

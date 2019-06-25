@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "./node_modules/.bin/webpack --watch",
-    "dev": "./node_modules/.bin/webpack",
-    "prod": "NODE_ENV='production' ./node_modules/.bin/webpack"
+    "watch": "./node_modules/.bin/webpack",
+    "prod": "NODE_ENV='production' ./node_modules/.bin/webpack",
+    "lint": "./node_modules/.bin/eslint -c .eslintrc.json frontend/"
   },
   "repository": {
     "type": "git",

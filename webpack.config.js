@@ -3,7 +3,6 @@
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
 const path = require('path');
-const webpack = require('webpack');
 
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -26,6 +25,8 @@ module.exports = {
         filename: '[name].js'
     },
 
+    watch: NODE_ENV === 'development',
+
     watchOptions: {
         aggregateTimeout: 100
     },
@@ -33,7 +34,6 @@ module.exports = {
     devtool: NODE_ENV === 'development' ? 'inline-source-map' : false,
 
     plugins: [
-        new webpack.NoEmitOnErrorsPlugin(),
         new MiniCssExtractPlugin({
             filename: '[name].css'
         })
