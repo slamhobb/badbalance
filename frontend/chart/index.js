@@ -4,7 +4,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 class BadChart extends React.PureComponent {
-    componentWillMount() {
+    constructor(props) {
+        super(props);
+
         this.inst = undefined;
     }
 
