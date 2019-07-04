@@ -40,5 +40,9 @@ def login():
 
 @mod.route('/logout')
 def logout():
+    token = get_token()
+    user_id = g.user_context.user_id
+
+    auth_service.logout(token, user_id)
     remove_token()
     return redirect(url_for('registration.index'))

@@ -40,6 +40,9 @@ class AuthService:
 
         return UserContext(auth_user.user_id, auth_user.login, True)
 
+    def logout(self, token, user_id):
+        self.token_dao.delete_token(token, user_id)
+
     def _get_auth_user(self, token):
         auth_user = self.cache.get_value(token)
 
