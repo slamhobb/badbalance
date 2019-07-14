@@ -23,18 +23,20 @@ class TableFilter extends React.PureComponent {
                 </td>
                 <td>
                     <div className="spending_sum text-right">
-
+                        {this.props.filteredSum}
                     </div>
                 </td>
                 <td>
                     <div className="spending_text">
                         <input className="form-control form-control-sm" type="text"
-                            value={this.props.filter} onChange={this.props.onChange} />
+                            placeholder="Фильтр описания"
+                            value={this.props.textFilter} onChange={this.props.onChange} />
                     </div>
                 </td>
                 <td>
                     <div className="spending_category">
                         <input className="form-control form-control-sm" type="text"
+                            placeholder="Фильтр категории"
                             value={this.props.categoryFilter} onChange={this.props.onChangeCategoryFilter} />
                     </div>
                 </td>
@@ -50,8 +52,11 @@ class TableFilter extends React.PureComponent {
 
 TableFilter.propTypes = {
     visible: PropTypes.bool.isRequired,
-    filter: PropTypes.string.isRequired,
+    textFilter: PropTypes.string.isRequired,
     categoryFilter: PropTypes.string.isRequired,
+
+    filteredSum: PropTypes.number.isRequired,
+
     onChange: PropTypes.func.isRequired,
     onChangeCategoryFilter: PropTypes.func.isRequired
 };

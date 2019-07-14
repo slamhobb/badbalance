@@ -370,9 +370,7 @@ class Spending extends React.PureComponent {
             ? Array.from(this.state.items.values())
             : Array.from(this.state.incomingItems.values());
 
-        const balance = items.reduce((sum, item) => {
-            return sum + item.sum;
-        }, 0);
+        const balance = items.reduce((sum, item) => sum + item.sum, 0);
 
         const balanceText = this.state.visibleTable === tableType.spending
             ? `Расход за месяц: ${balance}`

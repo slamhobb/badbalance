@@ -101,7 +101,12 @@ class IncomingTable extends React.PureComponent {
 }
 
 IncomingTable.propTypes = {
-    items: PropTypes.array.isRequired,
+    items: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        date: PropTypes.string.isRequired,
+        sum: PropTypes.number.isRequired,
+        text: PropTypes.string.isRequired
+    })).isRequired,
     curDate: PropTypes.string.isRequired,
     onAdd: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,

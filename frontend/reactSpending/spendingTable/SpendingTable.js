@@ -140,6 +140,8 @@ class SpendingTable extends React.PureComponent {
         // т.к. при форматировании проставляется дата
         items = this.filterItems(items);
 
+        const filteredSum = items.reduce((acc, x) => acc + x.sum, 0);
+
         const formattedItems = this.formatItems(items);
 
         const listItems = formattedItems.map(s => this.renderLine(s, categories));
@@ -153,8 +155,11 @@ class SpendingTable extends React.PureComponent {
                 <table className="spending_table table table-bordered table-striped table-md">
                     <thead>
                         <Header onToggleFilter={this.handleToggle}/>
-                        <TableFilter visible={this.state.filterEnable}
-                            filter={this.state.filter} categoryFilter={this.state.categoryFilter}
+                        <TableFilter
+                            visible={this.state.filterEnable}
+                            textFilter={this.state.filter}
+                            categoryFilter={this.state.categoryFilter}
+                            filteredSum={filteredSum}
                             onChange={this.handleChangeFilter}
                             onChangeCategoryFilter={this.handleChangeCategoryFilter} />
                     </thead>
@@ -168,7 +173,13 @@ class SpendingTable extends React.PureComponent {
 }
 
 SpendingTable.propTypes = {
-    items: PropTypes.array.isRequired,
+    items: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        date: PropTypes.string.isRequired,
+        sum: PropTypes.number.isRequired,
+        text: PropTypes.string.isRequired,
+        category_id: PropTypes.number.isRequired
+    })).isRequired,
     categories: PropTypes.instanceOf(Map).isRequired,
     curDate: PropTypes.string.isRequired,
     onAdd: PropTypes.func.isRequired,
