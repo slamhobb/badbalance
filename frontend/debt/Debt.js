@@ -7,6 +7,13 @@ import HttpClient from '../core/httpClient';
 
 import DebtPanel from './DebtPanel';
 
+import { IncomeIcon, OutcomeIcon } from '../svg/Svg';
+
+const addState = {
+    INIT: 0,
+    ADD: 1
+};
+
 class Debt extends React.Component {
     constructor(props) {
         super(props);
@@ -17,7 +24,12 @@ class Debt extends React.Component {
         this.handleDeleteDebt = this.handleDeleteDebt.bind(this);
         this.handleDeleteDebtItem = this.handleDeleteDebtItem.bind(this);
 
+        this.handleShowAdd = this.handleShowAdd.bind(this);
+
+        this.renderAddDebt = this.renderAddDebt.bind(this);
+
         this.state = {
+            addState: addState.INIT,
             debtName: '',
             items: new Map()
         };
@@ -86,7 +98,9 @@ class Debt extends React.Component {
                 newItems.set(debtId, newDebt);
 
                 this.setState({
-                    items: newItems
+                    debtName: '',
+                    items: newItems,
+                    addState: addState.INIT
                 });
             })
             .catch(error => alert('Произошла ошибка ' + error));
@@ -168,6 +182,43 @@ class Debt extends React.Component {
             .catch(error => alert('Произошла ошибка ' + error));
     }
 
+    handleShowAdd(e) {
+        e.preventDefault();
+
+        this.setState({
+            addState: addState.ADD
+        });
+    }
+
+    renderAddDebt() {
+        if (this.state.addState === addState.INIT) {
+            return (
+                <div className="row mt-4">
+                    <div className="col-md-4">
+                        <a href="#" onClick={this.handleShowAdd}>Добавить нового человека</a>
+                    </div>
+                </div>
+            );
+        } else {
+            return (
+                <div className="row mt-4">
+                    <div className="col-md-4">
+                        <div className="input-group">
+                            <input type="text" className="form-control" placeholder="Новая группа"
+                                value={this.state.debtName} onChange={this.handleChangeDebtName}/>
+                            <div className="input-group-append">
+                                <button type="submit" className="btn btn-primary"
+                                    onClick={this.handleAddDebt}>
+                                    Добавить
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+    }
+
     render() {
         const debts = Array.from(this.state.items.values());
         const debtItems = debts.map(x => Object.assign({}, x, { items: Array.from(x.items.values()) }));
@@ -176,22 +227,18 @@ class Debt extends React.Component {
             <React.Fragment>
                 <h2 className="mt-4">Управление долгами</h2>
 
-                <div className="row mt-4">
-                    <div className="col-md-4">
-                        <div className="card p-2">
-                            <div className="input-group">
-                                <input type="text" className="form-control" placeholder="Новая группа"
-                                    value={this.state.debtName} onChange={this.handleChangeDebtName}/>
-                                <div className="input-group-append">
-                                    <button type="submit" className="btn btn-primary"
-                                        onClick={this.handleAddDebt}>
-                                        Добавить
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                <div className="row">
+                    <div className="col-md-4 d-flex align-items-center">
+                        <span className="text-success">1</span>
+                        <OutcomeIcon className="d-flex align-items-end mx-1 text-success"/>
+                        <span className="text-success">- Дал</span>
+                        <span className="ml-3">+1</span>
+                        <IncomeIcon className="d-flex align-items-center mx-1"/>
+                        <span>- Взял</span>
                     </div>
                 </div>
+
+                {this.renderAddDebt()}
 
                 {debtItems.map(x =>
                     <DebtPanel key={x.debt_id} name={x.name} debt_id={x.debt_id} items={x.items}

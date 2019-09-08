@@ -7,32 +7,57 @@ import check from './check.svg';
 import pencil from './pencil.svg';
 import trashcan from './trashcan.svg';
 import filter from './settings.svg';
+import chevronRight from './chevron-right.svg';
+import chevronDown from './chevron-down.svg';
+import income from './income.svg';
+import outcome from './outcome.svg';
 
 function Svg(props) {
+    const {icon, className, ...rest} = props;
+
+    const cl = ["octicon", className].join(" ");
+
     return (
-        <span className="octicon"
-            dangerouslySetInnerHTML={{__html: props.icon}} />
+        <span className={cl} {...rest}
+            dangerouslySetInnerHTML={{__html: icon}} />
     );
 }
 
-function CheckIcon() {
-    return <Svg icon={check} />;
+function CheckIcon(props) {
+    return <Svg icon={check} {...props} />;
 }
 
-function PencilIcon() {
-    return <Svg icon={pencil} />;
+function PencilIcon(props) {
+    return <Svg icon={pencil} {...props} />;
 }
 
-function TrashcanIcon() {
-    return <Svg icon={trashcan} />;
+function TrashcanIcon(props) {
+    return <Svg icon={trashcan} {...props} />;
 }
 
-function FilterIcon() {
-    return <Svg icon={filter} />;
+function FilterIcon(props) {
+    return <Svg icon={filter} {...props} />;
+}
+
+function ChevronRightIcon(props) {
+    return <Svg icon={chevronRight} {...props} />;
+}
+
+function ChevronDownIcon(props) {
+    return <Svg icon={chevronDown} {...props} />;
+}
+
+function IncomeIcon(props) {
+    return <Svg icon={income} {...props} />;
+}
+
+function OutcomeIcon(props) {
+    return <Svg icon={outcome} {...props} />;
 }
 
 Svg.propTypes = {
-    icon: PropTypes.string
+    icon: PropTypes.string.isRequired
 };
 
-export { CheckIcon, PencilIcon, TrashcanIcon, FilterIcon };
+export { CheckIcon, PencilIcon, TrashcanIcon, FilterIcon,
+    ChevronRightIcon, ChevronDownIcon, IncomeIcon, OutcomeIcon };

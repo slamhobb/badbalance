@@ -16,7 +16,7 @@ class DebtItemForm(BaseForm):
     debt_id = IntegerField('DebtId', [DataRequired()])
     date = DateField('Дата', [DataRequired()])
     sum = IntegerField('Сумма', [DataRequired()])
-    text = StringField('Описание', [DataRequired()])
+    text = StringField('Описание')
 
 
 class DeleteDebtItemForm(BaseForm):

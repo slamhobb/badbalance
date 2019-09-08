@@ -21,7 +21,7 @@ footer {
 }
 
 .octicon {
-    display: inline-block;
+    /*display: inline-block;*/
     /*vertical-align: text-top;*/
     fill: currentColor;
 }
