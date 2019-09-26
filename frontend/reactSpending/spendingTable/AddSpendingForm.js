@@ -23,7 +23,9 @@ class AddSpendingForm extends React.PureComponent {
             date: this.props.defaultDate,
             sum: '',
             text: '',
-            category_id: 1
+            category_id: 1,
+
+            loading: false
         };
     }
 
@@ -61,10 +63,16 @@ class AddSpendingForm extends React.PureComponent {
 
         this.setState({
             sum: '',
-            text: ''
+            text: '',
+            loading: true
+        }, () => {
+            this.props.onAdd(data)
+                .then(() => {
+                    this.setState({
+                        loading: false
+                    });
+                });
         });
-
-        this.props.onAdd(data);
     }
 
     render() {
@@ -100,11 +108,17 @@ class AddSpendingForm extends React.PureComponent {
                         </td>
                         <td>
                             <div className="spending_action">
-                                <button className="btn btn-outline-secondary" type="button"
-                                    onClick={this.handleAdd}>
-                                    <CheckIcon />
-                                </button>
-
+                                {this.state.loading ? (
+                                    <button className="btn btn-outline-secondary" type="button">
+                                        <span className="spinner-border spinner-border-sm"
+                                            role="status" aria-hidden="true"></span>
+                                    </button>
+                                ) : (
+                                    <button className="btn btn-outline-secondary" type="button"
+                                        onClick={this.handleAdd}>
+                                        <CheckIcon/>
+                                    </button>
+                                )}
                             </div>
                         </td>
                     </tr>

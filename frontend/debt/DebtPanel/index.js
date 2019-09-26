@@ -87,7 +87,7 @@ class DebtPanel extends React.Component {
                                         <h6 className="my-0">{x.text}</h6>
                                         <small className="text-muted">{dateToRuString(x.date)}</small>
                                     </div>
-                                    <div className={x.sum < 0 ? "d-flex align-items-start text-success" : "d-flex align-items-start" }>
+                                    <div className={x.sum < 0 ? 'd-flex align-items-start text-success' : 'd-flex align-items-start' }>
                                         <span className="mr-1">
                                             {x.sum < 0 ? Math.abs(x.sum) : '+' + Math.abs(x.sum) }
                                         </span>

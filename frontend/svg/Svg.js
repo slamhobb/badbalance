@@ -15,7 +15,7 @@ import outcome from './outcome.svg';
 function Svg(props) {
     const {icon, className, ...rest} = props;
 
-    const cl = ["octicon", className].join(" ");
+    const cl = ['octicon', className].join(' ');
 
     return (
         <span className={cl} {...rest}
@@ -56,7 +56,8 @@ function OutcomeIcon(props) {
 }
 
 Svg.propTypes = {
-    icon: PropTypes.string.isRequired
+    icon: PropTypes.string.isRequired,
+    className: PropTypes.string
 };
 
 export { CheckIcon, PencilIcon, TrashcanIcon, FilterIcon,

@@ -169,7 +169,7 @@ class Spending extends React.PureComponent {
             category_id: spending.category_id
         };
 
-        HttpClient.postjson(this.props.saveSpendingUrl, data)
+        return HttpClient.postjson(this.props.saveSpendingUrl, data)
             .then(this.successResult)
             .then(result => {
                 const curDate = {
