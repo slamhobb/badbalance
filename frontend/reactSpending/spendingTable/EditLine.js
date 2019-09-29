@@ -23,7 +23,9 @@ class EditLine extends React.PureComponent {
             date: this.props.date,
             sum: this.props.sum,
             text: this.props.text,
-            category_id: this.props.category_id
+            category_id: this.props.category_id,
+
+            loading: false
         };
     }
 
@@ -50,11 +52,19 @@ class EditLine extends React.PureComponent {
     }
 
     handleSave() {
-        const id = this.props.id;
+        const spending = {
+            id: this.props.id,
+            date: this.state.date,
+            sum: parseInt(this.state.sum),
+            text: this.state.text,
+            category_id: parseInt(this.state.category_id)
+        };
 
-        const spending = Object.assign({id: id}, this.state);
-
-        this.props.onSave(spending);
+        this.setState({
+            loading: true
+        }, () => {
+            this.props.onSave(spending);
+        });
     }
 
     render() {
@@ -89,9 +99,16 @@ class EditLine extends React.PureComponent {
                 </td>
                 <td>
                     <div className="spending_action">
-                        <button className="btn btn-outline-secondary" type="button" onClick={this.handleSave}>
-                            <CheckIcon />
-                        </button>
+                        {this.state.loading ? (
+                            <button className="btn btn-outline-secondary" type="button">
+                                <span className="spinner-border spinner-border-sm"
+                                    role="status" aria-hidden="true"></span>
+                            </button>
+                        ) : (
+                            <button className="btn btn-outline-secondary" type="button" onClick={this.handleSave}>
+                                <CheckIcon />
+                            </button>
+                        )}
                     </div>
                 </td>
             </tr>
