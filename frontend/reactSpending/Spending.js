@@ -380,7 +380,7 @@ class Spending extends React.PureComponent {
             <React.Fragment>
                 <div className="row mt-4 mb-3">
                     <div className="col-sm-8">
-                        <p>{balanceText}</p>
+                        <span>{balanceText}</span>
                     </div>
                 </div>
                 <div className="row">

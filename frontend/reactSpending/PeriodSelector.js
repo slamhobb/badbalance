@@ -46,14 +46,17 @@ class PeriodSelector extends React.PureComponent {
         const monthList = months.map((m, i) => <option key={i} value={i + 1}>{m}</option>);
 
         return (
-            <div className="form-inline">
-                <select className="form-control" value={this.props.year} onChange={this.handleChangeYear}>
-                    {yearsList}
-                </select>
-                &nbsp;
-                <select className="form-control" value={this.props.month} onChange={this.handleChangeMonth}>
-                    {monthList}
-                </select>
+            <div className="form-row">
+                <div className="col">
+                    <select className="form-control" value={this.props.year} onChange={this.handleChangeYear}>
+                        {yearsList}
+                    </select>
+                </div>
+                <div className="col">
+                    <select className="form-control" value={this.props.month} onChange={this.handleChangeMonth}>
+                        {monthList}
+                    </select>
+                </div>
             </div>
         );
     }
