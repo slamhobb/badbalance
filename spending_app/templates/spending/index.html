@@ -1,12 +1,12 @@
 {% extends 'shared/layout.html' %}
 
 {% block styles %}
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='build/reactSpending.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='build/spending.css') }}">
 {% endblock %}
 
 {% block scripts %}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
-  <script src="{{ url_for('static', filename='build/reactSpending.js') }}"></script>
+  <script src="{{ url_for('static', filename='build/spending.js') }}"></script>
 {% endblock %}
 
 {% block menu %}
@@ -27,5 +27,5 @@
 {% endblock %}
 
 {% block body %}
-  <div id="spending"></div>
+  <div id="spending-js"></div>
 {% endblock %}

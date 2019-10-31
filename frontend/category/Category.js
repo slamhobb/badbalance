@@ -48,7 +48,8 @@ class Category extends React.PureComponent {
                 this.setState({
                     items: this.getMap(result.categories),
                 });
-            });
+            })
+            .catch(error => alert('Произошла ошибка ' + error));;
     }
 
     handleAdd(category) {

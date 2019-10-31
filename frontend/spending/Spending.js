@@ -109,7 +109,8 @@ class Spending extends React.PureComponent {
                     items: this.getMap(result.spending),
                     categories: this.getMap(result.categories)
                 });
-            });
+            })
+            .catch(error => alert('Произошла ошибка ' + error));
     }
 
     refreshTableIncoming() {
@@ -122,7 +123,8 @@ class Spending extends React.PureComponent {
                 this.setState({
                     incomingItems: this.getMap(result.incoming)
                 });
-            });
+            })
+            .catch(error => alert('Произошла ошибка ' + error));
     }
 
     refreshChart() {
@@ -135,7 +137,8 @@ class Spending extends React.PureComponent {
                 this.setState({
                     stat: result
                 });
-            });
+            })
+            .catch(error => alert('Произошла ошибка ' + error));
     }
 
     handleSwitchTable() {

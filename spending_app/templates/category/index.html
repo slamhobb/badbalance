@@ -1,12 +1,12 @@
 {% extends 'shared/layout.html' %}
 
 {% block styles %}
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='build/reactCategory.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='build/category.css') }}">
 {% endblock %}
 
 
 {% block scripts %}
-  <script src="{{ url_for('static', filename='build/reactCategory.js') }}"></script>
+  <script src="{{ url_for('static', filename='build/category.js') }}"></script>
 {% endblock %}
 
 
@@ -29,7 +29,5 @@
 
 
 {% block body %}
-
-  <div id="category"></div>
-
+  <div id="category-js"></div>
 {% endblock %}

@@ -18,5 +18,5 @@ ReactDOM.render(
         getIncomingUrl='/incoming/list'
         saveIncomingUrl='/incoming/save'
         removeIncomingUrl='/incoming/remove' />,
-    document.getElementById('spending')
+    document.getElementById('spending-js')
 );

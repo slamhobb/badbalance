@@ -11,5 +11,5 @@ ReactDOM.render(
         saveCategoryUrl='/category/save'
         removeCategoryUrl='/category/delete'
     />,
-    document.getElementById('category')
+    document.getElementById('category-js')
 );

@@ -15,8 +15,8 @@ module.exports = {
     context: path.resolve(__dirname, 'frontend'),
 
     entry: {
-        reactSpending: './reactSpending/index.js',
-        reactCategory: './reactCategory/index.js',
+        spending: './spending/index.js',
+        category: './category/index.js',
         debt: './debt/index.js'
     },
 
