@@ -26,6 +26,12 @@ def index():
     return render_template('spending/index.html')
 
 
+@mod.route('/fast')
+@login_required
+def fast():
+    return render_template('spending/fast.html')
+
+
 @mod.route('/list_month/<int:year>/<int:month>')
 @login_required
 def spending_list_month(year, month):

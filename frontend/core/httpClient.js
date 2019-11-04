@@ -29,6 +29,9 @@ export default {
             {},
             defaultOptions,
             {
+                headers: {
+                    'X-CSRFToken': getCSRFToken()
+                },
                 method: 'post'
             }
         );

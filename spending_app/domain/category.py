@@ -1,5 +1,4 @@
 class Category(object):
-
     def __init__(self, id, user_id, name):
         self.id = id
         self.user_id = user_id
@@ -26,7 +25,6 @@ class Category(object):
 
 
 class CategoryList(object):
-
     def __init__(self, id, name):
         self.id = id
         self.name = name

@@ -1,5 +1,4 @@
 class Statistic(object):
-
     def __init__(self, sum, category):
         self.sum = sum
         self.category = category

@@ -25,6 +25,10 @@ class Spending extends React.PureComponent {
     constructor(props) {
         super(props);
 
+        this.loadSpendingData = this.loadSpendingData.bind(this);
+        this.loadIncomingData = this.loadIncomingData.bind(this);
+        this.loadStatData = this.loadStatData.bind(this);
+
         this.handleChangePeriod = this.handleChangePeriod.bind(this);
         this.handleSwitchTable = this.handleSwitchTable.bind(this);
 
@@ -32,33 +36,30 @@ class Spending extends React.PureComponent {
         this.handleDeleteSpending = this.handleDeleteSpending.bind(this);
         this.handleSaveSpending = this.handleSaveSpending.bind(this);
         this.handleAddSpending = this.handleAddSpending.bind(this);
-        this.refreshTable = this.refreshTable.bind(this);
 
         this.handleEditIncoming = this.handleEditIncoming.bind(this);
         this.handleDeleteIncoming = this.handleDeleteIncoming.bind(this);
         this.handleSaveIncoming = this.handleSaveIncoming.bind(this);
         this.handleAddIncoming = this.handleAddIncoming.bind(this);
-        this.refreshTableIncoming = this.refreshTableIncoming.bind(this);
 
-        this.refreshChart = this.refreshChart.bind(this);
-
-        const {year, month} = this.getYearMonth(this.props.curDate);
+        const { year, month } = this.getYearMonth(this.props.curDate);
 
         this.state = {
+            year: year,
+            month: month,
+
             items: new Map(),
             categories: new Map(),
             incomingItems: new Map(),
-            showIncoming: false,
-            visibleTable: tableType.spending,
 
-            year: year,
-            month: month
+            incomingLoaded: false,
+            visibleTable: tableType.spending
         };
     }
 
     componentDidMount() {
-        this.refreshTable();
-        this.refreshChart();
+        this.loadSpendingData();
+        this.loadStatData();
     }
 
     getYearMonth(date) {
@@ -89,16 +90,16 @@ class Spending extends React.PureComponent {
             year: period.year,
             month: period.month
         }, () => {
-            this.refreshTable();
-            this.refreshChart();
+            this.loadSpendingData();
+            this.loadStatData();
 
-            if (this.state.showIncoming) {
-                this.refreshTableIncoming();
+            if (this.state.incomingLoaded) {
+                this.loadIncomingData();
             }
         });
     }
 
-    refreshTable() {
+    loadSpendingData() {
         const year = this.state.year;
         const month = this.state.month;
 
@@ -113,7 +114,7 @@ class Spending extends React.PureComponent {
             .catch(error => alert('Произошла ошибка ' + error));
     }
 
-    refreshTableIncoming() {
+    loadIncomingData() {
         const year = this.state.year;
         const month = this.state.month;
 
@@ -127,7 +128,7 @@ class Spending extends React.PureComponent {
             .catch(error => alert('Произошла ошибка ' + error));
     }
 
-    refreshChart() {
+    loadStatData() {
         const year = this.state.year;
         const month = this.state.month;
 
@@ -154,12 +155,12 @@ class Spending extends React.PureComponent {
             table = tableType.spending;
         }
 
-        if (!this.state.showIncoming) {
-            this.refreshTableIncoming();
+        if (!this.state.incomingLoaded) {
+            this.loadIncomingData();
         }
 
         this.setState({
-            showIncoming: true,
+            incomingLoaded: true,
             visibleTable: table
         });
     }
@@ -193,7 +194,7 @@ class Spending extends React.PureComponent {
                 newItems.set(spending.id, spending);
                 this.setState({items: newItems});
 
-                this.refreshChart();
+                this.loadStatData();
             })
             .catch(error => alert('Произошла ошибка ' + error));
     }
@@ -228,7 +229,7 @@ class Spending extends React.PureComponent {
 
                 this.setState({items: newItems});
 
-                this.refreshChart();
+                this.loadStatData();
             })
             .catch(error => alert('Произошла ошибка ' + error));
     }
@@ -248,7 +249,7 @@ class Spending extends React.PureComponent {
                 newItems.delete(id);
                 this.setState({items: newItems});
 
-                this.refreshChart();
+                this.loadStatData();
             })
             .catch(error => alert('Произошла ошибка ' + error));
     }
@@ -336,7 +337,7 @@ class Spending extends React.PureComponent {
     }
 
     renderIncoming() {
-        if (!this.state.showIncoming) {
+        if (!this.state.incomingLoaded) {
             return null;
         }
 
@@ -381,12 +382,12 @@ class Spending extends React.PureComponent {
 
         return (
             <React.Fragment>
-                <div className="row mt-4 mb-3">
+                <div className="row mt-4">
                     <div className="col-sm-8">
                         <span>{balanceText}</span>
                     </div>
                 </div>
-                <div className="row">
+                <div className="row mt-3">
                     <div className="col-sm-4 mb-3">
                         <PeriodSelector
                             year={this.state.year}
@@ -403,10 +404,10 @@ class Spending extends React.PureComponent {
                 </div>
                 <div className="row">
                     <div className="col-sm-8">
-                        <div className={this.state.visibleTable === tableType.spending ? 'd-block' : 'd-none'}>
+                        <div className={this.state.visibleTable === tableType.spending ? '' : 'd-none'}>
                             { this.renderSpending() }
                         </div>
-                        <div className={this.state.visibleTable === tableType.incoming ? 'd-block' : 'd-none'}>
+                        <div className={this.state.visibleTable === tableType.incoming ? '' : 'd-none'}>
                             { this.renderIncoming() }
                         </div>
                     </div>

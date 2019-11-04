@@ -49,7 +49,7 @@ class Category extends React.PureComponent {
                     items: this.getMap(result.categories),
                 });
             })
-            .catch(error => alert('Произошла ошибка ' + error));;
+            .catch(error => alert('Произошла ошибка ' + error));
     }
 
     handleAdd(category) {

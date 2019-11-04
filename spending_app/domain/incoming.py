@@ -1,5 +1,4 @@
 class Incoming(object):
-
     def __init__(self, id, user_id, date, sum, text):
         self.id = id
         self.user_id = user_id
@@ -32,7 +31,6 @@ class Incoming(object):
 
 
 class IncomingList(object):
-
     def __init__(self, id, date, sum, text):
         self.id = id
         self.date = date

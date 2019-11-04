@@ -46,3 +46,10 @@ class AuthUser(object):
         }
 
         return adict
+
+
+class UserContext:
+    def __init__(self, user_id, login, is_authenticated):
+        self.user_id = user_id
+        self.login = login
+        self.is_authenticated = is_authenticated

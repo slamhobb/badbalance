@@ -1,17 +1,17 @@
 {% extends 'shared/layout.html' %}
 
 {% block styles %}
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='build/debt.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='build/fastSpending.css') }}">
 {% endblock %}
 
 {% block scripts %}
-  <script src="{{ url_for('static', filename='build/debt.js') }}"></script>
+  <script src="{{ url_for('static', filename='build/fastSpending.js') }}"></script>
 {% endblock %}
 
 {% block menu %}
   <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link" href="/spending">Расходы</a>
+      <a class="nav-link active">Расходы</a>
     </li>
     <li class="nav-item">
       <a class="nav-link disabled" href="/statistic" tabindex="-1" aria-disabled="true">Статистика</a>
@@ -20,14 +20,22 @@
       <a class="nav-link" href="/category">Категории</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link active" href="/debt">Долги</a>
+      <a class="nav-link" href="/debt">Долги</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="/user-config">Настройки</a>
     </li>
   </ul>
+  <ul class="nav nav-pills mt-3">
+    <li class="nav-item">
+      <a class="nav-link" href="/spending">Просмотр</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active">Быстрый расход</a>
+    </li>
+  </ul>
 {% endblock %}
 
 {% block body %}
-  <div id="debt-js"></div>
+  <div id="fastSpending-js"></div>
 {% endblock %}

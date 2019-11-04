@@ -3,6 +3,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import './periodSelector.css';
+
 const years = [2016, 2017, 2018];
 const months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
     'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
@@ -46,17 +48,13 @@ class PeriodSelector extends React.PureComponent {
         const monthList = months.map((m, i) => <option key={i} value={i + 1}>{m}</option>);
 
         return (
-            <div className="form-row">
-                <div className="col">
-                    <select className="form-control" value={this.props.year} onChange={this.handleChangeYear}>
-                        {yearsList}
-                    </select>
-                </div>
-                <div className="col">
-                    <select className="form-control" value={this.props.month} onChange={this.handleChangeMonth}>
-                        {monthList}
-                    </select>
-                </div>
+            <div className="d-flex justify-content-start">
+                <select className="form-control period-width-auto mr-1" value={this.props.year} onChange={this.handleChangeYear}>
+                    {yearsList}
+                </select>
+                <select className="form-control period-width-auto" value={this.props.month} onChange={this.handleChangeMonth}>
+                    {monthList}
+                </select>
             </div>
         );
     }

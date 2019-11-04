@@ -17,7 +17,9 @@ module.exports = {
     entry: {
         spending: './spending/index.js',
         category: './category/index.js',
-        debt: './debt/index.js'
+        debt: './debt/index.js',
+        fastSpending: './fastSpending/index.js',
+        userConfig: './userConfig/index.js'
     },
 
     output: {

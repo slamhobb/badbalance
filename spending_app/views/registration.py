@@ -22,9 +22,8 @@ def get_context():
 
 @mod.route('/')
 def index():
-    user_context = getattr(g, 'user_context', None)
-    if user_context is not None and user_context.is_authenticated:
-        return redirect(url_for('spending.index'))
+    if g.user_context.is_authenticated:
+        return redirect(url_for('redirect.redirect'))
     return render_template('registration/cover.html')
 
 

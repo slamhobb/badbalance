@@ -1,5 +1,4 @@
 class UserData(object):
-
     def __init__(self, login, password):
         self.login = login
         self.password = password
@@ -15,7 +14,6 @@ class UserData(object):
 
 
 class User(object):
-
     def __init__(self, id, login, password):
         self.id = id
         self.login = login

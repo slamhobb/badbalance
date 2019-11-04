@@ -5,11 +5,11 @@ import os
 
 import inject
 
+from spending_app.infrastructure.cache import Cache
 from spending_app.dao.user.user_dao import UserDao
 from spending_app.dao.auth.auth_token_dao import AuthTokenDao
 from spending_app.domain.auth import AuthToken
-from spending_app.infrastructure.auth import UserContext
-from spending_app.infrastructure.cache import Cache
+from spending_app.domain.auth import UserContext
 
 
 class AuthService:

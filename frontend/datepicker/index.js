@@ -7,9 +7,17 @@ import flatpickr from './flatpickr';
 
 class ReactDatePicker extends React.PureComponent {
     componentDidMount() {
-        this.datePicker = new flatpickr(this.inputElement, {
+        const config = {
             onChange: (selectedDates, dateStr) => this.props.onChange(dateStr)
-        });
+        };
+
+        const dateFormat = this.props.dateFormat;
+
+        if (dateFormat) {
+            Object.assign(config, { altFormat: dateFormat });
+        }
+
+        this.datePicker = new flatpickr(this.inputElement, config);
     }
 
     componentWillUnmount() {
@@ -23,10 +31,11 @@ class ReactDatePicker extends React.PureComponent {
 }
 
 ReactDatePicker.propTypes = {
-    defaultValue: PropTypes.string,
+    defaultValue: PropTypes.string.isRequired,
     className: PropTypes.string,
-    onChange: PropTypes.func,
-    placeholder: PropTypes.string
+    onChange: PropTypes.func.isRequired,
+    placeholder: PropTypes.string,
+    dateFormat: PropTypes.string
 };
 
 export default ReactDatePicker;

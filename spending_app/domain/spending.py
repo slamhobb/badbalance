@@ -1,5 +1,4 @@
 class Spending(object):
-
     def __init__(self, id, user_id, date, sum, text, category_id):
         self.id = id
         self.user_id = user_id
@@ -35,7 +34,6 @@ class Spending(object):
 
 
 class SpendingList(object):
-
     def __init__(self, id, date, sum, text, category_id):
         self.id = id
         self.date = date
