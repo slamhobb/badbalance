@@ -39,8 +39,8 @@ class Switcher extends React.PureComponent {
 
         return (
             <div className="btn-group" role="group" aria-label="switcher">
-                <a className={isSpending ? 'btn btn-primary active disable-switcher' : 'btn btn-light' } role="button" onClick={this.handleClickSpending}>Расходы</a>
-                <a className={isIncoming ? 'btn btn-primary active disable-switcher' : 'btn btn-light' } role="button" onClick={this.handleClickIncoming}>Доходы</a>
+                <button className={isSpending ? 'btn btn-primary active disable-switcher' : 'btn btn-light' } role="button" onClick={this.handleClickSpending}>Расходы</button>
+                <button className={isIncoming ? 'btn btn-primary active disable-switcher' : 'btn btn-light' } role="button" onClick={this.handleClickIncoming}>Доходы</button>
             </div>
         );
     }

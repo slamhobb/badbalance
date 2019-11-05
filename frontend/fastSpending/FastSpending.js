@@ -8,6 +8,8 @@ import { addSpending } from '../services/spendingService';
 
 import ReactDatePicker from '../datepicker';
 
+const showMessageTimeout = 3000;
+
 class FastSpending extends React.Component {
     constructor(props) {
         super(props);
@@ -31,7 +33,7 @@ class FastSpending extends React.Component {
             sum: '',
             text: '',
 
-            lastSpendingText: '',
+            messages: [],
 
             loading: false
         };
@@ -93,26 +95,54 @@ class FastSpending extends React.Component {
             loading: true
         }, () => {
             addSpending(date, sum, text, categoryId)
-                .then(() => {
-                    this.setState({
-                        loading: false,
-                        lastSpendingText: `${sum} ${text} ${this.getCategoryName(categoryId)} ${date}`
+                .then(result => {
+                    this.setState(prev => {
+                        const messages = prev.messages.slice();
+
+                        // add message to tail
+                        messages.push({
+                            id: result.id,
+                            text: `${sum} ${this.getCategoryName(categoryId)} (${text}) ${date}`
+                        });
+
+                        return {
+                            messages: messages
+                        };
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState(prev => {
+                                const messages = prev.messages.slice();
+
+                                // remove message from head
+                                messages.splice(0, 1);
+
+                                return {
+                                    messages: messages
+                                };
+                            });
+                        }, showMessageTimeout);
                     });
                 })
-                .catch(error => alert('Произошла ошибка ' + error));
+                .catch(error => alert('Произошла ошибка ' + error))
+                .then(() => {
+                    this.setState({
+                        loading: false
+                    });
+                });
+
         });
     }
 
-    renderLastSpending() {
-        const lastSpendingText = this.state.lastSpendingText;
+    renderMessages() {
+        const messages = this.state.messages;
 
-        if (!lastSpendingText) {
+        if (messages.length === 0) {
             return null;
         }
 
-        return (
-            <div className="alert alert-success" role="alert">
-                Добавлено {this.state.lastSpendingText}
+        return messages.map(x =>
+            <div key={x.id} className="alert alert-success" role="alert">
+                Добавлено {x.text}
             </div>
         );
     }
@@ -133,7 +163,7 @@ class FastSpending extends React.Component {
             <React.Fragment>
                 <div className="row mt-4">
                     <div className="col-sm-4">
-                        {this.renderLastSpending()}
+                        {this.renderMessages()}
                         <div className="form-group">
                             <ReactDatePicker
                                 defaultValue={dateToString(this.props.curDate)}
@@ -156,13 +186,13 @@ class FastSpending extends React.Component {
                                 this.renderCategories()
                             ) :
                                 this.state.loading ? (
-                                    <button className="btn btn-primary btn-lg btn-block" disabled>
+                                    <button className="btn btn-outline-secondary btn-lg btn-block" disabled>
                                         <span className="spinner-border spinner-border-sm"
-                                            role="status" aria-hidden="true"></span>
+                                            role="status" aria-hidden="true" />
                                     </button>
                                 ) : (
                                     <button
-                                        className="btn btn-primary btn-lg btn-block"
+                                        className="btn btn-outline-secondary btn-lg btn-block"
                                         onClick={this.handleSelectCategory}>
                                         Выбор категории
                                     </button>

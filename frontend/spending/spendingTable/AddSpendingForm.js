@@ -111,7 +111,7 @@ class AddSpendingForm extends React.PureComponent {
                                 {this.state.loading ? (
                                     <button className="btn btn-outline-secondary" type="button" disabled>
                                         <span className="spinner-border spinner-border-sm"
-                                            role="status" aria-hidden="true"></span>
+                                            role="status" aria-hidden="true" />
                                     </button>
                                 ) : (
                                     <button className="btn btn-outline-secondary" type="button"

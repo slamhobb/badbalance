@@ -27,14 +27,16 @@
       <a class="nav-link" href="/user-config">Настройки</a>
     </li>
   </ul>
-  <ul class="nav nav-pills mt-3">
-    <li class="nav-item">
-      <a class="nav-link active">Просмотр</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/spending/fast">Быстрый расход</a>
-    </li>
-  </ul>
+  <nav class="mt-3">
+    <ul class="pagination">
+      <li class="page-item disabled">
+        <a class="page-link" tabindex="-1" aria-disabled="true">Просмотр</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="/spending/fast">Быстрый расход</a>
+      </li>
+    </ul>
+  </nav>
 {% endblock %}
 
 {% block body %}
