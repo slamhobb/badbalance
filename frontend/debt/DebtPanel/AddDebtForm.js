@@ -62,8 +62,7 @@ class AddDebtForm extends React.Component {
 
         this.setState({
             sum: '',
-            text: '',
-            addState: addState.INIT
+            text: ''
         });
 
         this.props.onAdd(data);
@@ -78,8 +77,7 @@ class AddDebtForm extends React.Component {
 
         this.setState({
             sum: '',
-            text: '',
-            addState: addState.ADD
+            text: ''
         });
 
         this.props.onAdd(data);
@@ -119,7 +117,7 @@ class AddDebtForm extends React.Component {
                             onClick={this.handleHideAdd}>&times;</button>
                     </div>
                     <div className="input-group mb-2">
-                        <input type="text" className="form-control" placeholder="Сумма"
+                        <input type="number" className="form-control" placeholder="Сумма"
                             value={this.state.sum} onChange={this.handleChangeSum}/>
                         <input type="text" className="form-control" placeholder="Описание"
                             value={this.state.text} onChange={this.handleChangeText}/>

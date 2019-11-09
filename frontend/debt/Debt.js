@@ -229,11 +229,9 @@ class Debt extends React.Component {
 
                 <div className="row">
                     <div className="col-md-4 d-flex align-items-center">
-                        <span className="text-success">1</span>
-                        <OutcomeIcon className="d-flex align-items-end mx-1 text-success"/>
+                        <OutcomeIcon className="d-flex align-items-end mr-1 text-success"/>
                         <span className="text-success">- Дал</span>
-                        <span className="ml-3">+1</span>
-                        <IncomeIcon className="d-flex align-items-center mx-1"/>
+                        <IncomeIcon className="d-flex align-items-center ml-3 mr-1"/>
                         <span>- Взял</span>
                     </div>
                 </div>
