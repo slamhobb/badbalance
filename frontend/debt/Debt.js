@@ -223,6 +223,12 @@ class Debt extends React.Component {
         const debts = Array.from(this.state.items.values());
         const debtItems = debts.map(x => Object.assign({}, x, { items: Array.from(x.items.values()) }));
 
+        const debtSum = debtItems.reduce((sum, item) => {
+            return sum + item.items.reduce((sum, item) => {
+                return sum + item.sum;
+            }, 0);
+        }, 0);
+
         return (
             <React.Fragment>
                 <h2 className="mt-4">Управление долгами</h2>
@@ -237,6 +243,16 @@ class Debt extends React.Component {
                 </div>
 
                 {this.renderAddDebt()}
+
+                <div className="row mt-3">
+                    <div className="col-md-4">
+                        {debtSum > 0 ? (
+                            <span>Итого я должен: {Math.abs(debtSum)}</span>
+                        ) : (
+                            <span>Итого мне должны: {Math.abs(debtSum)}</span>
+                        )}
+                    </div>
+                </div>
 
                 {debtItems.map(x =>
                     <DebtPanel key={x.debt_id} name={x.name} debt_id={x.debt_id} items={x.items}
