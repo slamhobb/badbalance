@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import './debtPanel.css';
 
-import AddDebtForm from './AddDebtForm';
+import AddDebtItemForm from './AddDebtItemForm';
 import { dateToRuString } from '../../tools/dateTools';
 import { ChevronRightIcon, ChevronDownIcon, IncomeIcon, OutcomeIcon } from '../../svg/Svg';
 
@@ -54,7 +54,7 @@ class DebtPanel extends React.Component {
 
         return (
             <div className="row mt-3">
-                <div className="col-md-4">
+                <div className="col-sm-4">
                     <h4 className="d-flex justify-content-between align-items-center my-0" onClick={this.handleToggle}>
                         <div className="d-flex align-items-center">
                             <span className="mr-2">
@@ -91,7 +91,7 @@ class DebtPanel extends React.Component {
                                         <span className="mr-1">
                                             {x.sum < 0 ? Math.abs(x.sum) : '+' + Math.abs(x.sum) }
                                         </span>
-                                        <div className="d-flex flex-column justify-content-end">
+                                        <div className="d-flex flex-column justify-content-start">
                                             {x.sum < 0
                                                 ? <OutcomeIcon className="d-flex align-items-center" />
                                                 : <IncomeIcon className="d-flex align-items-center" /> }
@@ -102,7 +102,7 @@ class DebtPanel extends React.Component {
                                     </div>
                                 </li>
                             )}
-                            <AddDebtForm onAdd={this.props.onAdd}/>
+                            <AddDebtItemForm onAdd={this.props.onAdd}/>
                         </ul>
                     }
 

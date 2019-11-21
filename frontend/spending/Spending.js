@@ -7,6 +7,8 @@ import PeriodSelector from './PeriodSelector';
 import Switcher from './Switcher';
 
 import SpendingTable from './spendingTable/SpendingTable';
+import withFiltered from './spendingTable/SpendingTableHoc';
+import MobileSpendingTable from './mobileSpending/MobileSpendingTable';
 
 import IncomingTable from './incomingTable/IncomingTable';
 
@@ -20,6 +22,8 @@ const tableType = {
     spending: 'spending',
     incoming: 'incoming'
 };
+
+const SpendingTableWithFilter = withFiltered(SpendingTable);
 
 class Spending extends React.PureComponent {
     constructor(props) {
@@ -336,12 +340,10 @@ class Spending extends React.PureComponent {
             .catch(error => alert('Произошла ошибка ' + error));
     }
 
-    renderIncoming() {
+    renderIncoming(items) {
         if (!this.state.incomingLoaded) {
             return null;
         }
-
-        const items = Array.from(this.state.incomingItems.values());
 
         return (
             <IncomingTable
@@ -354,11 +356,21 @@ class Spending extends React.PureComponent {
         );
     }
 
-    renderSpending() {
-        const items = Array.from(this.state.items.values());
+    renderSpending(items) {
+        if (this.props.mobile) {
+            return (
+                <MobileSpendingTable
+                    items={items}
+                    categories={this.state.categories}
+                    curDate={dateToString(this.props.curDate)}
+                    onAdd={this.handleAddSpending}
+                    onEdit={this.handleEditSpending}
+                    onSave={this.handleSaveSpending}
+                    onDelete={this.handleDeleteSpending} />);
+        }
 
         return (
-            <SpendingTable
+            <SpendingTableWithFilter
                 items={items}
                 categories={this.state.categories}
                 curDate={dateToString(this.props.curDate)}
@@ -405,10 +417,10 @@ class Spending extends React.PureComponent {
                 <div className="row">
                     <div className="col-sm-8">
                         <div className={this.state.visibleTable === tableType.spending ? '' : 'd-none'}>
-                            { this.renderSpending() }
+                            { this.renderSpending(items) }
                         </div>
                         <div className={this.state.visibleTable === tableType.incoming ? '' : 'd-none'}>
-                            { this.renderIncoming() }
+                            { this.renderIncoming(items) }
                         </div>
                     </div>
                     <div className="col-sm-4">
@@ -429,7 +441,9 @@ Spending.propTypes = {
 
     saveIncomingUrl: PropTypes.string.isRequired,
     getIncomingUrl:  PropTypes.string.isRequired,
-    removeIncomingUrl: PropTypes.string.isRequired
+    removeIncomingUrl: PropTypes.string.isRequired,
+
+    mobile: PropTypes.bool.isRequired
 };
 
 export default Spending;

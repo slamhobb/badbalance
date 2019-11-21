@@ -1,0 +1,128 @@
+'use strict';
+
+import React from 'react';
+import PropTypes from 'prop-types';
+
+import MobileAddSpendingForm from './MobileAddSpendingForm';
+import MobileLine from './MobileLine';
+import MobileEditLine from './MobileEditLine';
+
+const days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+
+class MobileSpendingTable extends React.PureComponent {
+    constructor(props) {
+        super(props);
+
+        this.renderMobileLine = this.renderMobileLine.bind(this);
+    }
+
+    renderMobileLine(s, categories) {
+        const category = this.props.categories.get(s.category_id);
+
+        return s.edit
+            ? <MobileEditLine
+                key={s.id}
+                id={s.id}
+                date={s.date}
+                sum={s.sum}
+                text={s.text}
+                category_id={s.category_id}
+                categories={categories}
+                onSave={this.props.onSave} />
+            : <MobileLine
+                key={s.id}
+                id={s.id}
+                date={s.dateStr}
+                sum={s.sum}
+                text={s.text}
+                categoryName={category ? category.name : ''}
+                onEdit={this.props.onEdit}
+                onDelete={this.props.onDelete} />;
+    }
+
+    groupBy(xs, key) {
+        let last;
+        return xs.reduce(function(arr, x) {
+            if (last !== x[key]) {
+                arr.push([]);
+                last = x[key];
+            }
+
+            arr[arr.length-1].push(x);
+
+            return arr;
+        }, []);
+    }
+
+    formatDate(date) {
+        const dateObj = new Date(date);
+
+        return `${days[dateObj.getDay()]}, ${dateObj.getDate()}`;
+    }
+
+    render() {
+        const categories = Array.from(this.props.categories.values());
+
+        let items = this.props.items.slice();
+
+        items.sort((a, b) => {
+            const diff = new Date(b.date) - new Date(a.date);
+
+            return diff === 0 ? b.id - a.id : diff;
+        });
+
+        const g = this.groupBy(items, 'date');
+
+        const listItems = g.map(x => {
+            return (
+                <div key={x[0].id} className="mt-3">
+                    <h5>{this.formatDate(x[0].date)}</h5>
+                    <ul className="list-group mt-1">
+                        { x.map(x => this.renderMobileLine(x, categories))}
+                    </ul>
+                </div>
+            );
+        });
+
+        if (!listItems.length) {
+            return (
+                <div className="d-flex justify-content-center">
+                    <div className="spinner-grow" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                </div>
+            );
+        }
+
+        return (
+            <div className="row">
+                <div className="col-sm-4">
+                    <MobileAddSpendingForm
+                        defaultDate={this.props.curDate}
+                        categories={categories}
+                        onAdd={this.props.onAdd} />
+                    {listItems}
+                    <div className="mb-3" />
+                </div>
+            </div>
+        );
+    }
+}
+
+MobileSpendingTable.propTypes = {
+    items: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        date: PropTypes.string.isRequired,
+        sum: PropTypes.number.isRequired,
+        text: PropTypes.string.isRequired,
+        category_id: PropTypes.number.isRequired
+    })).isRequired,
+    categories: PropTypes.instanceOf(Map).isRequired,
+    curDate: PropTypes.string.isRequired,
+    onAdd: PropTypes.func.isRequired,
+    onEdit: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired
+};
+
+export default MobileSpendingTable;

@@ -9,7 +9,7 @@ import ReactDatePicker from '../../datepicker';
 
 import { CheckIcon } from '../../svg/Svg';
 
-class EditLine extends React.PureComponent {
+class MobileEditLine extends React.PureComponent {
     constructor(props) {
         super(props);
 
@@ -71,52 +71,38 @@ class EditLine extends React.PureComponent {
         const categories = this.props.categories;
 
         return(
-            <tr>
-                <td>
-                    <div className="spending_date">
-                        <ReactDatePicker className="form-control"
-                            defaultValue={this.props.date} onChange={this.handleChangeDate} />
-                    </div>
-                </td>
-                <td>
-                    <div className="spending_sum">
-                        <input type="text" className="form-control"
-                            value={this.state.sum} onChange={this.handleChangeSum} />
-                    </div>
-                </td>
-                <td>
-                    <div className="spending_text">
-                        <input type="text" className="form-control"
-                            value={this.state.text} onChange={this.handleChangeText} />
-                    </div>
-                </td>
-                <td>
-                    <div className="spending_category">
-                        <CategoriesList items={categories}
-                            value={this.state.category_id}
-                            onChange={this.handleChangeCategory} />
-                    </div>
-                </td>
-                <td>
-                    <div className="spending_action">
-                        {this.state.loading ? (
-                            <button className="btn btn-outline-secondary" type="button" disabled>
-                                <span className="spinner-border spinner-border-sm"
-                                    role="status" aria-hidden="true" />
-                            </button>
-                        ) : (
-                            <button className="btn btn-outline-secondary" type="button" onClick={this.handleSave}>
-                                <CheckIcon />
-                            </button>
-                        )}
-                    </div>
-                </td>
-            </tr>
+            <div className="card p-2">
+                <div className="d-flex justify-content-center mb-2">
+                    <ReactDatePicker className="form-control" placeholder="Дата"
+                        defaultValue={this.props.date} onChange={this.handleChangeDate} />
+                    {this.state.loading ? (
+                        <button type="button" className="btn btn-outline-secondary ml-2" disabled>
+                            <span className="spinner-border spinner-border-sm"
+                                role="status" aria-hidden="true" />
+                        </button>
+                    ) : (
+                        <button type="button" className="btn btn-outline-secondary ml-2"
+                            onClick={this.handleSave}>
+                            <CheckIcon />
+                        </button>
+                    )}
+                </div>
+
+                <div className="input-group mb-2">
+                    <CategoriesList items={categories} value={this.state.category_id}
+                        onChange={this.handleChangeCategory} />
+                    <input type="number" className="form-control" value={this.state.sum}
+                        onChange={this.handleChangeSum} />
+                </div>
+
+                <input type="text" className="form-control" value={this.state.text}
+                    onChange={this.handleChangeText} />
+            </div>
         );
     }
 }
 
-EditLine.propTypes = {
+MobileEditLine.propTypes = {
     id: PropTypes.number.isRequired,
     date: PropTypes.string.isRequired,
     sum: PropTypes.number.isRequired,
@@ -126,4 +112,4 @@ EditLine.propTypes = {
     onSave: PropTypes.func.isRequired
 };
 
-export default EditLine;
+export default MobileEditLine;

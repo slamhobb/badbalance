@@ -5,7 +5,11 @@ import ReactDOM from 'react-dom';
 
 import Spending from './Spending';
 
+import { isMobile } from '../tools/browserTools';
+
 const curDate = new Date();
+
+const mobile = isMobile();
 
 ReactDOM.render(
     <Spending
@@ -17,6 +21,8 @@ ReactDOM.render(
 
         getIncomingUrl='/incoming/list'
         saveIncomingUrl='/incoming/save'
-        removeIncomingUrl='/incoming/remove' />,
+        removeIncomingUrl='/incoming/remove'
+
+        mobile={true} />,
     document.getElementById('spending-js')
 );

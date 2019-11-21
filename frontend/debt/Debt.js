@@ -5,32 +5,21 @@ import PropTypes from 'prop-types';
 
 import HttpClient from '../core/httpClient';
 
+import AddDebtForm from './DebtPanel/AddDebtForm';
 import DebtPanel from './DebtPanel';
 
 import { IncomeIcon, OutcomeIcon } from '../svg/Svg';
-
-const addState = {
-    INIT: 0,
-    ADD: 1
-};
 
 class Debt extends React.Component {
     constructor(props) {
         super(props);
 
-        this.handleChangeDebtName = this.handleChangeDebtName.bind(this);
         this.handleAddDebt = this.handleAddDebt.bind(this);
         this.handleAddDebtItem = this.handleAddDebtItem.bind(this);
         this.handleDeleteDebt = this.handleDeleteDebt.bind(this);
         this.handleDeleteDebtItem = this.handleDeleteDebtItem.bind(this);
 
-        this.handleShowAdd = this.handleShowAdd.bind(this);
-
-        this.renderAddDebt = this.renderAddDebt.bind(this);
-
         this.state = {
-            addState: addState.INIT,
-            debtName: '',
             items: new Map()
         };
     }
@@ -73,18 +62,12 @@ class Debt extends React.Component {
             .catch(error => alert('Произошла ошибка ' + error));
     }
 
-    handleChangeDebtName(e) {
-        this.setState({
-            debtName: e.target.value
-        });
-    }
-
-    handleAddDebt() {
+    handleAddDebt(debtName) {
         const data = {
-            name: this.state.debtName
+            name: debtName
         };
 
-        HttpClient.postjson(this.props.addDebtUrl, data)
+        return HttpClient.postjson(this.props.addDebtUrl, data)
             .then(this.successResult)
             .then(result => {
                 const debtId = parseInt(result.id);
@@ -98,9 +81,7 @@ class Debt extends React.Component {
                 newItems.set(debtId, newDebt);
 
                 this.setState({
-                    debtName: '',
                     items: newItems,
-                    addState: addState.INIT
                 });
             })
             .catch(error => alert('Произошла ошибка ' + error));
@@ -111,7 +92,7 @@ class Debt extends React.Component {
             id: debtId
         };
 
-        HttpClient.postjson(this.props.deleteDebtUrl, data)
+        return HttpClient.postjson(this.props.deleteDebtUrl, data)
             .then(this.successResult)
             .then(() => {
                 const newItems = new Map(this.state.items);
@@ -132,7 +113,7 @@ class Debt extends React.Component {
             debt_id: debtId
         };
 
-        HttpClient.postjson(this.props.addDebtItemUrl, data)
+        return HttpClient.postjson(this.props.addDebtItemUrl, data)
             .then(this.successResult)
             .then(result => {
                 const id = parseInt(result.id);
@@ -162,7 +143,7 @@ class Debt extends React.Component {
             debt_id: debtId
         };
 
-        HttpClient.postjson(this.props.deleteDebtItemUrl, data)
+        return HttpClient.postjson(this.props.deleteDebtItemUrl, data)
             .then(this.successResult)
             .then(() => {
                 const newItems = new Map(this.state.items);
@@ -182,43 +163,6 @@ class Debt extends React.Component {
             .catch(error => alert('Произошла ошибка ' + error));
     }
 
-    handleShowAdd(e) {
-        e.preventDefault();
-
-        this.setState({
-            addState: addState.ADD
-        });
-    }
-
-    renderAddDebt() {
-        if (this.state.addState === addState.INIT) {
-            return (
-                <div className="row mt-4">
-                    <div className="col-md-4">
-                        <a href="#" onClick={this.handleShowAdd}>Добавить нового человека</a>
-                    </div>
-                </div>
-            );
-        } else {
-            return (
-                <div className="row mt-4">
-                    <div className="col-md-4">
-                        <div className="input-group">
-                            <input type="text" className="form-control" placeholder="Новая группа"
-                                value={this.state.debtName} onChange={this.handleChangeDebtName}/>
-                            <div className="input-group-append">
-                                <button type="submit" className="btn btn-primary"
-                                    onClick={this.handleAddDebt}>
-                                    Добавить
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            );
-        }
-    }
-
     render() {
         const debts = Array.from(this.state.items.values());
         const debtItems = debts.map(x => Object.assign({}, x, { items: Array.from(x.items.values()) }));
@@ -234,7 +178,7 @@ class Debt extends React.Component {
                 <h2 className="mt-4">Управление долгами</h2>
 
                 <div className="row">
-                    <div className="col-md-4 d-flex align-items-center">
+                    <div className="col-sm-4 d-flex align-items-center">
                         <OutcomeIcon className="d-flex align-items-end mr-1 text-success"/>
                         <span className="text-success">- Дал</span>
                         <IncomeIcon className="d-flex align-items-center ml-3 mr-1"/>
@@ -242,10 +186,10 @@ class Debt extends React.Component {
                     </div>
                 </div>
 
-                {this.renderAddDebt()}
+                <AddDebtForm onAdd={this.handleAddDebt} />
 
                 <div className="row mt-3">
-                    <div className="col-md-4">
+                    <div className="col-sm-4">
                         {debtSum > 0 ? (
                             <span>Итого я должен: {Math.abs(debtSum)}</span>
                         ) : (
