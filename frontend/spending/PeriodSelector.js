@@ -48,7 +48,7 @@ class PeriodSelector extends React.PureComponent {
         const monthList = months.map((m, i) => <option key={i} value={i + 1}>{m}</option>);
 
         return (
-            <div className="d-flex justify-content-start">
+            <div className="d-flex">
                 <select className="form-control period-width-auto mr-1" value={this.props.year} onChange={this.handleChangeYear}>
                     {yearsList}
                 </select>

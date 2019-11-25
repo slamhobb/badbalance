@@ -105,7 +105,7 @@ class MobileAddSpendingForm extends React.PureComponent {
 
         return (
             <div className="card p-2">
-                <div className="d-flex justify-content-center mb-2">
+                <div className="d-flex mb-2">
                     <ReactDatePicker className="form-control" placeholder="Дата"
                         defaultValue={this.props.defaultDate} onChange={this.handleChangeDate} />
                     {this.state.loading ? (
@@ -119,11 +119,6 @@ class MobileAddSpendingForm extends React.PureComponent {
                             <CheckIcon />
                         </button>
                     )}
-
-                    <button type="button" className="btn btn-outline-danger ml-2"
-                        onClick={this.handleHideForm}>
-                        &times;
-                    </button>
                 </div>
 
                 <div className="input-group mb-2">
@@ -133,8 +128,15 @@ class MobileAddSpendingForm extends React.PureComponent {
                         value={this.state.sum} onChange={this.handleChangeSum} />
                 </div>
 
-                <input type="text" className="form-control" placeholder="Описание"
-                    value={this.state.text} onChange={this.handleChangeText} />
+                <div className="d-flex">
+                    <input type="text" className="form-control" placeholder="Описание"
+                        value={this.state.text} onChange={this.handleChangeText} />
+
+                    <button type="button" className="btn btn-outline-danger ml-2"
+                        onClick={this.handleHideForm}>
+                        &times;
+                    </button>
+                </div>
             </div>
         );
     }

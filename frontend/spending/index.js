@@ -23,6 +23,6 @@ ReactDOM.render(
         saveIncomingUrl='/incoming/save'
         removeIncomingUrl='/incoming/remove'
 
-        mobile={true} />,
+        mobile={mobile} />,
     document.getElementById('spending-js')
 );
