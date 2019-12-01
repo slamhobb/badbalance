@@ -89,10 +89,10 @@ class MobileEditLine extends React.PureComponent {
                 </div>
 
                 <div className="input-group mb-2">
-                    <CategoriesList items={categories} value={this.state.category_id}
-                        onChange={this.handleChangeCategory} />
                     <input type="number" className="form-control" value={this.state.sum}
                         onChange={this.handleChangeSum} />
+                    <CategoriesList items={categories} value={this.state.category_id}
+                        onChange={this.handleChangeCategory} />
                 </div>
 
                 <input type="text" className="form-control" value={this.state.text}

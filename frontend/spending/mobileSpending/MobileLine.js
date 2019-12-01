@@ -53,7 +53,7 @@ class MobileLine extends React.PureComponent {
     }
 
     handleLongPress() {
-        vibrate(100);
+        vibrate(50);
 
         this.setState(prev => {
             return { showControl: !prev.showControl };
@@ -62,28 +62,28 @@ class MobileLine extends React.PureComponent {
 
     render() {
         return (
-            <li className="list-group-item d-flex justify-content-between spending_line"
+            <li className="list-group-item d-flex justify-content-between spending_line py-2"
                 onTouchStart={this.handleTouchStart}
                 onTouchEnd={this.handleTouchEnd}
                 onTouchCancel={this.handleTouchEnd}
                 onTouchMove={this.handleTouchEnd} >
                 <div>
-                    <h6 className="my-0">{this.props.categoryName}</h6>
-                    <small className="text-muted">{this.props.text}</small>
+                    <h6 className="my-0">{this.props.text}</h6>
+                    <small className="text-muted">{this.props.categoryName}</small>
                 </div>
                 <span className="ml-auto">
                     {this.props.sum}
                 </span>
-                {this.state.showControl &&
-                <div className="d-flex flex-column justify-content-start">
-                    <a href="#" className="btn btn-outline-secondary btn-sm ml-1" onClick={this.handleEdit}>
-                        <PencilIcon/>
-                    </a>
-                    <a href="#" className="btn btn-outline-secondary btn-sm ml-1 mt-1" onClick={this.handleDelete}>
-                        <TrashcanIcon/>
-                    </a>
-                </div>
 
+                {this.state.showControl &&
+                    <div className="d-flex flex-column justify-content-start">
+                        <a href="#" className="btn btn-outline-secondary btn-sm ml-1" onClick={this.handleEdit}>
+                            <PencilIcon/>
+                        </a>
+                        <a href="#" className="btn btn-outline-secondary btn-sm ml-1 mt-1" onClick={this.handleDelete}>
+                            <TrashcanIcon/>
+                        </a>
+                    </div>
                 }
             </li>
         );

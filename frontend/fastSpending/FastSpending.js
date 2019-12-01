@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import ReactDatePicker from '../datepicker';
+
 import { dateToString } from '../tools/dateTools';
 
 import { getCategory } from '../services/categoryService';
-import { addSpending } from '../services/spendingService';
+import spendingService from '../services/spendingService';
 
-import ReactDatePicker from '../datepicker';
+import { vibrate } from '../tools/browserTools';
 
-const showMessageTimeout = 3000;
+const showMessageTimeout = 6000;
 
 class FastSpending extends React.Component {
     constructor(props) {
@@ -94,15 +96,18 @@ class FastSpending extends React.Component {
             showCategories: false,
             loading: true
         }, () => {
-            addSpending(date, sum, text, categoryId)
+            spendingService.addSpending(date, sum, text, categoryId)
                 .then(result => {
+
+                    vibrate(100);
+
                     this.setState(prev => {
                         const messages = prev.messages.slice();
 
                         // add message to tail
                         messages.push({
                             id: result.id,
-                            text: `${sum} ${this.getCategoryName(categoryId)} (${text}) ${date}`
+                            text: `${sum} ${this.getCategoryName(categoryId)} (${text})`
                         });
 
                         return {
@@ -142,7 +147,7 @@ class FastSpending extends React.Component {
 
         return messages.map(x =>
             <div key={x.id} className="alert alert-success" role="alert">
-                Добавлено {x.text}
+                {x.text}
             </div>
         );
     }

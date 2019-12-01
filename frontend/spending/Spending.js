@@ -14,9 +14,9 @@ import IncomingTable from './incomingTable/IncomingTable';
 
 import BadChart from '../chart';
 
-import HttpClient from '../core/httpClient';
+import spendingService from '../services/spendingService';
 
-import {dateToString} from '../tools/dateTools';
+import { dateToString } from '../tools/dateTools';
 
 const tableType = {
     spending: 'spending',
@@ -57,7 +57,9 @@ class Spending extends React.PureComponent {
             incomingItems: new Map(),
 
             incomingLoaded: false,
-            visibleTable: tableType.spending
+            visibleTable: tableType.spending,
+
+            loadingData: true,
         };
     }
 
@@ -107,23 +109,24 @@ class Spending extends React.PureComponent {
         const year = this.state.year;
         const month = this.state.month;
 
-        HttpClient.getjson(this.props.getSpendingUrl + '/' + year + '/' + month)
-            .then(this.successResult)
+        spendingService.getSpending(year, month)
             .then(result => {
                 this.setState({
                     items: this.getMap(result.spending),
-                    categories: this.getMap(result.categories)
+                    categories: this.getMap(result.categories),
                 });
             })
-            .catch(error => alert('Произошла ошибка ' + error));
+            .catch(error => alert('Произошла ошибка ' + error))
+            .then(() => {
+                this.setState({ loadingData: false });
+            });
     }
 
     loadIncomingData() {
         const year = this.state.year;
         const month = this.state.month;
 
-        HttpClient.getjson(this.props.getIncomingUrl + '/' + year + '/' + month)
-            .then(this.successResult)
+        spendingService.getIncoming(year, month)
             .then(result => {
                 this.setState({
                     incomingItems: this.getMap(result.incoming)
@@ -136,8 +139,7 @@ class Spending extends React.PureComponent {
         const year = this.state.year;
         const month = this.state.month;
 
-        HttpClient.getjson('/spending/stat/' + year + '/' + month)
-            .then(this.successResult)
+        spendingService.getStat(year, month)
             .then(result => {
                 this.setState({
                     stat: result
@@ -170,15 +172,7 @@ class Spending extends React.PureComponent {
     }
 
     handleAddSpending(spending) {
-        const data = {
-            date: spending.date,
-            sum: spending.sum,
-            text: spending.text,
-            category_id: spending.category_id
-        };
-
-        return HttpClient.postjson(this.props.saveSpendingUrl, data)
-            .then(this.successResult)
+        return spendingService.addSpending(spending.date, spending.sum, spending.text, spending.category_id)
             .then(result => {
                 const curDate = {
                     year: this.state.year,
@@ -204,16 +198,7 @@ class Spending extends React.PureComponent {
     }
 
     handleSaveSpending(spending) {
-        const data = {
-            id: spending.id,
-            date: spending.date,
-            sum: spending.sum,
-            text: spending.text,
-            category_id: spending.category_id
-        };
-
-        HttpClient.postjson(this.props.saveSpendingUrl, data)
-            .then(this.successResult)
+        spendingService.saveSpending(spending.id, spending.date, spending.sum, spending.text, spending.category_id)
             .then(() => {
                 const curDate = {
                     year: this.state.year,
@@ -246,8 +231,7 @@ class Spending extends React.PureComponent {
     }
 
     handleDeleteSpending(id) {
-        HttpClient.postjson(this.props.removeSpendingUrl, {id: id})
-            .then(this.successResult)
+        spendingService.removeSpending(id)
             .then(() => {
                 const newItems = new Map(this.state.items);
                 newItems.delete(id);
@@ -259,14 +243,7 @@ class Spending extends React.PureComponent {
     }
 
     handleAddIncoming(incoming) {
-        const data = {
-            date: incoming.date,
-            sum: incoming.sum,
-            text: incoming.text
-        };
-
-        HttpClient.postjson(this.props.saveIncomingUrl, data)
-            .then(this.successResult)
+        spendingService.addIncoming(incoming.date, incoming.sum, incoming.text)
             .then(result => {
                 const curDate = {
                     year: this.state.year,
@@ -290,15 +267,7 @@ class Spending extends React.PureComponent {
     }
 
     handleSaveIncoming(incoming) {
-        const data = {
-            id: incoming.id,
-            date: incoming.date,
-            sum: incoming.sum,
-            text: incoming.text,
-        };
-
-        HttpClient.postjson(this.props.saveIncomingUrl, data)
-            .then(this.successResult)
+        spendingService.saveIncoming(incoming.id, incoming.date, incoming.sum, incoming.text)
             .then(() => {
                 const curDate = {
                     year: this.state.year,
@@ -330,8 +299,7 @@ class Spending extends React.PureComponent {
     }
 
     handleDeleteIncoming(id) {
-        HttpClient.postjson(this.props.removeIncomingUrl, {id: id})
-            .then(this.successResult)
+        spendingService.removeIncoming(id)
             .then(() => {
                 const newItems = new Map(this.state.incomingItems);
                 newItems.delete(id);
@@ -357,6 +325,16 @@ class Spending extends React.PureComponent {
     }
 
     renderSpending(items) {
+        if (this.state.loadingData) {
+            return (
+                <div className="d-flex justify-content-center">
+                    <div className="spinner-grow" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                </div>
+            );
+        }
+
         if (this.props.mobile) {
             return (
                 <MobileSpendingTable
@@ -434,15 +412,6 @@ class Spending extends React.PureComponent {
 
 Spending.propTypes = {
     curDate: PropTypes.instanceOf(Date).isRequired,
-
-    saveSpendingUrl: PropTypes.string.isRequired,
-    getSpendingUrl:  PropTypes.string.isRequired,
-    removeSpendingUrl: PropTypes.string.isRequired,
-
-    saveIncomingUrl: PropTypes.string.isRequired,
-    getIncomingUrl:  PropTypes.string.isRequired,
-    removeIncomingUrl: PropTypes.string.isRequired,
-
     mobile: PropTypes.bool.isRequired
 };
 

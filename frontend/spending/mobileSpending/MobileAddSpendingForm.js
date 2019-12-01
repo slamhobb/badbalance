@@ -108,6 +108,24 @@ class MobileAddSpendingForm extends React.PureComponent {
                 <div className="d-flex mb-2">
                     <ReactDatePicker className="form-control" placeholder="Дата"
                         defaultValue={this.props.defaultDate} onChange={this.handleChangeDate} />
+
+                    <button type="button" className="btn btn-outline-danger ml-2"
+                        onClick={this.handleHideForm}>
+                        &times;
+                    </button>
+                </div>
+
+                <div className="input-group mb-2">
+                    <input type="number" className="form-control" placeholder="Сумма"
+                        value={this.state.sum} onChange={this.handleChangeSum} />
+                    <CategoriesList items={categories} value={this.state.category_id}
+                        onChange={this.handleChangeCategory} />
+                </div>
+
+                <div className="d-flex">
+                    <input type="text" className="form-control" placeholder="Описание"
+                        value={this.state.text} onChange={this.handleChangeText} />
+
                     {this.state.loading ? (
                         <button type="button" className="btn btn-outline-secondary ml-2" disabled>
                             <span className="spinner-border spinner-border-sm"
@@ -119,23 +137,7 @@ class MobileAddSpendingForm extends React.PureComponent {
                             <CheckIcon />
                         </button>
                     )}
-                </div>
 
-                <div className="input-group mb-2">
-                    <CategoriesList items={categories} value={this.state.category_id}
-                        onChange={this.handleChangeCategory} />
-                    <input type="number" className="form-control" placeholder="Сумма"
-                        value={this.state.sum} onChange={this.handleChangeSum} />
-                </div>
-
-                <div className="d-flex">
-                    <input type="text" className="form-control" placeholder="Описание"
-                        value={this.state.text} onChange={this.handleChangeText} />
-
-                    <button type="button" className="btn btn-outline-danger ml-2"
-                        onClick={this.handleHideForm}>
-                        &times;
-                    </button>
                 </div>
             </div>
         );

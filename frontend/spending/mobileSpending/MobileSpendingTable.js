@@ -7,6 +7,8 @@ import MobileAddSpendingForm from './MobileAddSpendingForm';
 import MobileLine from './MobileLine';
 import MobileEditLine from './MobileEditLine';
 
+import './mobileLine.css';
+
 const days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
 
 class MobileSpendingTable extends React.PureComponent {
@@ -83,16 +85,6 @@ class MobileSpendingTable extends React.PureComponent {
                 </div>
             );
         });
-
-        if (!listItems.length) {
-            return (
-                <div className="d-flex justify-content-center">
-                    <div className="spinner-grow" role="status">
-                        <span className="sr-only">Loading...</span>
-                    </div>
-                </div>
-            );
-        }
 
         return (
             <div className="row">
