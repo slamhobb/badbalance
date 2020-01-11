@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -25,56 +23,19 @@ class BadChart extends React.PureComponent {
     updateChart() {
         if (!this.inst) return;
 
-        if (!this.props.data) return;
+        if (!this.props.datasets) return;
 
-        const colors1 = [
-            //'#FFFF66',
-            '#FFCC66',
-            '#CC9933',
-            '#FFCC99',
-            '#FFCCCC',
-            '#CC6666',
-            '#FF99CC',
-            '#FFCCFF',
-            '#CC99CC',
-            '#CC66FF',
-            '#9966FF',
-            '#CCCCFF',
-        ];
+        this.inst.data.labels = this.props.labels;
+        this.inst.data.datasets = this.props.datasets;
 
-        // function getRandomColor() {
-        //     const letters = '0123456789ABCDEF';
-        //     let color = '#';
-        //     for (let i = 0; i < 6; i++ ) {
-        //         color += letters[Math.floor(Math.random() * 16)];
-        //     }
-        //     return color;
-        // }
-
-        const result = this.props.data;
-        const colors = result.stat.map((v, i) => { return colors1[i]; });
-
-        const data = {
-            labels: result.stat.map(function(x) { return x.category; }),
-            datasets: [
-                {
-                    data: result.stat.map(function(x) { return x.sum; }),
-                    backgroundColor: colors,
-                    hoverBackgroundColor: colors
-                }]
-        };
-
-        this.inst.data.labels = data.labels;
-        this.inst.data.datasets = data.datasets;
         this.inst.update(0, false);
     }
 
     renderChart() {
         // eslint-disable-next-line no-undef
-        this.inst = new Chart(this.node,{
-            type: 'doughnut',
-            //data: data
-            //options: options
+        this.inst = new Chart(this.node, {
+            type: this.props.type,
+            options: this.props.options
         });
     }
 
@@ -86,7 +47,16 @@ class BadChart extends React.PureComponent {
 }
 
 BadChart.propTypes = {
-    data: PropTypes.object
+    type: PropTypes.string.isRequired,
+    labels: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.string).isRequired,
+        PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)).isRequired
+    ]),
+    datasets: PropTypes.arrayOf(PropTypes.shape({
+        label: PropTypes.string,
+        data: PropTypes.arrayOf(PropTypes.number).isRequired
+    })).isRequired,
+    options: PropTypes.object
 };
 
 export default BadChart;

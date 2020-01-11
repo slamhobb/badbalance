@@ -77,9 +77,17 @@ class SpendingTable extends React.PureComponent {
     render() {
         const categories = Array.from(this.props.categories.values());
 
-        const filteredSum = this.props.items.reduce((acc, x) => acc + x.sum, 0);
+        const items = this.props.items.slice();
 
-        const formattedItems = this.formatItems(this.props.items);
+        items.sort((a, b) => {
+            const diff = new Date(b.date) - new Date(a.date);
+
+            return diff === 0 ? b.id - a.id : diff;
+        });
+
+        const filteredSum = items.reduce((acc, x) => acc + x.sum, 0);
+
+        const formattedItems = this.formatItems(items);
 
         const listItems = formattedItems.map(s => this.renderLine(s, categories));
 

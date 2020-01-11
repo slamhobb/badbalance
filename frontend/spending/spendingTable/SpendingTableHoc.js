@@ -68,12 +68,6 @@ function withFiltered(WrappedComponent) {
 
             itms = this.filterItems(itms);
 
-            itms.sort((a, b) => {
-                const diff = new Date(b.date) - new Date(a.date);
-
-                return diff === 0 ? b.id - a.id : diff;
-            });
-
             return <WrappedComponent
                 items={itms}
                 {...rest}

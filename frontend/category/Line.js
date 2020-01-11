@@ -22,6 +22,11 @@ class Line extends React.PureComponent {
     handleDelete(e) {
         e.preventDefault();
 
+        const confirmDelete = confirm('Вы действительно хотите удалить запись?');
+        if (!confirmDelete) {
+            return;
+        }
+
         let id = this.props.id;
         this.props.onDelete(id);
     }

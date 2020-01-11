@@ -25,6 +25,21 @@ const tableType = {
 
 const SpendingTableWithFilter = withFiltered(SpendingTable);
 
+const colors = [
+    //'#FFFF66',
+    '#FFCC66',
+    '#CC9933',
+    '#FFCC99',
+    '#FFCCCC',
+    '#CC6666',
+    '#FF99CC',
+    '#FFCCFF',
+    '#CC99CC',
+    '#CC66FF',
+    '#9966FF',
+    '#CCCCFF',
+];
+
 class Spending extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -55,6 +70,7 @@ class Spending extends React.PureComponent {
             items: new Map(),
             categories: new Map(),
             incomingItems: new Map(),
+            stat: [],
 
             incomingLoaded: false,
             visibleTable: tableType.spending,
@@ -81,14 +97,6 @@ class Spending extends React.PureComponent {
         const map = new Map();
         array.forEach(x => map.set(parseInt(x.id), x));
         return map;
-    }
-
-    successResult(result) {
-        if (result.status) {
-            return result;
-        }
-
-        throw new Error(JSON.stringify(result.message));
     }
 
     handleChangePeriod(period) {
@@ -142,7 +150,7 @@ class Spending extends React.PureComponent {
         spendingService.getStat(year, month)
             .then(result => {
                 this.setState({
-                    stat: result
+                    stat: result.stat
                 });
             })
             .catch(error => alert('Произошла ошибка ' + error));
@@ -359,10 +367,25 @@ class Spending extends React.PureComponent {
         );
     }
 
+    renderChart() {
+        const labels = this.state.stat.map(x => x.category);
+        const sums = this.state.stat.map(x => x.sum);
+
+        const datasets = [{
+            data: sums,
+            backgroundColor: colors
+        }];
+
+        return <BadChart type="doughnut" labels={labels} datasets={datasets} />;
+    }
+
     render() {
+        const sItems = Array.from(this.state.items.values());
+        const iItems = Array.from(this.state.incomingItems.values());
+
         const items = this.state.visibleTable === tableType.spending
-            ? Array.from(this.state.items.values())
-            : Array.from(this.state.incomingItems.values());
+            ? sItems
+            : iItems;
 
         const balance = items.reduce((sum, item) => sum + item.sum, 0);
 
@@ -395,14 +418,14 @@ class Spending extends React.PureComponent {
                 <div className="row">
                     <div className="col-sm-8">
                         <div className={this.state.visibleTable === tableType.spending ? '' : 'd-none'}>
-                            { this.renderSpending(items) }
+                            {this.renderSpending(sItems)}
                         </div>
                         <div className={this.state.visibleTable === tableType.incoming ? '' : 'd-none'}>
-                            { this.renderIncoming(items) }
+                            {this.renderIncoming(iItems)}
                         </div>
                     </div>
                     <div className="col-sm-4">
-                        <BadChart data={this.state.stat} />
+                        {this.renderChart()}
                     </div>
                 </div>
             </React.Fragment>

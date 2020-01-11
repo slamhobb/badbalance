@@ -79,7 +79,7 @@ function saveIncoming(id, date, sum, text) {
 
 function removeIncoming(id) {
     return httpClient.postjson('/incoming/remove', {id: id})
-        .then(this.successResult);
+        .then(successResult);
 }
 
 

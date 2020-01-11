@@ -53,8 +53,10 @@ class MobileAddSpendingForm extends React.PureComponent {
     }
 
     handleChangeSum(e) {
+        const sum = parseInt(e.target.value);
+
         this.setState({
-            sum: e.target.value
+            sum: isNaN(sum) ? 0 : sum
         });
     }
 

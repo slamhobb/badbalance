@@ -78,7 +78,7 @@ class MobileSpendingTable extends React.PureComponent {
         const listItems = g.map(x => {
             return (
                 <div key={x[0].id} className="mt-3">
-                    <h5>{this.formatDate(x[0].date)}</h5>
+                    <h5 className="text-muted">{this.formatDate(x[0].date)}</h5>
                     <ul className="list-group mt-1">
                         { x.map(x => this.renderMobileLine(x, categories))}
                     </ul>

@@ -71,8 +71,8 @@ class IncomingTable extends React.PureComponent {
     }
 
     render() {
-        let items = this.props.items;
-        items = items.sort((a, b) => {
+        const items = this.props.items.slice();
+        items.sort((a, b) => {
             const diff = new Date(b.date) - new Date(a.date);
 
             return diff === 0 ? b.id - a.id : diff;

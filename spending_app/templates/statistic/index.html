@@ -1,12 +1,13 @@
 {% extends 'shared/layout.html' %}
 
 {% block styles %}
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='build/statistic.css') }}">
 {% endblock %}
-
 
 {% block scripts %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+  <script src="{{ url_for('static', filename='build/statistic.js') }}"></script>
 {% endblock %}
-
 
 {% block menu %}
   <ul class="nav nav-tabs">
@@ -30,6 +31,5 @@
 
 
 {% block body %}
-  <h3>Сатитистика расходов</h3>
-
+  <div id="statistic-js"></div>
 {% endblock %}

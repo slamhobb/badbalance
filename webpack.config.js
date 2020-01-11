@@ -19,7 +19,8 @@ module.exports = {
         category: './category/index.js',
         debt: './debt/index.js',
         fastSpending: './fastSpending/index.js',
-        userConfig: './userConfig/index.js'
+        userConfig: './userConfig/index.js',
+        statistic: './statistic/index.js'
     },
 
     output: {

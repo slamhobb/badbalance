@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block scripts %}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
   <script src="{{ url_for('static', filename='build/spending.js') }}"></script>
 {% endblock %}
 
@@ -15,7 +15,7 @@
       <a class="nav-link active">Расходы</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link disabled" href="/statistic" tabindex="-1" aria-disabled="true">Статистика</a>
+      <a class="nav-link" href="/statistic">Статистика</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="/category">Категории</a>
