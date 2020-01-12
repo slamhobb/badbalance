@@ -7,6 +7,7 @@ const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const AutoPrefixer = require('autoprefixer');
 
 module.exports = {
@@ -37,6 +38,7 @@ module.exports = {
     devtool: NODE_ENV === 'development' ? 'inline-source-map' : false,
 
     plugins: [
+        new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
             filename: '[name].css'
         })

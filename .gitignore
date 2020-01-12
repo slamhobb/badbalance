@@ -5,11 +5,14 @@ __pycache__
 # idea
 .idea/
 
-#nmp modules
+# npm modules
 node_modules
 
-#built static
+# build static
 static/build
 
-#python test cache
+# vendor static
+static/vendor
+
+# python test cache
 .pytest_cache
