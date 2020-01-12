@@ -141,10 +141,10 @@ class Statistic extends React.Component {
                     </div>
                 </div>
                 <div className="row mt-3">
-                    <div className="col-sm-6">
+                    <div className="col-sm-6 mb-3">
                         {this.renderHorizontalBar(labels, dataSets)}
                     </div>
-                    <div className="col-sm-6">
+                    <div className="col-sm-6 mb-3">
                         <DetailStatistic items={this.state.items}
                             categories={categories} colors={colors} />
                     </div>
