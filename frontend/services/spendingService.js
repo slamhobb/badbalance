@@ -83,7 +83,7 @@ function removeIncoming(id) {
 }
 
 
-//stat
+//statistic
 
 function getStat(year, month) {
     return httpClient.getjson('/spending/stat/' + year + '/' + month)

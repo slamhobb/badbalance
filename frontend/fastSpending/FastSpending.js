@@ -5,7 +5,7 @@ import ReactDatePicker from '../datepicker';
 
 import { dateToString } from '../tools/dateTools';
 
-import { getCategory } from '../services/categoryService';
+import categoryService from '../services/categoryService';
 import spendingService from '../services/spendingService';
 
 import { vibrate } from '../tools/browserTools';
@@ -46,7 +46,7 @@ class FastSpending extends React.Component {
     }
 
     loadData() {
-        getCategory()
+        categoryService.getCategory()
             .then(result => {
                 this.setState({
                     categories: result.categories

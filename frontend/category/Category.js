@@ -1,12 +1,12 @@
 'use strict';
 
 import React from 'react';
-import PropTypes from 'prop-types';
+//import PropTypes from 'prop-types';
 
 import AddCategoryForm from './AddCategoryForm';
 import CategoryTable from './CategoryTable';
 
-import HttpClient from '../core/httpClient';
+import categoryService from '../services/categoryService';
 
 class Category extends React.PureComponent {
     constructor(props) {
@@ -23,7 +23,7 @@ class Category extends React.PureComponent {
     }
 
     componentDidMount() {
-        this.refreshTable();
+        this.loadCategoryData();
     }
 
     getMap(array) {
@@ -32,18 +32,8 @@ class Category extends React.PureComponent {
         return map;
     }
 
-    successResult(result) {
-        if (result.status) {
-            return result;
-        }
-
-        throw new Error(JSON.stringify(result.message));
-    }
-
-
-    refreshTable() {
-        HttpClient.getjson(this.props.getCategoryUrl)
-            .then(this.successResult)
+    loadCategoryData() {
+        categoryService.getCategory()
             .then(result => {
                 this.setState({
                     items: this.getMap(result.categories),
@@ -53,8 +43,7 @@ class Category extends React.PureComponent {
     }
 
     handleAdd(category) {
-        HttpClient.postjson(this.props.saveCategoryUrl, category)
-            .then(this.successResult)
+        categoryService.addCategory(category.name)
             .then(result => {
                 const id = parseInt(result.id);
                 Object.assign(category, {id: id});
@@ -67,13 +56,7 @@ class Category extends React.PureComponent {
     }
 
     handleSave(category) {
-        const data = {
-            id: category.id,
-            name: category.name
-        };
-
-        HttpClient.postjson(this.props.saveCategoryUrl, data)
-            .then(this.successResult)
+        categoryService.saveCategory(category.id, category.name)
             .then(() => {
                 const newItems = new Map(this.state.items);
                 newItems.set(category.id, category);
@@ -90,8 +73,7 @@ class Category extends React.PureComponent {
     }
 
     handleDelete(id) {
-        HttpClient.postjson(this.props.removeCategoryUrl, {id: id})
-            .then(this.successResult)
+        categoryService.removeCategory(id)
             .then(() => {
                 const newItems = new Map(this.state.items);
                 newItems.delete(id);
@@ -123,9 +105,6 @@ class Category extends React.PureComponent {
 }
 
 Category.propTypes = {
-    getCategoryUrl: PropTypes.string.isRequired,
-    saveCategoryUrl: PropTypes.string.isRequired,
-    removeCategoryUrl: PropTypes.string.isRequired
 };
 
 export default Category;

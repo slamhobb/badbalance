@@ -99,20 +99,6 @@ class Spending extends React.PureComponent {
         return map;
     }
 
-    handleChangePeriod(period) {
-        this.setState({
-            year: period.year,
-            month: period.month
-        }, () => {
-            this.loadSpendingData();
-            this.loadStatData();
-
-            if (this.state.incomingLoaded) {
-                this.loadIncomingData();
-            }
-        });
-    }
-
     loadSpendingData() {
         const year = this.state.year;
         const month = this.state.month;
@@ -154,6 +140,20 @@ class Spending extends React.PureComponent {
                 });
             })
             .catch(error => alert('Произошла ошибка ' + error));
+    }
+
+    handleChangePeriod(period) {
+        this.setState({
+            year: period.year,
+            month: period.month
+        }, () => {
+            this.loadSpendingData();
+            this.loadStatData();
+
+            if (this.state.incomingLoaded) {
+                this.loadIncomingData();
+            }
+        });
     }
 
     handleSwitchTable() {

@@ -1,14 +1,14 @@
 'use strict';
 
 import React from 'react';
-import PropTypes from 'prop-types';
-
-import HttpClient from '../core/httpClient';
+//import PropTypes from 'prop-types';
 
 import AddDebtForm from './DebtPanel/AddDebtForm';
 import DebtPanel from './DebtPanel';
 
 import { IncomeIcon, OutcomeIcon } from '../svg/Svg';
+
+import debtService from '../services/debtService';
 
 class Debt extends React.Component {
     constructor(props) {
@@ -50,8 +50,11 @@ class Debt extends React.Component {
     }
 
     componentDidMount() {
-        HttpClient.getjson(this.props.geDebtsUrl)
-            .then(this.successResult)
+        this.loadDebtData();
+    }
+
+    loadDebtData() {
+        debtService.getDebts()
             .then(result => {
                 if (result.status) {
                     this.setState({
@@ -63,18 +66,13 @@ class Debt extends React.Component {
     }
 
     handleAddDebt(debtName) {
-        const data = {
-            name: debtName
-        };
-
-        return HttpClient.postjson(this.props.addDebtUrl, data)
-            .then(this.successResult)
+        return debtService.addDebt(debtName)
             .then(result => {
                 const debtId = parseInt(result.id);
 
                 const newDebt = {
                     debt_id: debtId,
-                    name: data.name,
+                    name: debtName,
                     items: new Map()
                 };
                 const newItems = new Map(this.state.items);
@@ -88,12 +86,7 @@ class Debt extends React.Component {
     }
 
     handleDeleteDebt(debtId) {
-        const data = {
-            id: debtId
-        };
-
-        return HttpClient.postjson(this.props.deleteDebtUrl, data)
-            .then(this.successResult)
+        return debtService.removeDebt(debtId)
             .then(() => {
                 const newItems = new Map(this.state.items);
                 newItems.delete(debtId);
@@ -106,15 +99,7 @@ class Debt extends React.Component {
     }
 
     handleAddDebtItem(debtItem, debtId) {
-        const data = {
-            date: debtItem.date,
-            sum: debtItem.sum,
-            text: debtItem.text,
-            debt_id: debtId
-        };
-
-        return HttpClient.postjson(this.props.addDebtItemUrl, data)
-            .then(this.successResult)
+        return debtService.addDebtItem(debtItem.date, debtItem.sum, debtItem.text, debtId)
             .then(result => {
                 const id = parseInt(result.id);
 
@@ -138,13 +123,7 @@ class Debt extends React.Component {
     }
 
     handleDeleteDebtItem(id, debtId) {
-        const data = {
-            id: id,
-            debt_id: debtId
-        };
-
-        return HttpClient.postjson(this.props.deleteDebtItemUrl, data)
-            .then(this.successResult)
+        return debtService.removeDebtItem(id, debtId)
             .then(() => {
                 const newItems = new Map(this.state.items);
                 const debt = newItems.get(debtId);
@@ -209,11 +188,6 @@ class Debt extends React.Component {
 }
 
 Debt.propTypes = {
-    geDebtsUrl: PropTypes.string.isRequired,
-    addDebtUrl: PropTypes.string.isRequired,
-    addDebtItemUrl: PropTypes.string.isRequired,
-    deleteDebtUrl: PropTypes.string.isRequired,
-    deleteDebtItemUrl: PropTypes.string.isRequired
 };
 
 export default Debt;
