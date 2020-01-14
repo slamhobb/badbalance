@@ -11,7 +11,7 @@ function generateYears(minYear) {
     const years = [];
 
     let current = minYear;
-    while (current !== nextYear) {
+    while (current <= nextYear) {
         years.push(current);
 
         current++;
