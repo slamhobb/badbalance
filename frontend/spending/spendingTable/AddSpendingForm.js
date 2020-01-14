@@ -3,7 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import CategoriesList from '../CategoriesOptions';
+import CategoriesList from '../../sharedComponents/categoriesOptions/CategoriesOptions';
 
 import ReactDatePicker from '../../datepicker';
 

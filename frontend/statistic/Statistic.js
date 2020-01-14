@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import PeriodSelector from '../spending/PeriodSelector';
+import PeriodSelector from '../sharedComponents/period/PeriodSelector';
 
 import DetailStatistic from './DetailStatistic';
 

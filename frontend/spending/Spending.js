@@ -3,7 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import PeriodSelector from './PeriodSelector';
+import PeriodSelector from '../sharedComponents/period/PeriodSelector';
 import Switcher from './Switcher';
 
 import SpendingTable from './spendingTable/SpendingTable';

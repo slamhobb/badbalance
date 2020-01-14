@@ -5,21 +5,30 @@ import PropTypes from 'prop-types';
 
 import './periodSelector.css';
 
-const years = [2016, 2017, 2018];
+function generateYears(minYear) {
+    const nextYear = new Date().getFullYear() + 1;
+
+    const years = [];
+
+    let current = minYear;
+    while (current !== nextYear) {
+        years.push(current);
+
+        current++;
+    }
+
+    years.reverse();
+
+    return years;
+}
+
+const years = generateYears(2016);
 const months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
     'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
 
 class PeriodSelector extends React.PureComponent {
     constructor(props) {
         super(props);
-
-        const nextYear = new Date().getFullYear() + 1;
-
-        while (years[years.length-1] !== nextYear) {
-            const last = years[years.length-1];
-
-            years.push(last + 1);
-        }
 
         this.handleChangeYear = this.handleChangeYear.bind(this);
         this.handleChangeMonth = this.handleChangeMonth.bind(this);

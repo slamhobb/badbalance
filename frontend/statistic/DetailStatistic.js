@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import CategoriesOptions from '../spending/CategoriesOptions';
+import CategoriesOptions from '../sharedComponents/categoriesOptions/CategoriesOptions';
 
 import { generateDataForChart } from './chartDataGenerator';
 
