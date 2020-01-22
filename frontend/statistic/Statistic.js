@@ -107,6 +107,17 @@ class Statistic extends React.Component {
         return <BadChart type='horizontalBar' labels={labels} datasets={data} options={options} />;
     }
 
+    cutString(str) {
+        const cutSize = 6;
+
+        if (str.length > cutSize)
+        {
+            return `${str.slice(0, cutSize - 1)}..`;
+        }
+
+        return str
+    }
+
     render() {
         const allSpending = this.state.items.reduce((sum, item) => sum + item.sum, 0);
         const allIncoming = this.state.incomingItems.reduce((sum, item) => sum + item.sum, 0);
@@ -119,7 +130,11 @@ class Statistic extends React.Component {
             name: this.state.categories.get(x.category_id).name
         }));
 
-        const labels = data.map(x => [this.state.categories.get(x.category_id).name, x.sum.toString()]);
+        const labels = data.map(x => {
+            const catName = this.state.categories.get(x.category_id).name;
+
+            return [this.cutString(catName), x.sum.toString()];
+        });
         const dataSets = data.map(x => x.sum);
 
         return (
