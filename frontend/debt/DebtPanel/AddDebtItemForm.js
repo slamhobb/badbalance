@@ -4,6 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import ReactDatePicker from '../../datepicker';
+import { IncomeIcon, OutcomeIcon } from '../../svg/Svg';
 
 import { dateToString } from '../../tools/dateTools';
 
@@ -125,9 +126,15 @@ class AddDebtItemForm extends React.Component {
                     
                     <div className="btn-group">
                         <button type="button" className="btn btn-outline-dark debt_button"
-                            onClick={this.handleAddOutgoing}>Дал</button>
+                            onClick={this.handleAddOutgoing}>
+                            <span className="mr-1">Дал</span>
+                            <OutcomeIcon/>
+                        </button>
                         <button type="button" className="btn btn-outline-dark debt_button"
-                            onClick={this.handleAddIncoming}>Взял</button>
+                            onClick={this.handleAddIncoming}>
+                            <span className="mr-1">Взял</span>
+                            <IncomeIcon/>
+                        </button>
                     </div>
                     
                 </div>
