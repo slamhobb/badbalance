@@ -4,6 +4,6 @@ from wtforms.validators import DataRequired, Email
 
 
 class LoginForm(BaseForm):
-    login = StringField('Логин', [DataRequired(), Email()])
+    login = StringField('Логин', [DataRequired()])
     password = PasswordField('Пароль', [DataRequired()])
     remember_me = BooleanField('Запомнить меня')
