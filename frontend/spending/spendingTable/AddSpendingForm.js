@@ -39,7 +39,7 @@ class AddSpendingForm extends React.PureComponent {
         const sum = parseInt(e.target.value);
 
         this.setState({
-            sum: isNaN(sum) ? 0 : sum
+            sum: isNaN(sum) ? '' : sum
         });
     }
 
@@ -58,19 +58,19 @@ class AddSpendingForm extends React.PureComponent {
     handleAdd() {
         const data = {
             date: this.state.date,
-            sum: parseInt(this.state.sum),
+            sum: this.state.sum,
             text: this.state.text,
             category_id: parseInt(this.state.category_id)
         };
 
         this.setState({
-            sum: '',
-            text: '',
             loading: true
         }, () => {
             this.props.onAdd(data)
                 .then(() => {
                     this.setState({
+                        sum: '',
+                        text: '',
                         loading: false
                     });
                 });

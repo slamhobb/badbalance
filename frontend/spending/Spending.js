@@ -206,7 +206,7 @@ class Spending extends React.PureComponent {
     }
 
     handleSaveSpending(spending) {
-        spendingService.saveSpending(spending.id, spending.date, spending.sum, spending.text, spending.category_id)
+        return spendingService.saveSpending(spending.id, spending.date, spending.sum, spending.text, spending.category_id)
             .then(() => {
                 const curDate = {
                     year: this.state.year,
@@ -251,7 +251,7 @@ class Spending extends React.PureComponent {
     }
 
     handleAddIncoming(incoming) {
-        spendingService.addIncoming(incoming.date, incoming.sum, incoming.text)
+        return spendingService.addIncoming(incoming.date, incoming.sum, incoming.text)
             .then(result => {
                 const curDate = {
                     year: this.state.year,
@@ -292,7 +292,6 @@ class Spending extends React.PureComponent {
                 } else {
                     newItems.set(incoming.id, incoming);
                 }
-
 
                 this.setState({incomingItems: newItems});
             })

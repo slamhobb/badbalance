@@ -30,9 +30,9 @@ class EditLine extends React.PureComponent {
     handleChangeSum(e) {
         const sum = parseInt(e.target.value);
 
-        if (!isNaN(sum)) {
-            this.setState({sum: sum});
-        }
+        this.setState({
+            sum: isNaN(sum) ? '' : sum
+        });
     }
 
     handleChangeText(e) {
@@ -60,13 +60,13 @@ class EditLine extends React.PureComponent {
                 </td>
                 <td>
                     <div className="incoming_sum">
-                        <input className="form-control"
+                        <input className="form-control" placeholder="Сумма"
                             value={this.state.sum} onChange={this.handleChangeSum} />
                     </div>
                 </td>
                 <td>
                     <div className="incoming_text">
-                        <input className="form-control"
+                        <input className="form-control" placeholder="Описание"
                             value={this.state.text} onChange={this.handleChangeText} />
                     </div>
                 </td>

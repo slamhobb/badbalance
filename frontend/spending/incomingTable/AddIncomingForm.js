@@ -33,7 +33,7 @@ class AddIncomingForm extends React.PureComponent {
         const sum = parseInt(e.target.value);
 
         this.setState({
-            sum: isNaN(sum) ? 0 : sum
+            sum: isNaN(sum) ? '' : sum
         });
     }
 
@@ -44,18 +44,15 @@ class AddIncomingForm extends React.PureComponent {
     }
 
     handleAdd() {
-        const data = {
-            date: this.state.date,
-            sum: parseInt(this.state.sum),
-            text: this.state.text,
-        };
+        const data = Object.assign({}, this.state);
 
-        this.setState({
-            sum: '',
-            text: ''
-        });
-
-        this.props.onAdd(data);
+        this.props.onAdd(data)
+            .then(() => {
+                this.setState({
+                    sum: '',
+                    text: ''
+                });
+            });
     }
 
     render() {

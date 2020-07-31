@@ -37,7 +37,7 @@ class MobileEditLine extends React.PureComponent {
         const sum = parseInt(e.target.value);
 
         this.setState({
-            sum: isNaN(sum) ? 0 : sum
+            sum: isNaN(sum) ? '' : sum
         });
     }
 
@@ -55,7 +55,7 @@ class MobileEditLine extends React.PureComponent {
         const spending = {
             id: this.props.id,
             date: this.state.date,
-            sum: parseInt(this.state.sum),
+            sum: this.state.sum,
             text: this.state.text,
             category_id: parseInt(this.state.category_id)
         };
@@ -63,7 +63,12 @@ class MobileEditLine extends React.PureComponent {
         this.setState({
             loading: true
         }, () => {
-            this.props.onSave(spending);
+            this.props.onSave(spending)
+                .then(() => {
+                    this.setState({
+                        loading: false
+                    });
+                });
         });
     }
 
@@ -89,14 +94,14 @@ class MobileEditLine extends React.PureComponent {
                 </div>
 
                 <div className="input-group mb-2">
-                    <input type="number" className="form-control" value={this.state.sum}
-                        onChange={this.handleChangeSum} />
+                    <input type="number" className="form-control" placeholder="Сумма"
+                        value={this.state.sum} onChange={this.handleChangeSum} />
                     <CategoriesList items={categories} value={this.state.category_id}
                         onChange={this.handleChangeCategory} />
                 </div>
 
-                <input type="text" className="form-control" value={this.state.text}
-                    onChange={this.handleChangeText} />
+                <input type="text" className="form-control" placeholder="Описание"
+                    value={this.state.text} onChange={this.handleChangeText} />
             </div>
         );
     }
