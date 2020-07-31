@@ -91,8 +91,6 @@ class FastSpending extends React.Component {
         } = this.state;
 
         this.setState({
-            sum: '',
-            text: '',
             showCategories: false,
             loading: true
         }, () => {
@@ -131,6 +129,8 @@ class FastSpending extends React.Component {
                 .catch(error => alert('Произошла ошибка ' + error))
                 .then(() => {
                     this.setState({
+                        sum: '',
+                        text: '',
                         loading: false
                     });
                 });
