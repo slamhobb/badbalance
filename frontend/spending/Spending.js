@@ -17,6 +17,7 @@ import BadChart from '../chart';
 import spendingService from '../services/spendingService';
 
 import { dateToString } from '../tools/dateTools';
+import { formatSum } from '../tools/sumTools';
 
 const tableType = {
     spending: 'spending',
@@ -389,8 +390,8 @@ class Spending extends React.PureComponent {
         const balance = items.reduce((sum, item) => sum + item.sum, 0);
 
         const balanceText = this.state.visibleTable === tableType.spending
-            ? `Расход за месяц: ${balance}`
-            : `Доход за месяц: ${balance}`;
+            ? `Расход за месяц: ${formatSum(balance)}`
+            : `Доход за месяц: ${formatSum(balance)}`;
 
         return (
             <React.Fragment>

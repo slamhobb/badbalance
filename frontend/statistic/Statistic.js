@@ -10,6 +10,7 @@ import BadChart from '../chart';
 import spendingService from '../services/spendingService';
 
 import { generateDataForChart } from './chartDataGenerator';
+import { formatSum } from '../tools/sumTools';
 
 const colors = [
     '#1f77b4',
@@ -150,9 +151,9 @@ class Statistic extends React.Component {
                 </div>
                 <div className="row mt-3">
                     <div className="col">
-                        <span className="mr-2">Всего раходов: <strong>{allSpending}</strong></span>
-                        <span>Всего доходов: <strong>{allIncoming}</strong></span>
-                        <div>Балланс: <strong>{balance}</strong></div>
+                        <span className="mr-2">Всего раходов: <strong>{formatSum(allSpending)}</strong></span>
+                        <span>Всего доходов: <strong>{formatSum(allIncoming)}</strong></span>
+                        <div>Балланс: <strong>{formatSum(balance)}</strong></div>
                     </div>
                 </div>
                 <div className="row mt-3">

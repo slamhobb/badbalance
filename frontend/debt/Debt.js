@@ -9,6 +9,7 @@ import DebtPanel from './DebtPanel';
 import { IncomeIcon, OutcomeIcon } from '../svg/Svg';
 
 import debtService from '../services/debtService';
+import { formatSum } from '../tools/sumTools';
 
 class Debt extends React.Component {
     constructor(props) {
@@ -170,9 +171,9 @@ class Debt extends React.Component {
                 <div className="row mt-3">
                     <div className="col-sm-4">
                         {debtSum > 0 ? (
-                            <span>Итого я должен: {Math.abs(debtSum)}</span>
+                            <span>Итого я должен: {formatSum(Math.abs(debtSum))}</span>
                         ) : (
-                            <span>Итого мне должны: {Math.abs(debtSum)}</span>
+                            <span>Итого мне должны: {formatSum(Math.abs(debtSum))}</span>
                         )}
                     </div>
                 </div>

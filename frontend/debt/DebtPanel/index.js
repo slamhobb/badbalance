@@ -7,6 +7,7 @@ import './debtPanel.css';
 
 import AddDebtItemForm from './AddDebtItemForm';
 import { dateToRuString } from '../../tools/dateTools';
+import { formatSum } from '../../tools/sumTools';
 import { ChevronRightIcon, ChevronDownIcon, IncomeIcon, OutcomeIcon } from '../../svg/Svg';
 
 class DebtPanel extends React.Component {
@@ -69,7 +70,7 @@ class DebtPanel extends React.Component {
                         
                         <div className="d-flex align-items-center">
                             <div className="badge badge-secondary badge-pill">
-                                <span>{allSum}</span>
+                                <span>{formatSum(allSum)}</span>
                             </div>
                             { !this.state.minimized &&
                                 <button type="button" className="close ml-2" onClick={this.handleDeleteDebt}>
@@ -89,7 +90,7 @@ class DebtPanel extends React.Component {
                                     </div>
                                     <div className={x.sum < 0 ? 'd-flex align-items-start text-success' : 'd-flex align-items-start' }>
                                         <span className="mr-1">
-                                            {x.sum < 0 ? Math.abs(x.sum) : '+' + Math.abs(x.sum) }
+                                            {x.sum < 0 ? formatSum(Math.abs(x.sum)) : '+' + formatSum(Math.abs(x.sum)) }
                                         </span>
                                         <div className="d-flex flex-column justify-content-start">
                                             {x.sum < 0

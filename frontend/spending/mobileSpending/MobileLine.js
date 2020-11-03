@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { PencilIcon, TrashcanIcon } from '../../svg/Svg';
 
 import { vibrate } from '../../tools/browserTools';
+import { formatSum } from '../../tools/sumTools';
 
 class MobileLine extends React.PureComponent {
     constructor(props) {
@@ -72,7 +73,7 @@ class MobileLine extends React.PureComponent {
                     <small className="text-muted">{this.props.categoryName}</small>
                 </div>
                 <span className="ml-auto">
-                    {this.props.sum}
+                    {formatSum(this.props.sum)}
                 </span>
 
                 {this.state.showControl &&

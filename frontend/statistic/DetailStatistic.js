@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import CategoriesOptions from '../sharedComponents/categoriesOptions/CategoriesOptions';
 
 import { generateDataForChart } from './chartDataGenerator';
+import { formatSum } from '../tools/sumTools';
 
 class DetailStatistic extends React.Component {
     constructor(props) {
@@ -28,7 +29,7 @@ class DetailStatistic extends React.Component {
                 <tbody>
                     {data.map(x =>
                         <tr key={x.text}>
-                            <td>{x.sum}</td>
+                            <td>{formatSum(x.sum)}</td>
                             <td>{x.text}</td>
                         </tr>)}
                 </tbody>

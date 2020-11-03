@@ -3,6 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { formatSum } from '../../tools/sumTools';
 import { PencilIcon, TrashcanIcon } from '../../svg/Svg';
 
 class Line extends React.PureComponent {
@@ -42,7 +43,7 @@ class Line extends React.PureComponent {
                 </td>
                 <td>
                     <div className="incoming_sum text-right">
-                        {this.props.item.sum}
+                        {formatSum(this.props.item.sum)}
                     </div>
                 </td>
                 <td>
