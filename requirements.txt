@@ -1,5 +1,5 @@
-bcrypt==3.1.7
+bcrypt==3.2.0
 Flask==1.1.2
 Flask-WTF==0.14.3
-Inject==4.2.0
+Inject==4.3.1
 Jinja2==2.11.2

@@ -4,11 +4,10 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 
 const path = require('path');
 
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const AutoPrefixer = require('autoprefixer');
 
 module.exports = {
     mode: NODE_ENV,
@@ -58,27 +57,31 @@ module.exports = {
                 {
                     loader: 'postcss-loader',
                     options: {
-                        ident: 'postcss',
                         sourceMap: NODE_ENV === 'development',
-                        plugins: [
-                            AutoPrefixer
-                        ]
+                        postcssOptions: {
+                            plugins: [
+                                'autoprefixer'
+                            ]
+                        }
                     }
                 }
             ]
         }, {
             test: /\.svg$/,
             include: path.resolve(__dirname, 'frontend'),
-            loader: 'svg-inline-loader?removeSVGTagAttrs=false'
+            loader: 'raw-loader'
         }]
     }
 };
 
 if (NODE_ENV === 'production') {
     module.exports.optimization = {
+        minimize: true,
         minimizer: [
-            new UglifyJsPlugin(),
-            new OptimizeCSSAssetsPlugin()
+            new TerserPlugin({
+                extractComments: false
+            }),
+            new CssMinimizerPlugin()
         ]
     };
 }
