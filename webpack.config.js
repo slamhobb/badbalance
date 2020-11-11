@@ -28,6 +28,10 @@ module.exports = {
         filename: '[name].js'
     },
 
+    resolve: {
+        extensions: [".ts", ".js"]
+    },
+
     watch: NODE_ENV === 'development',
 
     watchOptions: {
@@ -48,6 +52,10 @@ module.exports = {
             test: /\.js$/,
             include: path.resolve(__dirname, 'frontend'),
             use: 'babel-loader'
+        }, {
+            test: /\.ts$/,
+            include: path.resolve(__dirname, 'frontend'),
+            use: 'ts-loader'
         }, {
             test: /\.css$/,
             include: path.resolve(__dirname, 'frontend'),
