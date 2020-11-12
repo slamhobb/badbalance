@@ -157,7 +157,7 @@ class Debt extends React.Component {
             <React.Fragment>
                 <h2 className="mt-4">Управление долгами</h2>
 
-                <div className="row">
+                <div className="row mt-3">
                     <div className="col-sm-4 d-flex align-items-center">
                         <OutcomeIcon className="d-flex align-items-end mr-1 text-success"/>
                         <span className="text-success">- Дал</span>

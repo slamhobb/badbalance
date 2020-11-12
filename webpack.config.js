@@ -20,7 +20,8 @@ module.exports = {
         debt: './debt/index.js',
         fastSpending: './fastSpending/index.js',
         userConfig: './userConfig/index.js',
-        statistic: './statistic/index.js'
+        statistic: './statistic/index.js',
+        cooperativeSpending: './cooperativeSpending/index.tsx'
     },
 
     output: {
@@ -29,7 +30,7 @@ module.exports = {
     },
 
     resolve: {
-        extensions: [".ts", ".js"]
+        extensions: ['.ts', '.tsx', '.js']
     },
 
     watch: NODE_ENV === 'development',
@@ -53,7 +54,7 @@ module.exports = {
             include: path.resolve(__dirname, 'frontend'),
             use: 'babel-loader'
         }, {
-            test: /\.ts$/,
+            test: /\.tsx?$/,
             include: path.resolve(__dirname, 'frontend'),
             use: 'ts-loader'
         }, {

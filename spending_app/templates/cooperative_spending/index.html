@@ -1,11 +1,11 @@
 {% extends 'shared/layout.html' %}
 
 {% block styles %}
-{#  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='build/userConfig.css') }}">#}
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='build/cooperativeSpending.css') }}">
 {% endblock %}
 
 {% block scripts %}
-  <script src="{{ url_for('static', filename='build/userConfig.js') }}"></script>
+  <script src="{{ url_for('static', filename='build/cooperativeSpending.js') }}"></script>
 {% endblock %}
 
 {% block menu %}
@@ -23,14 +23,14 @@
       <a class="nav-link" href="/debt">Долги</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="/cooperative-spending">Кооператив</a>
+      <a class="nav-link active">Кооператив</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link active">Настройки</a>
+      <a class="nav-link" href="/user-config">Настройки</a>
     </li>
   </ul>
 {% endblock %}
 
 {% block body %}
-  <div id="userConfig-js"></div>
+  <div id="cooperativeSpending-js"></div>
 {% endblock %}

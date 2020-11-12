@@ -89,7 +89,7 @@ class Category extends React.PureComponent {
             <React.Fragment>
                 <h2 className="mt-4">Редактирование списка категорий</h2>
 
-                <div className="row mt-4">
+                <div className="row mt-3">
                     <div className="col-sm-4">
                         <AddCategoryForm onAdd={this.handleAdd}/>
                         <CategoryTable

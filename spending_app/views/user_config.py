@@ -91,6 +91,3 @@ def clear_default_fast_spending():
 def delete_cookie_config():
     set_user_config(None)
     return jsonify(status=True)
-
-
-

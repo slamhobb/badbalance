@@ -92,3 +92,36 @@ create table user_config(
 );
 
 create index ix_user_config_user_id on user_config(user_id);
+
+
+drop table if exists coop_spending;
+create table coop_spending(
+    id integer primary key autoincrement,
+    name text not null,
+    data text not null
+);
+
+create index ix_coop_spending_id on coop_spending(id);
+
+
+drop table if exists coop_spending_user;
+create table coop_spending_user(
+    id integer primary key autoincrement,
+    coop_spending_id integer not null,
+    user_id integer not null
+);
+
+create index ix_coop_spending_user_id on coop_spending_user(id);
+create index ix_coop_spending_user_user_id on coop_spending_user(user_id);
+
+
+drop table if exists coop_spending_item;
+create table coop_spending_item(
+    id integer primary key autoincrement,
+    coop_spending_id integer not null,
+    date text not null,
+    data text not null
+);
+
+create index ix_coop_spending_item_id on coop_spending_item(id);
+create index ix_coop_spending_item_coop_spending_id on coop_spending_item(coop_spending_id);

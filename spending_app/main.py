@@ -18,6 +18,8 @@ from spending_app.views.incoming import mod as incoming
 from spending_app.views.debt import mod as debt
 from spending_app.views.tool import mod as tool
 from spending_app.views.user_config import mod as user_config
+from spending_app.views.cooperative_spending import mod as cooperative_spending
+
 
 def create_app():
     app = Flask(__name__)
@@ -36,5 +38,6 @@ def create_app():
     app.register_blueprint(debt, url_prefix='/debt')
     app.register_blueprint(tool, url_prefix='/tool')
     app.register_blueprint(user_config, url_prefix='/user-config')
+    app.register_blueprint(cooperative_spending, url_prefix='/cooperative-spending')
 
     return app
