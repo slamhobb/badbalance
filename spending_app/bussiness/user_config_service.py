@@ -8,7 +8,12 @@ class UserConfigService:
     config_dao = inject.attr(UserConfigDao)
 
     def get(self, user_id: int) -> UserConfig:
-        return self.config_dao.get(user_id)
+        config = self.config_dao.get(user_id)
+
+        if config is None:
+            return UserConfig(user_id=user_id, separate_category_ids=[])
+
+        return config
 
     def save(self, user_config: UserConfig) -> None:
         self.config_dao.save(user_config)
