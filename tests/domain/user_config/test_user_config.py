@@ -1,27 +1,52 @@
+import json
+
 from spending_app.domain.user_config import UserConfig
 
 
-def test_user_context_init():
-    user_config = UserConfig(default_page_fast_spending=True)
+def test_user_config_init():
+    user_config = UserConfig(user_id=9, separate_category_ids=[1, 5, 8])
 
-    assert user_config.default_page_fast_spending == True
+    assert user_config.user_id == 9
+    assert user_config.separate_category_ids == [1, 5, 8]
 
 
-def test_user_context_from_dict():
+def test_user_config_from_dict():
     user_config = UserConfig.from_dict(
         {
-            'default_page_fast_spending': True,
+            'user_id': 9,
+            'data': json.dumps(
+                {
+                    'separate_category_ids': [1, 5, 8]
+                }
+            )
         }
     )
-    assert user_config.default_page_fast_spending == True
+    assert user_config.user_id == 9
+    assert user_config.separate_category_ids == [1, 5, 8]
 
 
-def test_user_context_to_dict():
-    user_config = UserConfig(default_page_fast_spending=True)
+def test_user_config_to_dict():
+    user_config = UserConfig(user_id=9, separate_category_ids=[1, 5, 8])
     adict = user_config.to_dict()
 
     expected_dict = {
-        'default_page_fast_spending': True,
+        'user_id': 9,
+        'data': json.dumps(
+            {
+                'separate_category_ids': [1, 5, 8]
+            }
+        )
+    }
+
+    assert adict == expected_dict
+
+
+def test_user_config_to_web_dict():
+    user_config = UserConfig(user_id=9, separate_category_ids=[1, 5, 8])
+    adict = user_config.to_web_dict()
+
+    expected_dict = {
+        'separate_category_ids': [1, 5, 8]
     }
 
     assert adict == expected_dict

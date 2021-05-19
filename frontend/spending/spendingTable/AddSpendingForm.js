@@ -3,7 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import CategoriesList from '../../sharedComponents/categoriesOptions/CategoriesOptions';
+import CategoriesOptions from '../../sharedComponents/categoriesOptions/CategoriesOptions';
 
 import ReactDatePicker from '../../datepicker';
 
@@ -23,7 +23,7 @@ class AddSpendingForm extends React.PureComponent {
             date: this.props.defaultDate,
             sum: '',
             text: '',
-            category_id: 1,
+            categoryId: 1,
 
             loading: false
         };
@@ -49,9 +49,9 @@ class AddSpendingForm extends React.PureComponent {
         });
     }
 
-    handleChangeCategory(category_id) {
+    handleChangeCategory(categoryId) {
         this.setState({
-            category_id: category_id
+            categoryId: categoryId
         });
     }
 
@@ -60,7 +60,7 @@ class AddSpendingForm extends React.PureComponent {
             date: this.state.date,
             sum: this.state.sum,
             text: this.state.text,
-            category_id: parseInt(this.state.category_id)
+            category_id: parseInt(this.state.categoryId)
         };
 
         this.setState({
@@ -104,7 +104,7 @@ class AddSpendingForm extends React.PureComponent {
                         </td>
                         <td>
                             <div className="spending_category">
-                                <CategoriesList items={categories} value={this.state.category_id}
+                                <CategoriesOptions items={categories} value={this.state.categoryId}
                                     onChange={this.handleChangeCategory} />
                             </div>
                         </td>

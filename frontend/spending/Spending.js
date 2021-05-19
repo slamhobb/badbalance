@@ -70,6 +70,7 @@ class Spending extends React.PureComponent {
 
             items: new Map(),
             categories: new Map(),
+            separateCategoryIds: [],
             incomingItems: new Map(),
             stat: [],
 
@@ -109,6 +110,7 @@ class Spending extends React.PureComponent {
                 this.setState({
                     items: this.getMap(result.spending),
                     categories: this.getMap(result.categories),
+                    separateCategoryIds: result.separate_category_ids,
                 });
             })
             .catch(error => alert('Произошла ошибка ' + error))
@@ -316,6 +318,37 @@ class Spending extends React.PureComponent {
             .catch(error => alert('Произошла ошибка ' + error));
     }
 
+    renderBalanceText(sItems, iItems) {
+        if (this.state.visibleTable === tableType.incoming) {
+            const balance = iItems.reduce((sum, item) => sum + item.sum, 0);
+
+            return `Доход за месяц: ${formatSum(balance)}`;
+        }
+
+        const allBalance = sItems.reduce((sum, item) => sum + item.sum, 0);
+
+        const mainItems = sItems.filter(item => !this.state.separateCategoryIds.includes(item.category_id));
+        const mainBalance = mainItems.reduce((sum, item) => sum + item.sum, 0);
+
+        const separateBalances = this.state.separateCategoryIds
+            .map(categoryId => {
+                const category = this.state.categories.get(categoryId);
+                const categoryName = category ? category.name : '';
+
+                const items = sItems.filter(item => categoryId === item.category_id);
+                const balance = items.reduce((sum, item) => sum + item.sum, 0);
+
+                return balance > 0
+                    ? `${balance} (${categoryName})`
+                    : null;
+            })
+            .filter(b => b !== null);
+
+        return separateBalances.length > 0
+            ? `Расход за месяц: ${formatSum(mainBalance)} + ${separateBalances.join(' + ')} = ${allBalance}`
+            : `Расход за месяц: ${formatSum(allBalance)}`;
+    }
+
     renderIncoming(items) {
         if (!this.state.incomingLoaded) {
             return null;
@@ -383,21 +416,11 @@ class Spending extends React.PureComponent {
         const sItems = Array.from(this.state.items.values());
         const iItems = Array.from(this.state.incomingItems.values());
 
-        const items = this.state.visibleTable === tableType.spending
-            ? sItems
-            : iItems;
-
-        const balance = items.reduce((sum, item) => sum + item.sum, 0);
-
-        const balanceText = this.state.visibleTable === tableType.spending
-            ? `Расход за месяц: ${formatSum(balance)}`
-            : `Доход за месяц: ${formatSum(balance)}`;
-
         return (
             <React.Fragment>
                 <div className="row mt-4">
                     <div className="col-sm-8">
-                        <span>{balanceText}</span>
+                        <span>{this.renderBalanceText(sItems, iItems)}</span>
                     </div>
                 </div>
                 <div className="row mt-3">

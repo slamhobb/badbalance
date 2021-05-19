@@ -83,3 +83,12 @@ create table debt_item(
 
 create index ix_debt_item_id on debt_item(id);
 create index ix_debt_item_debt_id on debt_item(debt_id);
+
+
+drop table if exists user_config;
+create table user_config(
+    user_id int not null primary key,
+    data text not null
+);
+
+create index ix_user_config_user_id on user_config(user_id);

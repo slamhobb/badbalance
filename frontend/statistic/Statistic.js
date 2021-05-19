@@ -116,7 +116,7 @@ class Statistic extends React.Component {
             return `${str.slice(0, cutSize - 1)}..`;
         }
 
-        return str
+        return str;
     }
 
     render() {

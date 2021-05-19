@@ -4,15 +4,20 @@ from flask import render_template, Blueprint, jsonify, g
 
 from spending_app.infrastructure.web import get_token
 from spending_app.infrastructure.auth import login_required
-from spending_app.bussiness.spending_service import SpendingService
 from spending_app.bussiness.auth_service import AuthService
+from spending_app.bussiness.spending_service import SpendingService
+from spending_app.bussiness.category_service import CategoryService
+from spending_app.bussiness.user_config_service import UserConfigService
 from spending_app.domain.spending import Spending
 from spending_app.forms.spending import SpendingForm, DeleteSpendingForm
+
 
 mod = Blueprint('spending', __name__)
 
 auth_service = inject.instance(AuthService)
 spending_service = inject.instance(SpendingService)
+category_service = inject.instance(CategoryService)
+user_config_service = inject.instance(UserConfigService)
 
 
 @mod.before_request
@@ -40,9 +45,16 @@ def spending_list_month(year, month):
     items = spending_service.get_by_month(user_id, year, month)
     items = [i.to_dict() for i in items]
 
-    cats = spending_service.get_category_list(user_id)
+    cats = category_service.get_category_list(user_id)
     cats = [c.to_dict() for c in cats]
-    return jsonify(status=True, spending=items, categories=cats)
+
+    user_config = user_config_service.get(user_id)
+
+    return jsonify(
+        status=True,
+        spending=items,
+        categories=cats,
+        separate_category_ids=user_config.separate_category_ids)
 
 
 @mod.route('/save', methods=['POST'])

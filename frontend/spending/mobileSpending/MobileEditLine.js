@@ -23,7 +23,7 @@ class MobileEditLine extends React.PureComponent {
             date: this.props.date,
             sum: this.props.sum,
             text: this.props.text,
-            category_id: this.props.category_id,
+            categoryId: this.props.categoryId,
 
             loading: false
         };
@@ -47,8 +47,8 @@ class MobileEditLine extends React.PureComponent {
         this.setState({text: text});
     }
 
-    handleChangeCategory(category_id) {
-        this.setState({category_id: category_id});
+    handleChangeCategory(categoryId) {
+        this.setState({categoryId: categoryId});
     }
 
     handleSave() {
@@ -57,18 +57,13 @@ class MobileEditLine extends React.PureComponent {
             date: this.state.date,
             sum: this.state.sum,
             text: this.state.text,
-            category_id: parseInt(this.state.category_id)
+            category_id: parseInt(this.state.categoryId)
         };
 
         this.setState({
             loading: true
         }, () => {
-            this.props.onSave(spending)
-                .then(() => {
-                    this.setState({
-                        loading: false
-                    });
-                });
+            this.props.onSave(spending);
         });
     }
 
@@ -96,7 +91,7 @@ class MobileEditLine extends React.PureComponent {
                 <div className="input-group mb-2">
                     <input type="number" className="form-control" placeholder="Сумма"
                         value={this.state.sum} onChange={this.handleChangeSum} />
-                    <CategoriesList items={categories} value={this.state.category_id}
+                    <CategoriesList items={categories} value={this.state.categoryId}
                         onChange={this.handleChangeCategory} />
                 </div>
 
@@ -112,7 +107,7 @@ MobileEditLine.propTypes = {
     date: PropTypes.string.isRequired,
     sum: PropTypes.number.isRequired,
     text: PropTypes.string.isRequired,
-    category_id: PropTypes.number.isRequired,
+    categoryId: PropTypes.number.isRequired,
     categories: PropTypes.array.isRequired,
     onSave: PropTypes.func.isRequired
 };

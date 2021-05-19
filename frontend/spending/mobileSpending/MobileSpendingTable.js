@@ -28,7 +28,7 @@ class MobileSpendingTable extends React.PureComponent {
                 date={s.date}
                 sum={s.sum}
                 text={s.text}
-                category_id={s.category_id}
+                categoryId={s.category_id}
                 categories={categories}
                 onSave={this.props.onSave} />
             : <MobileLine

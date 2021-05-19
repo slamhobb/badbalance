@@ -26,7 +26,7 @@ class MobileAddSpendingForm extends React.PureComponent {
             date: this.props.defaultDate,
             sum: '',
             text: '',
-            category_id: 1,
+            categoryId: 1,
 
             showForm: false,
 
@@ -66,9 +66,9 @@ class MobileAddSpendingForm extends React.PureComponent {
         });
     }
 
-    handleChangeCategory(category_id) {
+    handleChangeCategory(categoryId) {
         this.setState({
-            category_id: category_id
+            categoryId: categoryId
         });
     }
 
@@ -77,7 +77,7 @@ class MobileAddSpendingForm extends React.PureComponent {
             date: this.state.date,
             sum: this.state.sum,
             text: this.state.text,
-            category_id: parseInt(this.state.category_id)
+            category_id: parseInt(this.state.categoryId)
         };
 
         this.setState({
@@ -120,7 +120,7 @@ class MobileAddSpendingForm extends React.PureComponent {
                 <div className="input-group mb-2">
                     <input type="number" className="form-control" placeholder="Сумма"
                         value={this.state.sum} onChange={this.handleChangeSum} />
-                    <CategoriesList items={categories} value={this.state.category_id}
+                    <CategoriesList items={categories} value={this.state.categoryId}
                         onChange={this.handleChangeCategory} />
                 </div>
 

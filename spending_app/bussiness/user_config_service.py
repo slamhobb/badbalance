@@ -1,13 +1,14 @@
-from spending_app.domain.user_config import UserConfig
+import inject
 
-defaultConfig = UserConfig(default_page_fast_spending=False)
+from spending_app.dao.config.user_config_dao import UserConfigDao
+from spending_app.domain.user_config import UserConfig
 
 
 class UserConfigService:
-    def get(self, config_dict):
-        if config_dict is None:
-            return defaultConfig
+    config_dao = inject.attr(UserConfigDao)
 
-        config = UserConfig.from_dict(config_dict)
+    def get(self, user_id: int) -> UserConfig:
+        return self.config_dao.get(user_id)
 
-        return config
+    def save(self, user_config: UserConfig) -> None:
+        self.config_dao.save(user_config)

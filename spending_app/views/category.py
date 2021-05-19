@@ -5,14 +5,14 @@ from flask import render_template, g, jsonify, Blueprint
 from spending_app.infrastructure.web import *
 from spending_app.infrastructure.auth import login_required
 from spending_app.bussiness.auth_service import AuthService
-from spending_app.bussiness.spending_service import SpendingService
+from spending_app.bussiness.category_service import CategoryService
 from spending_app.domain.category import Category
 from spending_app.forms.spending import CategoryForm, DeleteCategoryForm
 
 mod = Blueprint('category', __name__)
 
 auth_service = inject.instance(AuthService)
-spending_service = inject.instance(SpendingService)
+category_service = inject.instance(CategoryService)
 
 
 @mod.before_request
@@ -31,7 +31,7 @@ def index():
 def get_list():
     user_id = g.user_context.user_id
 
-    result = spending_service.get_category_list(user_id)
+    result = category_service.get_category_list(user_id)
     result = [r.to_dict() for r in result]
 
     return jsonify(status=True, categories=result)
@@ -50,9 +50,9 @@ def save():
 
     category = Category.from_dict(adict)
 
-    id = spending_service.save_category(category)
+    category_id = category_service.save_category(category)
 
-    return jsonify(status=True, id=id)
+    return jsonify(status=True, id=category_id)
 
 
 @mod.route('/delete', methods=['POST'])
@@ -65,6 +65,6 @@ def remove():
     user_id = g.user_context.user_id
     category_id = form.data['id']
 
-    spending_service.delete_category(category_id, user_id)
+    category_service.delete_category(category_id, user_id)
 
     return jsonify(status=True)

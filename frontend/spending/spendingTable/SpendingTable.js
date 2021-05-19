@@ -44,14 +44,14 @@ class SpendingTable extends React.PureComponent {
                 dateStr: dateStr,
                 sum: item.sum,
                 text: item.text,
-                category_id: item.category_id,
+                categoryId: item.category_id,
                 edit: item.edit
             };
         });
     }
 
     renderLine(s, categories) {
-        const category = this.props.categories.get(s.category_id);
+        const category = this.props.categories.get(s.categoryId);
 
         return s.edit
             ? <EditLine
@@ -60,7 +60,7 @@ class SpendingTable extends React.PureComponent {
                 date={s.date}
                 sum={s.sum}
                 text={s.text}
-                category_id={s.category_id}
+                categoryId={s.categoryId}
                 categories={categories}
                 onSave={this.props.onSave} />
             : <Line
