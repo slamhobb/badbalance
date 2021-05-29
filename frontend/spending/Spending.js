@@ -339,13 +339,13 @@ class Spending extends React.PureComponent {
                 const balance = items.reduce((sum, item) => sum + item.sum, 0);
 
                 return balance > 0
-                    ? `${balance} (${categoryName})`
+                    ? `${formatSum(balance)} (${categoryName})`
                     : null;
             })
             .filter(b => b !== null);
 
         return separateBalances.length > 0
-            ? `Расход за месяц: ${formatSum(mainBalance)} + ${separateBalances.join(' + ')} = ${allBalance}`
+            ? `Расход за месяц: ${formatSum(mainBalance)} + ${separateBalances.join(' + ')} = ${formatSum(allBalance)}`
             : `Расход за месяц: ${formatSum(allBalance)}`;
     }
 
