@@ -2,6 +2,8 @@ import React from 'react';
 
 import SeparateCategories from './SeparateCategories';
 
+import { CheckIcon } from '../svg/Svg';
+
 import userConfigService from '../services/userConfigService';
 import categoryService from '../services/categoryService';
 
@@ -11,11 +13,17 @@ class UserConfig extends React.Component {
 
         this.handleChangeDefaultPageFastSpending = this.handleChangeDefaultPageFastSpending.bind(this);
         this.handleChangeSeparateCategories = this.handleChangeSeparateCategories.bind(this);
+        this.handleChangeSpendingGoal = this.handleChangeSpendingGoal.bind(this);
+        this.handleSaveSpendingGoal = this.handleSaveSpendingGoal.bind(this);
 
         this.state = {
             defaultPageFastSpending: false,
+
             separateCategoryIds: [],
-            categories: new Map()
+            categories: new Map(),
+
+            spendingGoal: 0,
+            spendingGoalLoading: false
         };
     }
 
@@ -28,9 +36,13 @@ class UserConfig extends React.Component {
     componentDidMount() {
         userConfigService.getUserConfig()
             .then(result => {
+                const cookieConfig = result.cookie_config;
+                const userConfig = result.user_config;
+
                 this.setState({
-                    defaultPageFastSpending: result.cookie_config.default_page_fast_spending,
-                    separateCategoryIds: result.user_config.separate_category_ids
+                    defaultPageFastSpending: cookieConfig.default_page_fast_spending,
+                    separateCategoryIds: userConfig.separate_category_ids,
+                    spendingGoal: userConfig.spending_goal
                 });
             })
             .catch(error => alert('Произошла ошибка ' + error));
@@ -66,6 +78,28 @@ class UserConfig extends React.Component {
             .catch(error => alert('Произошла ошибка ' + error));
     }
 
+    handleChangeSpendingGoal(e) {
+        const sum = parseInt(e.target.value);
+
+        this.setState({
+            spendingGoal: isNaN(sum) ? 0 : sum
+        });
+    }
+
+    handleSaveSpendingGoal() {
+        this.setState({
+            spendingGoalLoading: true
+        }, () => {
+            userConfigService.saveSpendingGoal(this.state.spendingGoal)
+                .then(() => {
+                    this.setState({
+                        spendingGoalLoading: false
+                    });
+                })
+                .catch(error => alert('Произошла ошибка ' + error));
+        });
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -92,6 +126,32 @@ class UserConfig extends React.Component {
                             categoryIds={this.state.separateCategoryIds}
                             categories={this.state.categories}
                             onChange={this.handleChangeSeparateCategories} />
+                    </div>
+                </div>
+
+                <div className="row mt-3">
+                    <div className="col">
+                        Цель потратить в этом месяце максимум
+                    </div>
+                </div>
+
+                <div className="row mt-2">
+                    <div className="col-sm-4">
+                        <div className="d-flex">
+                            <input type="text" className="form-control mr-2"
+                                value={this.state.spendingGoal}
+                                onChange={this.handleChangeSpendingGoal} />
+                            {this.state.spendingGoalLoading ? (
+                                <button className="btn btn-outline-secondary">
+                                    <span className="spinner-border spinner-border-sm"
+                                        role="status" aria-hidden="true" />
+                                </button>
+                            ) : (
+                                <button className="btn btn-outline-secondary" onClick={this.handleSaveSpendingGoal}>
+                                    <CheckIcon/>
+                                </button>
+                            )}
+                        </div>
                     </div>
                 </div>
             </React.Fragment>

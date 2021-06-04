@@ -40,13 +40,25 @@ def get():
                    user_config=user_config.to_web_dict())
 
 
-@mod.route('/save-separate-category', methods=['GET', 'POST'])
+@mod.route('/save-separate-category', methods=['POST'])
 @login_required
 def save_separate_category():
     user_id = g.user_context.user_id
 
     user_config = user_config_service.get(user_id)
     user_config.separate_category_ids = request.json['separate_category_ids']
+    user_config_service.save(user_config)
+
+    return jsonify(status=True)
+
+
+@mod.route('/save-spending-goal', methods=['POST'])
+@login_required
+def save_spending_goal():
+    user_id = g.user_context.user_id
+
+    user_config = user_config_service.get(user_id)
+    user_config.spending_goal = request.json['spending_goal']
     user_config_service.save(user_config)
 
     return jsonify(status=True)

@@ -54,7 +54,9 @@ def spending_list_month(year, month):
         status=True,
         spending=items,
         categories=cats,
-        separate_category_ids=user_config.separate_category_ids)
+        separate_category_ids=user_config.separate_category_ids,
+        spending_goal=user_config.spending_goal
+    )
 
 
 @mod.route('/save', methods=['POST'])

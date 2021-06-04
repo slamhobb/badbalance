@@ -11,7 +11,7 @@ class UserConfigService:
         config = self.config_dao.get(user_id)
 
         if config is None:
-            return UserConfig(user_id=user_id, separate_category_ids=[])
+            return UserConfig(user_id=user_id, separate_category_ids=[], spending_goal=0)
 
         return config
 

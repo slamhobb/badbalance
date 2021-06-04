@@ -30,4 +30,13 @@ function saveSeparateCategoryIds(categoryIds) {
     return httpClient.postjson('/user-config/save-separate-category', data);
 }
 
-export default { getUserConfig, setDefaultPageFastSpending, saveSeparateCategoryIds };
+function saveSpendingGoal(spendingGoal) {
+    const data = {
+        spending_goal: spendingGoal
+    };
+
+    return httpClient.postjson('/user-config/save-spending-goal', data);
+}
+
+export default { getUserConfig, setDefaultPageFastSpending, saveSeparateCategoryIds,
+    saveSpendingGoal };
