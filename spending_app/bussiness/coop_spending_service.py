@@ -23,13 +23,38 @@ class CoopSpendingService:
     def get_coop_spending_items(self, coop_id: int, user_id: int) -> List[CoopSpendingItem]:
         return self.coop_spending_item_dao.get_items_by_coop_id(coop_id, user_id)
 
-    def add_coop_spending_item(self, item: CoopSpendingItem, user_id: int) -> int:
-        coop = self.coop_spending_dao.get_by_id(item.coop_spending_id, user_id)
-
+    def save_coop_spending_item(self, item: CoopSpendingItem, user_id: int) -> int:
         # проверям что item добавляется в coop, принадлежащий текущему пользователю
+        coop_spending_id = self._get_coop_spending_id(item)
+        coop = self.coop_spending_dao.get_by_id(coop_spending_id, user_id)
         if coop is None:
             return 0
 
-        # проверить что пользователи в pays и debts существуеют в coops
+        if not self._validate_item(item):
+            return 0
 
-        return self.coop_spending_item_dao.add_item(item)
+        # TODO: проверить что пользователи в pays и debts существуеют в coops
+
+        if (item.id or 0) > 0:
+            return self.coop_spending_item_dao.update(item)
+        else:
+            return self.coop_spending_item_dao.add(item)
+
+    def _get_coop_spending_id(self, item: CoopSpendingItem) -> int:
+        coop_spending_id = item.coop_spending_id
+
+        # для существующих item берём coop_spending_id из базы
+        if (item.id or 0) > 0:
+            old_item = self.coop_spending_item_dao.get_item_by_id(item.id)
+            coop_spending_id = old_item.coop_spending_id
+
+        return coop_spending_id
+
+    def _validate_item(self, item: CoopSpendingItem) -> bool:
+        if item.type == 'pay':
+            for pay in item.pays:
+                debt_sum = sum(debt.sum for debt in pay.debts)
+                if debt_sum > pay.sum:
+                    return False
+
+        return True

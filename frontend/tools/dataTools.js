@@ -6,6 +6,20 @@ export function groupByX(array, key) {
     }, {});
 }
 
+export function groupBy(xs, key) {
+    let last;
+    return xs.reduce(function(arr, x) {
+        if (last !== x[key]) {
+            arr.push([]);
+            last = x[key];
+        }
+
+        arr[arr.length-1].push(x);
+
+        return arr;
+    }, []);
+}
+
 export function zip(rows) {
     return rows[0].map((_, i) => {
         return rows.map(row => row[i]);

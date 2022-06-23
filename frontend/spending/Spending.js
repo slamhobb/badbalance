@@ -242,7 +242,10 @@ class Spending extends React.PureComponent {
 
     handleEditSpending(id) {
         const newItems = new Map(this.state.items);
-        newItems.get(id).edit = true;
+
+        const spending = Object.assign({}, newItems.get(id));
+        spending.edit = true;
+        newItems.set(spending.id, spending);
 
         this.setState({items: newItems});
     }
@@ -309,7 +312,10 @@ class Spending extends React.PureComponent {
 
     handleEditIncoming(id) {
         const newItems = new Map(this.state.incomingItems);
-        newItems.get(id).edit = true;
+
+        const incoming = Object.assign({}, newItems.get(id));
+        incoming.edit = true;
+        newItems.set(incoming.id, incoming);
 
         this.setState({incomingItems: newItems});
     }

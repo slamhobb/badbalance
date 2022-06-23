@@ -3,10 +3,13 @@ import React, {useEffect, useState} from 'react';
 import ICoop from '../types/ICoop';
 import ICoopSpendingItem from '../types/ICoopSpendingItem';
 
+import { ChevronLeftIcon } from '../../svg/Svg';
+
 import CoopSpending2User from './CoopSpending2User/CoopSpending2User';
 
 import coopSpendingService from '../../services/coopSpendingService';
-import { mapCoopFromQuery, mapCoopSpendingItemFromQuery, mapCoopSpendingItemToQuery } from './coopMapper';
+import { mapCoopFromQuery, mapCoopSpendingItemFromQuery, mapCoopSpendingItemToQuery } from './coopQueryMapper';
+import { validateItems } from './itemValidator';
 
 import './styles.css';
 
@@ -14,17 +17,35 @@ function CoopSpending(props: {
     coopId: number
 }) {
     const [coop, setCoop] = useState<ICoop>(null);
-    // TODO: заменить на Map
-    const [coopItems, setCoopItems] = useState<ICoopSpendingItem[]>([]);
+    const [coopItems, setCoopItems] = useState<Map<number, ICoopSpendingItem>>(new Map<number, ICoopSpendingItem>());
 
     useEffect(() => {
         coopSpendingService.getCoopData(props.coopId)
             .then(result => {
                 setCoop(mapCoopFromQuery(result.coop));
-                setCoopItems(result.items.map(mapCoopSpendingItemFromQuery));
+
+                const items = result.items.map(mapCoopSpendingItemFromQuery);
+                setCoopItems(getMap(items));
             })
             .catch(error => alert('Произошла ошибка ' + error));
     }, [])
+
+    function getMap(items: ICoopSpendingItem[]) : Map<number, ICoopSpendingItem> {
+        const map = new Map<number, ICoopSpendingItem>();
+        items.forEach(x => map.set(x.id, x));
+        return map;
+    }
+
+    function copyItem(item: ICoopSpendingItem) : ICoopSpendingItem {
+        return {
+            ...item,
+            pays: item.pays.map(pay => ({
+                ...pay,
+                debts: pay.debts.map(debt => ({ ...debt }))
+            })),
+            transfers: item.transfers.map(x => ({ ...x }))
+        }
+    }
 
     function createBackUrl(): string {
         const path = window.location.pathname;
@@ -34,53 +55,50 @@ function CoopSpending(props: {
         return pathItems.join('/');
     }
 
-    function handleAddCoopSpendingItem(item: ICoopSpendingItem) {
+    function handleAddCoopSpendingItem(item: ICoopSpendingItem) : Promise<void> {
         item.coopSpendingId = coop.id;
-        return coopSpendingService.addCoopSpendingItem(mapCoopSpendingItemToQuery(item))
+        return coopSpendingService.saveCoopSpendingItem(mapCoopSpendingItemToQuery(item))
             .then(result => {
-                const coopSpendingItemId = result.id;
-                item.id = coopSpendingItemId;
+                item.id = result.id;
 
-                const newCoopItems = coopItems.slice();
-                newCoopItems.push(item);
+                const newCoopItems = new Map(coopItems);
+                newCoopItems.set(item.id, item);
                 setCoopItems(newCoopItems);
-
-                return coopSpendingItemId;
             })
             .catch(error => alert('Произошла ошибка ' + error))
     }
 
-    function validateItemsForUsers(items: ICoopSpendingItem[], userIds: number[]) {
-        const userCount = userIds.length;
-
-        // если пользователей меньше двух, валидацию не проводим
-        if (userCount < 2) {
-            return false;
-        }
-
-        const notValidItems = items.filter(item => {
-            if (userCount === 2 && item.pays.length != 1) {
-                return true;
-            }
-
-            for (const pay of item.pays) {
-                if (!userIds.includes(pay.userId))
-                {
-                    return true;
-                }
-
-                for (const debt of pay.debts) {
-                    if (!userIds.includes(debt.userId)) {
-                        return true;
-                    }
-                }
-            }
-        });
-
-        return notValidItems.length > 0;
+    function handleSaveCoopSpendingItem(item: ICoopSpendingItem) : void {
+        item.coopSpendingId = coop.id;
+        coopSpendingService.saveCoopSpendingItem(mapCoopSpendingItemToQuery(item))
+            .then(() => {
+                const newCoopItems = new Map(coopItems);
+                newCoopItems.set(item.id, item);
+                setCoopItems(newCoopItems);
+            })
+            .catch(error => alert('Произошла ошибка ' + error))
     }
 
-    function renderItems() {
+    function handleEditCoopSpendingItem(id: number) : void {
+        const newCoopItems = new Map(coopItems);
+
+        const item = newCoopItems.get(id);
+        const newItem: ICoopSpendingItem = copyItem(item);
+        newItem.edit = true;
+        newCoopItems.set(newItem.id, newItem);
+
+        setCoopItems(newCoopItems);
+    }
+
+    function handleDeleteCoopSpendingItem(id: number) : void {
+        const newCoopItems = new Map(coopItems);
+
+        newCoopItems.delete(id);
+
+        setCoopItems(newCoopItems);
+    }
+
+    function renderItems(items: ICoopSpendingItem[]) {
         if (coop == null) {
             return (
                 <div className="d-flex justify-content-center mt-3">
@@ -97,8 +115,11 @@ function CoopSpending(props: {
                     id={coop.id}
                     leftUser={coop.users[0]}
                     rightUser={coop.users[1]}
-                    items={coopItems}
+                    items={items}
                     onAdd={handleAddCoopSpendingItem}
+                    onEdit={handleEditCoopSpendingItem}
+                    onSave={handleSaveCoopSpendingItem}
+                    onDelete={handleDeleteCoopSpendingItem}
                 />
             );
         }
@@ -106,8 +127,9 @@ function CoopSpending(props: {
         return <div>Больше 2 пользователей не поддерживается</div>;
     }
 
+    const items = Array.from(coopItems.values());
     const userIds = coop?.users.map(u => u.id) ?? [];
-    if (validateItemsForUsers(coopItems, userIds)) {
+    if (!validateItems(items, userIds)) {
         alert('Не валидные данные');
 
         return <div>Не валидные данные</div>;
@@ -116,10 +138,12 @@ function CoopSpending(props: {
     return (
         <React.Fragment>
             <div className="mt-4 d-flex justify-content-start align-items-center">
-                <a href={createBackUrl()} className="btn btn-outline-secondary">&lt;</a>
+                <a href={createBackUrl()} className="btn btn-outline-secondary">
+                    <ChevronLeftIcon />
+                </a>
                 <h2 className="mb-0">&nbsp;{coop?.name}</h2>
             </div>
-            {renderItems()}
+            {renderItems(items)}
         </React.Fragment>
     );
 }

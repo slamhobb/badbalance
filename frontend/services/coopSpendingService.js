@@ -23,9 +23,9 @@ function addCoop(coopSpending) {
         .then(successResult);
 }
 
-function addCoopSpendingItem(coopSpendingItem) {
-    return httpClient.postjson('/coop-spending/add-item', coopSpendingItem)
+function saveCoopSpendingItem(coopSpendingItem) {
+    return httpClient.postjson('/coop-spending/save-item', coopSpendingItem)
         .then(successResult);
 }
 
-export default { getCoops, getCoopData, addCoop, addCoopSpendingItem };
+export default { getCoops, getCoopData, addCoop, saveCoopSpendingItem };

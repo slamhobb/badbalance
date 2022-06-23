@@ -4,11 +4,12 @@ import CoopSpendingType from '../../types/CoopSpendingType';
 import ICoopUser from '../../types/ICoopUser';
 import ICoopSpendingItem from '../../types/ICoopSpendingItem';
 
-
+import AddCoopSpendingItemForm, { AddStateType } from './AddCoopSpendingItemForm';
 import CoopSpendingItem from './CoopSpendingItem';
-import AddCoopSpendingItemForm from './AddCoopSpendingItemForm';
 
-import {getAvatarImagePath} from '../../services/avatarSelector';
+import { getAvatarImagePath } from '../../services/avatarSelector';
+import { groupBy } from '../../../tools/dataTools';
+import { formatDate } from '../../../tools/dateTools';
 
 import '../styles.css';
 
@@ -18,14 +19,99 @@ function CoopSpending2User(props: {
     leftUser: ICoopUser,
     rightUser: ICoopUser,
     items: ICoopSpendingItem[],
-    onAdd: (item: ICoopSpendingItem) => Promise<number | void>
+    onAdd: (item: ICoopSpendingItem) => Promise<void>,
+    onEdit: (id: number) => void,
+    onSave: (item: ICoopSpendingItem) => void,
+    onDelete: (id: number) => void
 }) {
+    function renderItem(item: ICoopSpendingItem) {
+        const payData = item.pays[0];
+        const debtData = payData?.debts[0];
+        const transferData = item.transfers[0];
+
+        const leftUser = payData?.userId === props.leftUser.id ||
+            transferData?.fromUserId === props.leftUser.id;
+
+        if (item.edit) {
+            if (item.type === CoopSpendingType.Pay)
+            {
+                return <AddCoopSpendingItemForm
+                    key={item.id}
+                    id={item.id}
+                    state={leftUser ? AddStateType.LEFT_ADD_PAY : AddStateType.RIGHT_ADD_PAY}
+                    date={item.date}
+                    paySum={payData.sum}
+                    debtSum={debtData.sum}
+                    text={item.text}
+                    edit={true}
+                    leftUser={props.leftUser}
+                    rightUser={props.rightUser}
+                    onAdd={() => new Promise(null)}
+                    onSave={props.onSave}
+                    onDelete={props.onDelete}
+                    />;
+            }
+
+            if (item.type === CoopSpendingType.Transfer) {
+                return <AddCoopSpendingItemForm
+                    key={item.id}
+                    id={item.id}
+                    state={leftUser ? AddStateType.LEFT_ADD_TRANSFER : AddStateType.RIGHT_ADD_TRANSFER}
+                    date={item.date}
+                    paySum={transferData.sum}
+                    debtSum={0}
+                    text={item.text}
+                    edit={true}
+                    leftUser={props.leftUser}
+                    rightUser={props.rightUser}
+                    onAdd={() => new Promise(null)}
+                    onSave={props.onSave}
+                    onDelete={props.onDelete}
+                    />;
+            }
+
+            return null;
+        }
+
+        return <CoopSpendingItem
+            key={item.id}
+            id={item.id}
+            name={item.text}
+            type={item.type}
+            paySum={payData?.sum ?? 0}
+            debtSum={debtData?.sum ?? 0}
+            transferSum={item.transfers[0]?.sum ?? 0}
+            leftUser={leftUser}
+            onEdit={props.onEdit} />
+    }
+
+    const items = props.items.slice();
+    items.sort((a, b) => {
+        const diff = new Date(b.date).getTime() - new Date(a.date).getTime();
+
+        return diff === 0 ? b.id - a.id : diff;
+    });
+
+    const g = groupBy(items, 'date');
+
+    const listItems = g.map((x : ICoopSpendingItem[]) => {
+        return (
+            <div key={x[0].id} className="mt-3">
+                <h5 className="text-muted">{formatDate(x[0].date)}</h5>
+                <div className="list-group mt-1">
+                    { x.map(x => renderItem(x))}
+                </div>
+            </div>
+        );
+    });
+
     return (
         <React.Fragment>
             <div className="row mt-3 pb-3">
 
                 <div className="col-sm-5">
-                    <div className="ava-card">
+
+                    <div className="ava-card mb-3">
                         <div className="row no-gutters">
                             <div className="col text-right">
                                 <img src={getAvatarImagePath(props.leftUser.avatar)} className="rounded" alt="avatar" />
@@ -41,33 +127,14 @@ function CoopSpending2User(props: {
                         </div>
                     </div>
 
-                    <AddCoopSpendingItemForm leftUser={props.leftUser} rightUser={props.rightUser} onAdd={props.onAdd}/>
+                    <AddCoopSpendingItemForm
+                        leftUser={props.leftUser}
+                        rightUser={props.rightUser}
+                        onAdd={props.onAdd}
+                        onSave={() => {}}
+                        onDelete={() => {}}/>
 
-                    {props.items.map(item => {
-                        if (item.type === CoopSpendingType.Pay) {
-
-                            const payData = item.pays[0];
-                            const debtData = payData.debts.length == 1
-                                ? payData.debts[0]
-                                : null;
-
-                            const leftPay = payData.userId === props.leftUser.id;
-
-                            return <CoopSpendingItem
-                                key={item.id}
-                                name={item.text}
-                                type={item.type}
-                                paySum={payData.sum}
-                                debtSum={debtData?.sum  ?? 0}
-                                leftPay={leftPay} />
-                        }
-
-                        if (item.type === CoopSpendingType.Transfer) {
-                            // TODO:
-                        }
-
-                        return null;
-                    })}
+                    {listItems}
 
                     <div className="card mt-3">
                         <ul className="list-group list-group-flush">

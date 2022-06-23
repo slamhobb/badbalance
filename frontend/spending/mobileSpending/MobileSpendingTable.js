@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -7,9 +5,10 @@ import MobileAddSpendingForm from './MobileAddSpendingForm';
 import MobileLine from './MobileLine';
 import MobileEditLine from './MobileEditLine';
 
-import './mobileLine.css';
+import {groupBy} from '../../tools/dataTools';
+import {formatDate} from '../../tools/dateTools';
 
-const days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+import './mobileLine.css';
 
 class MobileSpendingTable extends React.PureComponent {
     constructor(props) {
@@ -42,26 +41,6 @@ class MobileSpendingTable extends React.PureComponent {
                 onDelete={this.props.onDelete} />;
     }
 
-    groupBy(xs, key) {
-        let last;
-        return xs.reduce(function(arr, x) {
-            if (last !== x[key]) {
-                arr.push([]);
-                last = x[key];
-            }
-
-            arr[arr.length-1].push(x);
-
-            return arr;
-        }, []);
-    }
-
-    formatDate(date) {
-        const dateObj = new Date(date);
-
-        return `${days[dateObj.getDay()]}, ${dateObj.getDate()}`;
-    }
-
     render() {
         const categories = Array.from(this.props.categories.values());
 
@@ -73,12 +52,12 @@ class MobileSpendingTable extends React.PureComponent {
             return diff === 0 ? b.id - a.id : diff;
         });
 
-        const g = this.groupBy(items, 'date');
+        const g = groupBy(items, 'date');
 
         const listItems = g.map(x => {
             return (
                 <div key={x[0].id} className="mt-3">
-                    <h5 className="text-muted">{this.formatDate(x[0].date)}</h5>
+                    <h5 className="text-muted">{formatDate(x[0].date)}</h5>
                     <ul className="list-group mt-1">
                         { x.map(x => this.renderMobileLine(x, categories))}
                     </ul>

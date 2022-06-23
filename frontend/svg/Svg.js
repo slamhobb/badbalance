@@ -8,6 +8,7 @@ import pencil from './pencil.svg';
 import trashcan from './trashcan.svg';
 import filter from './settings.svg';
 import chevronRight from './chevron-right.svg';
+import chevronLeft from './chevron-left.svg';
 import chevronDown from './chevron-down.svg';
 import income from './income.svg';
 import outcome from './outcome.svg';
@@ -43,6 +44,10 @@ function ChevronRightIcon(props) {
     return <Svg icon={chevronRight} {...props} />;
 }
 
+function ChevronLeftIcon(props) {
+    return <Svg icon={chevronLeft} {...props} />;
+}
+
 function ChevronDownIcon(props) {
     return <Svg icon={chevronDown} {...props} />;
 }
@@ -61,4 +66,4 @@ Svg.propTypes = {
 };
 
 export { CheckIcon, PencilIcon, TrashcanIcon, FilterIcon,
-    ChevronRightIcon, ChevronDownIcon, IncomeIcon, OutcomeIcon };
+    ChevronRightIcon, ChevronLeftIcon, ChevronDownIcon, IncomeIcon, OutcomeIcon };

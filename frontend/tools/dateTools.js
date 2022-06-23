@@ -1,4 +1,10 @@
-'use strict';
+const days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+
+export function formatDate(date) {
+    const dateObj = new Date(date);
+
+    return `${days[dateObj.getDay()]}, ${dateObj.getDate()}`;
+}
 
 export function dateToString(date) {
     const localDate = new Date(date);

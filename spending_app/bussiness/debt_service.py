@@ -49,6 +49,7 @@ class DebtService:
 
         return result
 
+    # TODO: зачем нужен этот маппер? почему здесь не возвращается объект?
     @staticmethod
     def _map_debt(debt, items):
         return {

@@ -9,7 +9,9 @@ interface ICoopSpendingItem {
     text: string,
     type: CoopSpendingType,
     pays: ICoopSpendingPay[],
-    transfers: ICoopSpendingTransfer[]
+    transfers: ICoopSpendingTransfer[],
+    // TODO: нужен ли null?
+    edit?: boolean
 }
 
 export default ICoopSpendingItem;

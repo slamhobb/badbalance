@@ -12,5 +12,3 @@ if (isNaN(coopId)) {
 } else {
     ReactDOM.render(<CoopSpending coopId={coopId}/>, document.getElementById('coopSpending-js'));
 }
-
-

@@ -1,10 +1,10 @@
 import ICoop from '../types/ICoop';
 import ICoopUser from '../types/ICoopUser';
-import ICoopSpendingItem from '../types/ICoopSpendingItem';
+import CoopSpendingType from '../types/CoopSpendingType';
 import ICoopSpendingDebt from '../types/ICoopSpendingDebt';
 import ICoopSpendingPay from '../types/ICoopSpendingPay';
 import ICoopSpendingTransfer from '../types/ICoopSpendingTransfer';
-import CoopSpendingType from "../types/CoopSpendingType";
+import ICoopSpendingItem from '../types/ICoopSpendingItem';
 
 function mapCoopFromQuery(coop: any) : ICoop {
     function mapUser(user: any) : ICoopUser {

@@ -68,9 +68,9 @@ def add_coop():
     return jsonify(status=True, id=coop_spending_id)
 
 
-@mod.route('/add-item', methods=['POST'])
+@mod.route('/save-item', methods=['POST'])
 @login_required
-def add_coop_item():
+def save_coop_item():
     form = CoopSpendingItemForm(formdata=None, data=request.get_json())
 
     if not form.validate_on_submit():
@@ -81,6 +81,9 @@ def add_coop_item():
 
     user_id = g.user_context.user_id
 
-    coop_spending_item_id = coop_spending_service.add_coop_spending_item(item, user_id)
+    coop_spending_item_id = coop_spending_service.save_coop_spending_item(item, user_id)
+
+    if coop_spending_item_id == 0:
+        return jsonify(status=False, message='Не валидные данные')
 
     return jsonify(status=True, id=coop_spending_item_id)

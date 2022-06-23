@@ -9,7 +9,7 @@ class CoopSpendingDao(BaseDao):
         super().__init__('/coop_spending/sql/')
 
     def get_by_id(self, coop_id: int, user_id: int) -> CoopSpending:
-        sql = self.get_sql('get_coops_by_id.sql')
+        sql = self.get_sql('get_coop_by_id.sql')
         return self.query_one(CoopSpending, sql, dict(coop_id=coop_id, user_id=user_id))
 
     def get_by_user_id(self, user_id: int) -> List[CoopSpending]:

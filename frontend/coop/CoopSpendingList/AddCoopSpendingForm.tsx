@@ -79,7 +79,7 @@ function AddCoopSpendingForm(props: {
                     <input type="text" className="form-control" placeholder="Название кооператива"
                            value={coopName} onChange={e => setCoopName(e.target.value)}/>
 
-                    <li className="list-unstyled">
+                    <ul className="list-unstyled">
                         {users.map((user: ICoopUser) => (
                             <li className="media mt-3" key={user.id}>
                                 <img src={`/static/img/${user.avatar}.gif`} className="rounded mr-3" alt="avatar" />
@@ -98,7 +98,7 @@ function AddCoopSpendingForm(props: {
                                 </div>
                             </li>
                         ))}
-                    </li>
+                    </ul>
 
                     <div className="d-flex mt-3">
                         <input type="text" className="form-control" placeholder="Имя пользователя"

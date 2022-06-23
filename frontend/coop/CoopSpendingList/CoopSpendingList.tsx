@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ICoop from '../types/ICoop';
+
 import AddCoopSpendingForm from './AddCoopSpendingForm';
 
 import coopSpendingService from '../../services/coopSpendingService';

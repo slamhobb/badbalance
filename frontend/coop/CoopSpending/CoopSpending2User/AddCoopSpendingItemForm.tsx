@@ -1,16 +1,16 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
-import CoopSpendingType from '../../../types/CoopSpendingType';
-import ICoopSpendingDebt from '../../../types/ICoopSpendingDebt';
-import ICoopSpendingPay from '../../../types/ICoopSpendingPay';
-import ICoopSpendingTransfer from '../../../types/ICoopSpendingTransfer';
-import ICoopSpendingItem from '../../../types/ICoopSpendingItem';
+import CoopSpendingType from '../../types/CoopSpendingType';
+import ICoopSpendingDebt from '../../types/ICoopSpendingDebt';
+import ICoopSpendingPay from '../../types/ICoopSpendingPay';
+import ICoopSpendingTransfer from '../../types/ICoopSpendingTransfer';
+import ICoopSpendingItem from '../../types/ICoopSpendingItem';
 
-import ReactDatePicker from '../../../../datepicker/index';
+import ReactDatePicker from '../../../datepicker/index';
 
-import { dateToString } from '../../../../tools/dateTools';
+import { dateToString } from '../../../tools/dateTools';
 
-import { CheckIcon} from '../../../../svg/Svg';
+import { CheckIcon } from '../../../svg/Svg';
 
 enum AddStateType {
     INIT,
@@ -22,7 +22,27 @@ enum AddStateType {
 
 const curDate = dateToString(new Date());
 
+AddCoopSpendingItemForm.defaultProps = {
+    id: 0,
+    state: AddStateType.INIT,
+    date: curDate,
+    paySum: 0,
+    debtSum: 0,
+    text: '',
+
+    edit: false
+};
+
 function AddCoopSpendingItemForm(props: {
+    id: number,
+    state: AddStateType,
+    date: string,
+    paySum: number,
+    debtSum: number,
+    text: string,
+
+    edit: boolean,
+
     leftUser: {
         id: number,
         name: string,
@@ -31,14 +51,16 @@ function AddCoopSpendingItemForm(props: {
         id: number,
         name: string
     },
-    onAdd: (item: ICoopSpendingItem) => Promise<void>
+    onAdd: (item: ICoopSpendingItem) => Promise<void>,
+    onSave: (item: ICoopSpendingItem) => void,
+    onDelete: (id: number) => void,
 }) {
-    const [addState, setAddState] = useState<AddStateType>(AddStateType.INIT);
+    const [addState, setAddState] = useState<AddStateType>(props.state);
 
-    const [date, setDate] = useState<string>(curDate);
-    const [paySum, setPaySum] = useState<number>(0);
-    const [debtSum, setDebtSum] = useState<number>(0);
-    const [text, setText] = useState<string>('');
+    const [date, setDate] = useState<string>(props.date);
+    const [paySum, setPaySum] = useState<number>(props.paySum);
+    const [debtSum, setDebtSum] = useState<number>(props.debtSum);
+    const [text, setText] = useState<string>(props.text);
 
     function addPay() : ICoopSpendingItem {
         const payUserId = addState === AddStateType.LEFT_ADD_PAY
@@ -149,7 +171,18 @@ function AddCoopSpendingItemForm(props: {
         setText(e.target.value);
     }
 
-    function handleHideAdd() {
+    function handleCloseForm() {
+        if (props.edit) {
+            const confirmDelete = confirm('Вы действительно хотите удалить запись?');
+            if (!confirmDelete) {
+                return;
+            }
+
+            props.onDelete(props.id);
+
+            return;
+        }
+
         setAddState(AddStateType.INIT);
     }
 
@@ -164,6 +197,13 @@ function AddCoopSpendingItemForm(props: {
         if (addState === AddStateType.LEFT_ADD_TRANSFER ||
             addState === AddStateType.RIGHT_ADD_TRANSFER) {
             item = addTransfer();
+        }
+
+        if (props.edit && item) {
+            item.id = props.id;
+            props.onSave(item);
+
+            return;
         }
 
         item && props.onAdd(item)
@@ -189,7 +229,7 @@ function AddCoopSpendingItemForm(props: {
 
     function renderInitForm() {
         return (
-            <div className="card mt-3">
+            <div className="card">
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item">
                         <div className="row no-gutters">
@@ -227,7 +267,7 @@ function AddCoopSpendingItemForm(props: {
             : paySum - debtSum;
 
         return (
-            <div className="card mt-3 p-2">
+            <div className="card p-2">
                 <div className="d-flex justify-content-center align-items-center mb-2">
                     <div>{renderAdderName()}</div>
 
@@ -237,7 +277,7 @@ function AddCoopSpendingItemForm(props: {
                     <input type="number" className="form-control ml-2" placeholder="Сумма оплаты"
                         value={emptyIfZero(paySum)} onChange={handleChangePaySum}/>
 
-                    <button type="button" className="btn btn-outline-danger ml-2" onClick={handleHideAdd}>
+                    <button type="button" className="btn btn-outline-danger ml-2" onClick={handleCloseForm}>
                         &times;
                     </button>
                 </div>
@@ -270,7 +310,7 @@ function AddCoopSpendingItemForm(props: {
 
     function renderTransferForm() {
         return (
-            <div className="card mt-3 p-2">
+            <div className="card p-2">
                 <div className="d-flex justify-content-center align-items-center mb-2">
                     <div>{renderAdderName()}</div>
 
@@ -280,7 +320,7 @@ function AddCoopSpendingItemForm(props: {
                     <input type="number" className="form-control ml-2" placeholder="Сумма перевода"
                         value={emptyIfZero(paySum)} onChange={handleChangePaySum}/>
 
-                    <button type="button" className="btn btn-outline-danger ml-2" onClick={handleHideAdd}>
+                    <button type="button" className="btn btn-outline-danger ml-2" onClick={handleCloseForm}>
                         &times;
                     </button>
                 </div>
@@ -288,7 +328,9 @@ function AddCoopSpendingItemForm(props: {
                     <input type="text" className="form-control" placeholder="Название"
                         value={text} onChange={handleChangeText} />
                     <div className="input-group-append">
-                        <button className="btn btn-outline-secondary" onClick={handleAdd}>+</button>
+                        <button className="btn btn-outline-secondary" onClick={handleAdd}>
+                            <CheckIcon />
+                        </button>
                     </div>
                 </div>
             </div>
@@ -311,3 +353,4 @@ function AddCoopSpendingItemForm(props: {
 }
 
 export default AddCoopSpendingItemForm;
+export { AddStateType };
