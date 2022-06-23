@@ -18,10 +18,10 @@ class DebtService:
         debt = self.debt_dao.get_by_id(debt_item.debt_id, user_id)
 
         # проверяем что debt_item добавляется в debt, принадлежащий текущему пользователю
-        if debt is not None:
-            return self.debt_item_dao.add_item(debt_item)
+        if debt is None:
+            return 0
 
-        return 0
+        return self.debt_item_dao.add_item(debt_item)
 
     def delete_debt(self, debt_id, user_id):
         count = self.debt_item_dao.count_items_by_debt_id(debt_id, user_id)

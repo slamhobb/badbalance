@@ -1,32 +1,35 @@
 from typing import List
-from datetime import datetime
+from dataclasses import dataclass
 import json
 
 
+@dataclass
 class CoopSpendingUser:
-    def __init__(self, id: int, name: str):
-        self.id = id
-        self.name = name
+    id: int
+    name: str
+    avatar: str
 
     @classmethod
     def from_dict(cls, adict):
         return CoopSpendingUser(
             id=adict['id'],
-            name=adict['name']
+            name=adict['name'],
+            avatar=adict['avatar']
         )
 
     def to_dict(self):
         return {
             'id': self.id,
-            'name': self.name
+            'name': self.name,
+            'avatar': self.avatar
         }
 
 
+@dataclass
 class CoopSpending(object):
-    def __init__(self, id: int, name: str, users: List[CoopSpendingUser]):
-        self.id = id
-        self.name = name
-        self.users = users
+    id: int
+    name: str
+    users: List[CoopSpendingUser]
 
     @classmethod
     def from_dict(cls, adict: dict):
@@ -54,24 +57,31 @@ class CoopSpending(object):
         return adict
 
     # todo: cover tests
-    def to_dict_web(self):
-        data = {
-            'users': [user.to_dict() for user in self.users]
-        }
+    @classmethod
+    def from_dict_web(cls, adict: dict):
+        coop_spending = CoopSpending(
+            id=adict['id'],
+            name=adict['name'],
+            users=[CoopSpendingUser.from_dict(user) for user in adict['users']]
+        )
 
+        return coop_spending
+
+    # todo: cover tests
+    def to_dict_web(self):
         adict = {
             'id': self.id,
             'name': self.name,
-            'data': data
+            'users': [user.to_dict() for user in self.users]
         }
 
         return adict
 
 
+@dataclass
 class CoopSpendingDebt:
-    def __init__(self, user_id: int, sum: int):
-        self.user_id = user_id
-        self.sum = sum
+    user_id: int
+    sum: int
 
     @classmethod
     def from_dict(cls, adict):
@@ -87,11 +97,11 @@ class CoopSpendingDebt:
         }
 
 
+@dataclass
 class CoopSpendingPay:
-    def __init__(self, user_id: int, sum: int, debts: List[CoopSpendingDebt]):
-        self.user_id = user_id
-        self.sum = sum
-        self.debts = debts
+    user_id: int
+    sum: int
+    debts: List[CoopSpendingDebt]
 
     @classmethod
     def from_dict(cls, adict):
@@ -109,11 +119,11 @@ class CoopSpendingPay:
         }
 
 
+@dataclass
 class CoopSpendingTransfer:
-    def __init__(self, from_user_id: int, to_user_id: int, sum: int):
-        self.from_user_id = from_user_id
-        self.to_user_id = to_user_id
-        self.sum = sum
+    from_user_id: int
+    to_user_id: int
+    sum: int
 
     @classmethod
     def from_dict(cls, adict):
@@ -131,15 +141,15 @@ class CoopSpendingTransfer:
         }
 
 
+@dataclass
 class CoopSpendingItem:
-    def __init__(self, id: int, coop_spending_id: int, date: str, type: str,
-                 pays: List[CoopSpendingPay], transfers: List[CoopSpendingTransfer]):
-        self.id = id
-        self.coop_spending_id = coop_spending_id
-        self.date = date
-        self.type = type
-        self.pays = pays
-        self.transfers = transfers
+    id: int
+    coop_spending_id: int
+    date: str
+    text: str
+    type: str
+    pays: List[CoopSpendingPay]
+    transfers: List[CoopSpendingTransfer]
 
     @classmethod
     def from_dict(cls, adict):
@@ -149,6 +159,7 @@ class CoopSpendingItem:
             id=adict['id'],
             coop_spending_id=adict['coop_spending_id'],
             date=adict['date'],
+            text=adict['text'],
             type=data['type'],
             pays=[CoopSpendingPay.from_dict(pay) for pay in data['pays']],
             transfers=[CoopSpendingTransfer.from_dict(t) for t in data['transfers']]
@@ -165,21 +176,21 @@ class CoopSpendingItem:
             'id': self.id,
             'coop_spending_id': self.coop_spending_id,
             'date': self.date,
+            'text': self.text,
             'data': json.dumps(data)
         }
 
     # todo: cover test
     @classmethod
     def from_dict_web(cls, adict):
-        data = json.loads(adict['data'])
-
         return CoopSpendingItem(
             id=adict['id'],
             coop_spending_id=adict['coop_spending_id'],
-            date=adict['date'].strftime('%Y-%m-%d'),
-            type=data['type'],
-            pays=[CoopSpendingPay.from_dict(pay) for pay in data['pays']],
-            transfers=[CoopSpendingTransfer.from_dict(t) for t in data['transfers']]
+            date=adict['date'],
+            text=adict['text'],
+            type=adict['type'],
+            pays=[CoopSpendingPay.from_dict(pay) for pay in adict['pays']],
+            transfers=[CoopSpendingTransfer.from_dict(t) for t in adict['transfers']]
         )
 
     # todo: cover tests
@@ -188,6 +199,7 @@ class CoopSpendingItem:
             'id': self.id,
             'coop_spending_id': self.coop_spending_id,
             'date': self.date,
+            'text': self.text,
             'type': self.type,
             'pays': [pay.to_dict() for pay in self.pays],
             'transfers': [t.to_dict() for t in self.transfers]

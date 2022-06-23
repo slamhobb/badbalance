@@ -112,7 +112,8 @@ create table coop_spending_user(
 );
 
 create index ix_coop_spending_user_id on coop_spending_user(id);
-create index ix_coop_spending_user_user_id on coop_spending_user(user_id);
+create unique index ux_coop_spending_user_coop_spending_id_user_id on
+    coop_spending_user(coop_spending_id, user_id);
 
 
 drop table if exists coop_spending_item;
@@ -120,6 +121,7 @@ create table coop_spending_item(
     id integer primary key autoincrement,
     coop_spending_id integer not null,
     date text not null,
+    text text not null,
     data text not null
 );
 

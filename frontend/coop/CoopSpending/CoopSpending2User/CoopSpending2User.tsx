@@ -1,32 +1,73 @@
 import React from 'react';
 
-import './styles.css';
+import CoopSpendingType from '../../types/CoopSpendingType';
+import ICoopUser from '../../types/ICoopUser';
+import ICoopSpendingItem from '../../types/ICoopSpendingItem';
 
-function CooperativeSpending() {
+
+import CoopSpendingItem from './CoopSpendingItem';
+import AddCoopSpendingItemForm from './AddCoopSpendingItemForm';
+
+import {getAvatarImagePath} from '../../services/avatarSelector';
+
+import '../styles.css';
+
+
+function CoopSpending2User(props: {
+    id: number,
+    leftUser: ICoopUser,
+    rightUser: ICoopUser,
+    items: ICoopSpendingItem[],
+    onAdd: (item: ICoopSpendingItem) => Promise<number | void>
+}) {
     return (
         <React.Fragment>
-            <h2 className="mt-4">Кооперативные расходы</h2>
-
             <div className="row mt-3 pb-3">
-                <div className="col-sm-5">
 
+                <div className="col-sm-5">
                     <div className="ava-card">
                         <div className="row no-gutters">
                             <div className="col text-right">
-                                <img src="/static/img/blizzrep.gif" className="rounded" alt="avatar" />
-                                <h5 className="">Дима</h5>
-                                <h6 className="card-subtitle text-muted">Representative</h6>
+                                <img src={getAvatarImagePath(props.leftUser.avatar)} className="rounded" alt="avatar" />
+                                <h5>{props.leftUser.name}</h5>
                             </div>
                             <div className="col d-flex justify-content-center align-items-center">
                                 vs
                             </div>
                             <div className="col">
-                                <img src="/static/img/sysop.gif" className="rounded" alt="avatar" />
-                                <h5 className="">Сергей</h5>
-                                <h6 className="card-subtitle text-muted">System Administrator</h6>
+                                <img src={getAvatarImagePath(props.rightUser.avatar)} className="rounded" alt="avatar" />
+                                <h5>{props.rightUser.name}</h5>
                             </div>
                         </div>
                     </div>
+
+                    <AddCoopSpendingItemForm leftUser={props.leftUser} rightUser={props.rightUser} onAdd={props.onAdd}/>
+
+                    {props.items.map(item => {
+                        if (item.type === CoopSpendingType.Pay) {
+
+                            const payData = item.pays[0];
+                            const debtData = payData.debts.length == 1
+                                ? payData.debts[0]
+                                : null;
+
+                            const leftPay = payData.userId === props.leftUser.id;
+
+                            return <CoopSpendingItem
+                                key={item.id}
+                                name={item.text}
+                                type={item.type}
+                                paySum={payData.sum}
+                                debtSum={debtData?.sum  ?? 0}
+                                leftPay={leftPay} />
+                        }
+
+                        if (item.type === CoopSpendingType.Transfer) {
+                            // TODO:
+                        }
+
+                        return null;
+                    })}
 
                     <div className="card mt-3">
                         <ul className="list-group list-group-flush">
@@ -34,14 +75,14 @@ function CooperativeSpending() {
                                 <h4 className="font-weight-bold text-center">1800</h4>
                                 <h5 className="text-center">Обед на высоте </h5>
                                 <div className="row no-gutters">
-                                    <div className="col text-right">
+                                    <div className="col text-right text-muted">
                                         1200
                                     </div>
                                     <div className="col text-center ">
-                                        <span className="badge badge-secondary">&lt; 600</span>
+                                        <span className="badge badge-secondary">&lt; долг</span>
                                     </div>
-                                    <div className="col ">
-
+                                    <div className="col">
+                                        600
                                     </div>
                                 </div>
                             </li>
@@ -216,4 +257,4 @@ function CooperativeSpending() {
     );
 }
 
-export default CooperativeSpending;
+export default CoopSpending2User;

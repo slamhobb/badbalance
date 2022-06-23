@@ -21,7 +21,7 @@ module.exports = {
         fastSpending: './fastSpending/index.js',
         userConfig: './userConfig/index.js',
         statistic: './statistic/index.js',
-        cooperativeSpending: './cooperativeSpending/index.tsx'
+        coopSpending: './coop/index.tsx'
     },
 
     output: {

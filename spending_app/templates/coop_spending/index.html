@@ -1,11 +1,11 @@
 {% extends 'shared/layout.html' %}
 
 {% block styles %}
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='build/cooperativeSpending.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='build/coopSpending.css') }}">
 {% endblock %}
 
 {% block scripts %}
-  <script src="{{ url_for('static', filename='build/cooperativeSpending.js') }}"></script>
+  <script src="{{ url_for('static', filename='build/coopSpending.js') }}"></script>
 {% endblock %}
 
 {% block menu %}
@@ -32,5 +32,6 @@
 {% endblock %}
 
 {% block body %}
-  <div id="cooperativeSpending-js"></div>
+  <input type="hidden" id="coopId-js" value="{{ coop_id }}">
+  <div id="coopSpending-js"></div>
 {% endblock %}

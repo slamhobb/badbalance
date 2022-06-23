@@ -9,8 +9,8 @@ import { IncomeIcon, OutcomeIcon } from '../../svg/Svg';
 import { dateToString } from '../../tools/dateTools';
 
 const addState = {
-    INIT: 0,
-    ADD: 1
+    INIT: 'init',
+    ADD: 'add'
 };
 
 class AddDebtItemForm extends React.Component {
@@ -108,38 +108,37 @@ class AddDebtItemForm extends React.Component {
                         Добавить
                 </a>
             );
-        } else {
-            return (
-                <div className="card p-2">
-                    <div className="d-flex justify-content-center mb-2">
-                        <ReactDatePicker className="form-control" placeholder="Дата"
-                            defaultValue={this.curDate} onChange={this.handleChangeDate}/>
-                        <button type="button" className="btn btn-outline-danger ml-2"
-                            onClick={this.handleHideAdd}>&times;</button>
-                    </div>
-                    <div className="input-group mb-2">
-                        <input type="number" className="form-control" placeholder="Сумма"
-                            value={this.state.sum} onChange={this.handleChangeSum}/>
-                        <input type="text" className="form-control" placeholder="Описание"
-                            value={this.state.text} onChange={this.handleChangeText}/>
-                    </div>
-                    
-                    <div className="btn-group">
-                        <button type="button" className="btn btn-outline-dark debt_button"
-                            onClick={this.handleAddOutgoing}>
-                            <span className="mr-1">Дал</span>
-                            <OutcomeIcon/>
-                        </button>
-                        <button type="button" className="btn btn-outline-dark debt_button"
-                            onClick={this.handleAddIncoming}>
-                            <span className="mr-1">Взял</span>
-                            <IncomeIcon/>
-                        </button>
-                    </div>
-                    
-                </div>
-            );
         }
+
+        return (
+            <div className="card p-2">
+                <div className="d-flex justify-content-center mb-2">
+                    <ReactDatePicker className="form-control" placeholder="Дата"
+                        defaultValue={this.curDate} onChange={this.handleChangeDate}/>
+                    <button type="button" className="btn btn-outline-danger ml-2"
+                        onClick={this.handleHideAdd}>&times;</button>
+                </div>
+                <div className="input-group mb-2">
+                    <input type="number" className="form-control" placeholder="Сумма"
+                        value={this.state.sum} onChange={this.handleChangeSum}/>
+                    <input type="text" className="form-control" placeholder="Описание"
+                        value={this.state.text} onChange={this.handleChangeText}/>
+                </div>
+
+                <div className="btn-group">
+                    <button type="button" className="btn btn-outline-dark debt_button"
+                        onClick={this.handleAddOutgoing}>
+                        <span className="mr-1">Дал</span>
+                        <OutcomeIcon/>
+                    </button>
+                    <button type="button" className="btn btn-outline-dark debt_button"
+                        onClick={this.handleAddIncoming}>
+                        <span className="mr-1">Взял</span>
+                        <IncomeIcon/>
+                    </button>
+                </div>
+            </div>
+        );
     }
 }
 

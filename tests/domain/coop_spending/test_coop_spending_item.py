@@ -1,4 +1,3 @@
-from datetime import datetime
 import json
 
 from spending_app.domain.coop_spending import CoopSpendingItem
@@ -8,15 +7,32 @@ from spending_app.domain.coop_spending import CoopSpendingDebt
 
 
 def test_pays_init():
-    model = CoopSpendingItem(id=7, coop_spending_id=4, date='2021-01-17', type="pay",
-                             pays=[CoopSpendingPay(user_id=11, sum=2500,
-                                                   debts=[CoopSpendingDebt(user_id=18, sum=500)])],
-                             transfers=[])
+    model = CoopSpendingItem(
+        id=7,
+        coop_spending_id=4,
+        date='2021-01-17',
+        text='Скипасс',
+        type='pay',
+        pays=[
+            CoopSpendingPay(
+                user_id=11,
+                sum=2500,
+                debts=[
+                    CoopSpendingDebt(
+                        user_id=18,
+                        sum=500
+                    )
+                ]
+            )
+        ],
+        transfers=[]
+    )
 
     assert model.id == 7
     assert model.coop_spending_id == 4
     assert model.date == '2021-01-17'
-    assert model.type == "pay"
+    assert model.text == 'Скипасс'
+    assert model.type == 'pay'
     assert model.pays[0].user_id == 11
     assert model.pays[0].sum == 2500
     assert model.pays[0].debts[0].user_id == 18
@@ -30,6 +46,7 @@ def test_pays_from_dict():
             'id': 7,
             'coop_spending_id': 4,
             'date': '2021-01-17',
+            'text': 'Скипасс',
             'data': json.dumps(
                 {
                     'type': 'pay',
@@ -54,7 +71,8 @@ def test_pays_from_dict():
     assert model.id == 7
     assert model.coop_spending_id == 4
     assert model.date == '2021-01-17'
-    assert model.type == "pay"
+    assert model.type == 'pay'
+    assert model.text == 'Скипасс'
     assert model.pays[0].user_id == 11
     assert model.pays[0].sum == 2500
     assert model.pays[0].debts[0].user_id == 18
@@ -63,16 +81,33 @@ def test_pays_from_dict():
 
 
 def test_pays_to_dict():
-    model = CoopSpendingItem(id=7, coop_spending_id=4, date='2021-01-17', type="pay",
-                             pays=[CoopSpendingPay(user_id=11, sum=2500,
-                                                   debts=[CoopSpendingDebt(user_id=18, sum=500)])],
-                             transfers=[])
+    model = CoopSpendingItem(
+        id=7,
+        coop_spending_id=4,
+        date='2021-01-17',
+        text='Скипасс',
+        type='pay',
+        pays=[
+            CoopSpendingPay(
+                user_id=11,
+                sum=2500,
+                debts=[
+                    CoopSpendingDebt(
+                        user_id=18,
+                        sum=500
+                    )
+                ]
+            )
+        ],
+        transfers=[])
+
     adict = model.to_dict()
 
     expected_dict = {
         'id': 7,
         'coop_spending_id': 4,
         'date': '2021-01-17',
+        'text': 'Скипасс',
         'data': json.dumps(
             {
                 'type': 'pay',
@@ -97,14 +132,23 @@ def test_pays_to_dict():
 
 
 def test_transfers_init():
-    model = CoopSpendingItem(id=7, coop_spending_id=4, date='2021-01-17', type="pay",
-                             pays=[],
-                             transfers=[CoopSpendingTransfer(from_user_id=9, to_user_id=10, sum=250)])
+    model = CoopSpendingItem(
+        id=7,
+        coop_spending_id=4,
+        date='2021-01-17',
+        text='За обед',
+        type='transfer',
+        pays=[],
+        transfers=[
+            CoopSpendingTransfer(from_user_id=9, to_user_id=10, sum=250)
+        ]
+    )
 
     assert model.id == 7
     assert model.coop_spending_id == 4
     assert model.date == '2021-01-17'
-    assert model.type == "pay"
+    assert model.text == 'За обед'
+    assert model.type == 'transfer'
     assert model.pays == []
     assert model.transfers[0].from_user_id == 9
     assert model.transfers[0].to_user_id == 10
@@ -117,9 +161,10 @@ def test_transfers_from_dict():
             'id': 7,
             'coop_spending_id': 4,
             'date': '2021-01-17',
+            'text': 'За обед',
             'data': json.dumps(
                 {
-                    'type': 'pay',
+                    'type': 'transfer',
                     'pays': [],
                     'transfers': [
                         {
@@ -136,7 +181,8 @@ def test_transfers_from_dict():
     assert model.id == 7
     assert model.coop_spending_id == 4
     assert model.date == '2021-01-17'
-    assert model.type == "pay"
+    assert model.text == 'За обед'
+    assert model.type == 'transfer'
     assert model.pays == []
     assert model.transfers[0].from_user_id == 9
     assert model.transfers[0].to_user_id == 10
@@ -144,18 +190,27 @@ def test_transfers_from_dict():
 
 
 def test_transfers_to_dict():
-    model = CoopSpendingItem(id=7, coop_spending_id=4, date='2021-01-17', type="pay",
-                             pays=[],
-                             transfers=[CoopSpendingTransfer(from_user_id=9, to_user_id=10, sum=250)])
+    model = CoopSpendingItem(
+        id=7,
+        coop_spending_id=4,
+        date='2021-01-17',
+        text='За обед',
+        type='transfer',
+        pays=[],
+        transfers=[
+            CoopSpendingTransfer(from_user_id=9, to_user_id=10, sum=250)
+        ]
+    )
     adict = model.to_dict()
 
     expected_dict = {
         'id': 7,
         'coop_spending_id': 4,
         'date': '2021-01-17',
+        'text': 'За обед',
         'data': json.dumps(
             {
-                'type': 'pay',
+                'type': 'transfer',
                 'pays': [],
                 'transfers': [
                     {

@@ -29,7 +29,9 @@ def index():
 @mod.route('/list', methods=['GET'])
 @login_required
 def get_debts():
-    list = debt_service.get_items_for_not_closed_debts(g.user_context.user_id)
+    user_id = g.user_context.user_id
+
+    list = debt_service.get_items_for_not_closed_debts(user_id)
 
     return jsonify(status=True, items=list)
 
@@ -70,7 +72,7 @@ def delete_debt():
 
 @mod.route('/add_item', methods=['POST'])
 @login_required
-def save_debt_item():
+def add_debt_item():
     form = DebtItemForm()
 
     if not form.validate_on_submit():
